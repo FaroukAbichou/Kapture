@@ -7,16 +7,16 @@ class ScreenRecorder(
     private val outputFile: String,
     private val width: Int = 1280,
     private val height: Int = 720,
-    private val frameRatee: Double = 30.0,
-    private val pixelFormatt: Int = avutil.AV_PIX_FMT_UYVY422
+    private val frameRate: Double = 30.0,
+    private val pixelFormat: Int = avutil.AV_PIX_FMT_UYVY422
 ) {
     fun record() {
         val grabber = FFmpegFrameGrabber("1").apply {
             format = "avfoundation"
-            imageWidth = width
-            imageHeight = height
-            this.frameRate = frameRatee
-            this.pixelFormat = pixelFormatt
+            imageWidth = this@ScreenRecorder.width
+            imageHeight = this@ScreenRecorder.height
+            this.frameRate = this@ScreenRecorder.frameRate
+            this.pixelFormat = this@ScreenRecorder.pixelFormat
             setOption("probesize", "5000000")
         }
 
