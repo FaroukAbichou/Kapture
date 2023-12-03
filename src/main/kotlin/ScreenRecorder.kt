@@ -7,28 +7,25 @@ class ScreenRecorder(
     private val outputFile: String,
     private val width: Int = 1280,
     private val height: Int = 720,
-    private val frameRate: Double = 30.0,
-    private val pixelFormat: Int = avutil.AV_PIX_FMT_UYVY422
+    private val frameRatee: Double = 30.0,
+    private val pixelFormatt: Int = avutil.AV_PIX_FMT_UYVY422
 ) {
     fun record() {
-        val grabber = FFmpegFrameGrabber("1") // "1" usually refers to the main screen
-        grabber.setOption("probesize", "5000000")
+        val grabber = FFmpegFrameGrabber("1").apply {
+            format = "avfoundation"
+            imageWidth = width
+            imageHeight = height
+            this.frameRate = frameRatee
+            this.pixelFormat = pixelFormatt
+            setOption("probesize", "5000000")
+        }
 
-        grabber.format = "avfoundation"
-        grabber.imageWidth = width
-        grabber.imageHeight = height
-        grabber.frameRate = frameRate
-
-        grabber.pixelFormat = pixelFormat
-
-        // Set up the recorder
-        val recorder = FFmpegFrameRecorder(outputFile, grabber.imageWidth, grabber.imageHeight)
-        recorder.videoCodecName = "libx264"
-        recorder.frameRate = grabber.frameRate
-        recorder.pixelFormat = avutil.AV_PIX_FMT_YUV420P // Set pixel format for recording
-
-        recorder.setVideoOption("crf", "18") // Range is 0 (lossless) to 51 (worst)
-
+        val recorder = FFmpegFrameRecorder(outputFile, width, height).apply {
+            videoCodecName = "libx264"
+            this.frameRate = frameRate
+            pixelFormat = avutil.AV_PIX_FMT_YUV420P
+            setVideoOption("crf", "18")
+        }
         // Start recording
         grabber.start()
         recorder.start()
