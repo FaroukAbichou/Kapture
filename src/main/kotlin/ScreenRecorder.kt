@@ -17,9 +17,9 @@ class ScreenRecorder(private val config: ConfigurationManager) {
             .setFormat("avfoundation") // Use the AVFoundation format
             .addOutput(outputFilePath) // Specify the output file path
             .setDuration(durationInSeconds.toLong(), TimeUnit.SECONDS) // Set the recording duration
-            .setVideoCodec("libx264") // Use the x264 codec for video
-            .setVideoFrameRate(30, 1) // Record at 30 frames per second
-            .setVideoResolution(1920, 1080) // Set the desired resolution
+            .setVideoCodec(config.videoCodecName) // Use the x264 codec for video
+            .setVideoFrameRate(config.frameRate, 1) // Record at 30 frames per second
+            .setVideoResolution(config.width, config.height) // Set the desired resolution
             .done()
 
         val executor = FFmpegExecutor(ffmpeg, ffprobe)

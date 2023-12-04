@@ -9,7 +9,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import util.Window.getWindowBounds
 
 @Composable
 @Preview
@@ -21,12 +20,7 @@ fun App(screenRecorder: ScreenRecorder) {
         ) {
             Button(
                 onClick = {
-                    val bounds = getWindowBounds("Terminal")
-                    if (bounds != null) {
-                        println("Bounds: ${bounds.x1}, ${bounds.y1}, ${bounds.x2}, ${bounds.y2}")
-                        println("Width: ${bounds.width}, Height: ${bounds.height}")
-                        screenRecorder.recordScreen("output.mp4", 3)
-                    }
+                    screenRecorder.recordScreen("output.mp4", 5)
                 }
             ) {
                 Text("Record")
