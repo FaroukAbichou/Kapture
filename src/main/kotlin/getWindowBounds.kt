@@ -1,9 +1,11 @@
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
-fun getTerminalWindowBounds(): List<Int>? {
+fun getWindowBounds(
+    windowId: String
+): WindowBounds? {
     try {
-        val command = arrayOf("/usr/bin/osascript", "-e", "tell application \"Terminal\" to get the bounds of the front window")
+        val command = arrayOf("/usr/bin/osascript", "-e", "tell application \"$windowId\" to get the bounds of the front window")
         val process = ProcessBuilder(*command).start()
 
         val reader = BufferedReader(InputStreamReader(process.inputStream))
@@ -22,7 +24,12 @@ fun getTerminalWindowBounds(): List<Int>? {
             return null
         }
 
-        return output.split(", ").map { it.toIntOrNull() ?: return null }
+        val bounds = output.split(", ").map { it.toIntOrNull() ?: return null }
+        if (bounds.size == 4) {
+            return WindowBounds(bounds[0], bounds[1], bounds[2], bounds[3])
+        }
+
+        return null
     } catch (e: Exception) {
         e.printStackTrace()
         return null

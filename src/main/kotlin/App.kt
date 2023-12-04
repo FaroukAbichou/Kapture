@@ -17,20 +17,23 @@ fun App(screenRecorder: ScreenRecorder) {
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            Button(onClick = {
-                println(getTerminalWindowBounds())
-                screenRecorder.startRecording(
-                    x = getTerminalWindowBounds()!![0],
-                    y = getTerminalWindowBounds()!![1],
-                    width = getTerminalWindowBounds()!![2],
-                    height = getTerminalWindowBounds()!![3]
-                )
-            }) {
+            Button(
+                onClick = {
+                    val bounds = getWindowBounds("Terminal")
+                    if (bounds != null) {
+                        println("Bounds: ${bounds.x1}, ${bounds.y1}, ${bounds.x2}, ${bounds.y2}")
+                        println("Width: ${bounds.width}, Height: ${bounds.height}")
+                        screenRecorder.startRecording(bounds)
+                    }
+                }
+            ) {
                 Text("Record")
             }
-            Button(onClick = {
-                screenRecorder.stopRecording()
-            }) {
+            Button(
+                onClick = {
+                    screenRecorder.stopRecording()
+                }
+            ) {
                 Text("Stop")
             }
         }
