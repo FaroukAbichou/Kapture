@@ -8,36 +8,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import java.io.BufferedReader
-import java.io.InputStreamReader
 
-fun getTerminalWindowBounds(): List<Int>? {
-    try {
-        val process = Runtime.getRuntime().exec("osascript -e 'tell application \"Terminal\" to get the bounds of the front window'")
-        val reader = BufferedReader(InputStreamReader(process.inputStream))
-        val errorReader = BufferedReader(InputStreamReader(process.errorStream))
-
-        val output = reader.readText()
-        val error = errorReader.readText()
-
-        reader.close()
-        errorReader.close()
-
-        process.waitFor()
-
-        // Check for errors
-        if (error.isNotEmpty()) {
-            println("Error: $error")
-            return null
-        }
-
-        // Parse the output
-        return output.trim().split(", ").map { it.toIntOrNull() ?: return null }
-    } catch (e: Exception) {
-        e.printStackTrace()
-        return null
-    }
-}
 @Composable
 @Preview
 fun App(screenRecorder: ScreenRecorder) {
@@ -49,10 +20,10 @@ fun App(screenRecorder: ScreenRecorder) {
             Button(onClick = {
                 println(getTerminalWindowBounds())
                 screenRecorder.startRecording(
-                    x = 910,
-                    y = 105,
-                    width = 925,
-                    height = 641
+                    x = getTerminalWindowBounds()!![0],
+                    y = getTerminalWindowBounds()!![1],
+                    width = getTerminalWindowBounds()!![2],
+                    height = getTerminalWindowBounds()!![3]
                 )
             }) {
                 Text("Record")
