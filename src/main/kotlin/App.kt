@@ -1,3 +1,4 @@
+
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,6 +9,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import util.Window.getWindowBounds
 
 @Composable
 @Preview
@@ -23,7 +25,7 @@ fun App(screenRecorder: ScreenRecorder) {
                     if (bounds != null) {
                         println("Bounds: ${bounds.x1}, ${bounds.y1}, ${bounds.x2}, ${bounds.y2}")
                         println("Width: ${bounds.width}, Height: ${bounds.height}")
-                        screenRecorder.startRecording(bounds)
+                        screenRecorder.recordScreen("output.mp4", 3)
                     }
                 }
             ) {
@@ -31,7 +33,7 @@ fun App(screenRecorder: ScreenRecorder) {
             }
             Button(
                 onClick = {
-                    screenRecorder.stopRecording()
+//                    screenRecorder.stopRecording()
                 }
             ) {
                 Text("Stop")

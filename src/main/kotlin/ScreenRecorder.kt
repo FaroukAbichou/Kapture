@@ -1,63 +1,29 @@
 
-import org.bytedeco.ffmpeg.global.avutil
-import org.bytedeco.javacv.FFmpegFrameGrabber
-import org.bytedeco.javacv.FFmpegFrameRecorder
-import org.bytedeco.javacv.Frame
+import net.bramp.ffmpeg.FFmpeg
+import net.bramp.ffmpeg.FFmpegExecutor
+import net.bramp.ffmpeg.FFprobe
+import net.bramp.ffmpeg.builder.FFmpegBuilder
+import java.util.concurrent.TimeUnit
+
 
 class ScreenRecorder(private val config: ConfigurationManager) {
-    private var recordingThread: Thread? = null
-    @Volatile private var isRecording: Boolean = false
 
-    fun startRecording(bounds: WindowBounds) {
-        isRecording = true
-        recordingThread = Thread {
-            record(bounds)
-        }
-        recordingThread?.start()
+    fun recordScreen(outputFilePath: String, durationInSeconds: Int) {
+        val ffmpeg = FFmpeg("/opt/homebrew/bin/ffmpeg")
+        val ffprobe = FFprobe("/opt/homebrew/bin/ffprobe")
+
+        val builder = FFmpegBuilder()
+            .setInput("1") // '1' typically represents the main screen in AVFoundation on macOS
+            .setFormat("avfoundation") // Use the AVFoundation format
+            .addOutput(outputFilePath) // Specify the output file path
+            .setDuration(durationInSeconds.toLong(), TimeUnit.SECONDS) // Set the recording duration
+            .setVideoCodec("libx264") // Use the x264 codec for video
+            .setVideoFrameRate(30, 1) // Record at 30 frames per second
+            .setVideoResolution(1920, 1080) // Set the desired resolution
+            .done()
+
+        val executor = FFmpegExecutor(ffmpeg, ffprobe)
+        executor.createJob(builder).run()
     }
-
-    fun stopRecording() {
-        isRecording = false
-        recordingThread?.join()
-    }
-
-    private fun record(bounds: WindowBounds) {
-        val grabber = FFmpegFrameGrabber("0").apply {
-            format = "avfoundation"
-            imageWidth = bounds.width
-            imageHeight = bounds.height
-            this.frameRate = config.frameRate
-            this.pixelFormat = config.pixelFormat
-            setOption("probesize", "5000000")
-        }
-
-        val recorder = FFmpegFrameRecorder(
-            config.outputFile,
-            config. width,
-            config.height
-        ).apply {
-            videoCodecName = config.videoCodecName
-            this.frameRate = config.frameRate
-            pixelFormat = avutil.AV_PIX_FMT_YUV420P
-            setVideoOption("crf", "18")
-        }
-
-        grabber.start()
-        recorder.start()
-
-        var capturedFrame: Frame?
-        while (isRecording) {
-            capturedFrame = grabber.grab()
-            if (capturedFrame != null) {
-                recorder.record(capturedFrame)
-            }
-        }
-
-        recorder.stop()
-        recorder.release()
-        grabber.stop()
-        grabber.release()
-    }
-
 }
 

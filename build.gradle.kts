@@ -16,7 +16,7 @@ repositories {
 
 dependencies {
     implementation(compose.desktop.currentOs)
-    implementation("org.bytedeco:javacv-platform:1.5.9")
+    implementation("net.bramp.ffmpeg:ffmpeg:0.8.0")
 }
 
 compose.desktop {
