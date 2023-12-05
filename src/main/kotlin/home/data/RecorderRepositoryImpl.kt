@@ -1,13 +1,13 @@
 package home.data
 
 import ConfigurationManager
-import screen.domain.WindowBounds
 import home.domain.RecorderRepository
 import net.bramp.ffmpeg.FFmpeg
 import net.bramp.ffmpeg.FFmpegExecutor
 import net.bramp.ffmpeg.FFprobe
 import net.bramp.ffmpeg.builder.FFmpegBuilder
 import screen.data.ScreenInfo
+import screen.domain.WindowBounds
 import util.FFmpegUtils.FFmpegPath
 import util.FFmpegUtils.FFprobePath
 import java.util.concurrent.Executors
