@@ -6,7 +6,6 @@ import net.bramp.ffmpeg.FFprobe
 import net.bramp.ffmpeg.builder.FFmpegBuilder
 import record.domain.ConfigurationManager
 import record.domain.RecorderRepository
-import screen.data.ScreenInfo
 import screen.domain.WindowBounds
 import util.FFmpegUtils.FFmpegPath
 import util.FFmpegUtils.FFprobePath
@@ -14,17 +13,13 @@ import java.util.concurrent.Executors
 import java.util.concurrent.Future
 import java.util.concurrent.TimeUnit
 
-class RecorderRepositoryImpl(
-    screenInfo: ScreenInfo
-) : RecorderRepository {
+class RecorderRepositoryImpl : RecorderRepository {
     private val ffmpeg = FFmpeg(FFmpegPath)
     private val ffprobe = FFprobe(FFprobePath)
 
     private var recordingThread: Future<*>? = null
     private val executorService = Executors.newSingleThreadExecutor()
 
-    val resolutions = screenInfo.getScreenResolutions()
-    val numberOfScreens = screenInfo.getNumberOfScreens()
 
     override fun recordScreen(
         config: ConfigurationManager,
@@ -44,11 +39,16 @@ class RecorderRepositoryImpl(
             )
             .setVideoCodec(config.videoCodecName)
             .setVideoFrameRate(config.frameRate, 1)
-            .setVideoResolution(
-                resolutions[config.screenId].width,
-                resolutions[config.screenId].height
-            )
-            .apply { if (cropFilter != null) setVideoFilter(cropFilter) }
+
+            .apply {
+                if (cropFilter != null)
+                    setVideoFilter(cropFilter)
+                if (config.windowBounds != null)
+                    setVideoResolution(
+                        config.windowBounds.width,
+                        config.windowBounds.height
+                    )
+            }
             .done()
 
         val executor = FFmpegExecutor(ffmpeg, ffprobe)
@@ -70,10 +70,13 @@ class RecorderRepositoryImpl(
             )
             .setVideoCodec(config.videoCodecName)
             .setVideoFrameRate(config.frameRate, 1)
-            .setVideoResolution(
-                resolutions[config.screenId].width,
-                resolutions[config.screenId].height
-            )
+            .apply {
+                if (config.windowBounds != null)
+                    setVideoResolution(
+                        config.windowBounds.width,
+                        config.windowBounds.height
+                    )
+            }
             .setAudioCodec("aac")
             .done()
 
@@ -95,7 +98,13 @@ class RecorderRepositoryImpl(
             .addOutput(config.outputFile)
             .setVideoCodec(config.videoCodecName)
             .setVideoFrameRate(config.frameRate, 1)
-            .setVideoResolution(resolutions[config.screenId].width, resolutions[config.screenId].height)
+            .apply {
+                if (config.windowBounds != null)
+                    setVideoResolution(
+                        config.windowBounds.width,
+                        config.windowBounds.height
+                    )
+            }
             .apply { if (cropFilter != null) setVideoFilter(cropFilter) }
             .done()
 

@@ -9,10 +9,12 @@ import kotlinx.coroutines.flow.stateIn
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import record.domain.RecorderRepository
+import screen.data.ScreenRepository
 
 class HomeViewModel : KoinComponent {
 
-    private val repository: RecorderRepository by inject()
+    private val recorderRepository: RecorderRepository by inject()
+    private val screenRepository: ScreenRepository = ScreenRepository()
 
     private val viewModelScope = MainScope()
 
@@ -25,34 +27,39 @@ class HomeViewModel : KoinComponent {
         ).value
 
     init {
-        getScreen()
+        getScreensInfo()
     }
 
     fun onEvent(event: HomeEvent) {
         when (event) {
             is HomeEvent.Record -> {
-                repository.recordScreen(event.config, bounds = null)
+                recorderRepository.recordScreen(event.config, bounds = null)
             }
 
             is HomeEvent.RecordSection -> {
-                repository.recordScreen(event.config, event.bounds)
+                recorderRepository.recordScreen(event.config, event.bounds)
             }
 
             is HomeEvent.RecordWithAudio -> {
-                repository.recordScreenWithAudio(event.config, event.audioSource)
+                recorderRepository.recordScreenWithAudio(event.config, event.audioSource)
             }
 
             is HomeEvent.StartRecording -> {
-                repository.startRecording(event.config, event.bounds)
+                recorderRepository.startRecording(event.config, event.bounds)
             }
 
             HomeEvent.StopRecording -> {
-                repository.stopRecording()
+                recorderRepository.stopRecording()
             }
         }
     }
 
-    private fun getScreen() {
-        TODO("Not yet implemented")
+    private fun getScreensInfo() {
+        val resolutions = screenRepository.getScreenResolutions()
+        val numberOfScreens = screenRepository.getNumberOfScreens()
+        _state.value = _state.value.copy(
+            resolutions = resolutions,
+            numberOfScreens = numberOfScreens,
+        )
     }
 }

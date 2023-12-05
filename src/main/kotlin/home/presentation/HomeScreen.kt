@@ -39,7 +39,10 @@ fun HomeScreen(
                 val bounds = WindowBounds(x1 = 100, y1 = 100, x2 = 500, y2 = 400)
                 onEvent(
                     HomeEvent.RecordSection(
-                        config = ConfigurationManager(),
+                        config = ConfigurationManager(
+                            screenId = state.selectedScreenId,
+                            windowBounds = bounds
+                        ),
                         bounds = bounds
                     )
                 )
