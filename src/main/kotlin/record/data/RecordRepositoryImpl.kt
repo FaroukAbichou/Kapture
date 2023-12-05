@@ -5,7 +5,7 @@ import net.bramp.ffmpeg.FFmpegExecutor
 import net.bramp.ffmpeg.FFprobe
 import net.bramp.ffmpeg.builder.FFmpegBuilder
 import record.domain.ConfigurationManager
-import record.domain.RecorderRepository
+import record.domain.RecordRepository
 import screen.domain.WindowBounds
 import util.FFmpegUtils.FFmpegPath
 import util.FFmpegUtils.FFprobePath
@@ -13,7 +13,7 @@ import java.util.concurrent.Executors
 import java.util.concurrent.Future
 import java.util.concurrent.TimeUnit
 
-class RecorderRepositoryImpl : RecorderRepository {
+class RecordRepositoryImpl : RecordRepository {
     private val ffmpeg = FFmpeg(FFmpegPath)
     private val ffprobe = FFprobe(FFprobePath)
 
@@ -30,7 +30,7 @@ class RecorderRepositoryImpl : RecorderRepository {
         }
 
         val builder = FFmpegBuilder()
-            .setInput(config.screenId.toString())
+            .setInput(config.screenId)
             .setFormat(config.format)
             .addOutput(config.outputFile)
             .setDuration(
@@ -60,7 +60,7 @@ class RecorderRepositoryImpl : RecorderRepository {
         audioSource: String
     ) {
         val builder = FFmpegBuilder()
-            .setInput(config.screenId.toString())
+            .setInput(config.screenId)
             .setInput(audioSource) // Specify audio source
             .setFormat(config.format)
             .addOutput(config.outputFile)
@@ -93,7 +93,7 @@ class RecorderRepositoryImpl : RecorderRepository {
         }
 
         val builder = FFmpegBuilder()
-            .setInput(config.screenId.toString())
+            .setInput(config.screenId)
             .setFormat(config.format)
             .addOutput(config.outputFile)
             .setVideoCodec(config.videoCodecName)

@@ -20,12 +20,12 @@ fun ScreenSelector(
         modifier = Modifier.padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        repeat(state.numberOfScreens) {
+        repeat(state.screens.size) {
             Button(
                 onClick = {
                     onEvent(
                         HomeEvent.SelectScreen(
-                            screenId = it
+                            screenId = state.screens[it].id
                         )
                     )
                 }

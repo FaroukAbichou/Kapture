@@ -10,7 +10,7 @@ fun App() {
     val viewModel = HomeViewModel()
     MaterialTheme {
         HomeScreen(
-            state = viewModel.state,
+            state = viewModel.state.value,
             onEvent = viewModel::onEvent
         )
     }

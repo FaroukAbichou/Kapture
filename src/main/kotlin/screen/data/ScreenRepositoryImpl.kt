@@ -7,7 +7,8 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 
 class ScreenRepositoryImpl : ScreenRepository {
-    override fun getScreenList(): List<Screen> {
+
+    override fun getScreens(): List<Screen> {
         val command = listOf("/usr/sbin/system_profiler", "SPDisplaysDataType")
         val process = ProcessBuilder(command).start()
 
@@ -15,10 +16,13 @@ class ScreenRepositoryImpl : ScreenRepository {
         val output = reader.readText()
         reader.close()
 
+        var screenNumber = -1
+
         val resolutionRegex = "Resolution: (\\d+) x (\\d+)".toRegex()
-        return resolutionRegex.findAll(output).map { matchResult ->
+        val screens = resolutionRegex.findAll(output).map { matchResult ->
+            screenNumber++
             Screen(
-                id = matchResult.groupValues[1],
+                id =   screenNumber.toString(),
                 name = matchResult.groupValues[2],
                 bounds = WindowBounds(
                     x1 = 0,
@@ -28,28 +32,7 @@ class ScreenRepositoryImpl : ScreenRepository {
                 )
             )
         }.toList()
+        return screens
     }
 
-    override fun getScreen(screenId: String): Screen {
-        val command = listOf("/usr/sbin/system_profiler", "SPDisplaysDataType")
-        val process = ProcessBuilder(command).start()
-
-        val reader = BufferedReader(InputStreamReader(process.inputStream))
-        val output = reader.readText()
-        reader.close()
-
-        val resolutionRegex = "Resolution: (\\d+) x (\\d+)".toRegex()
-        return resolutionRegex.findAll(output).map { matchResult ->
-            Screen(
-                id = matchResult.groupValues[1],
-                name = matchResult.groupValues[2],
-                bounds = WindowBounds(
-                    x1 = 0,
-                    y1 = 0,
-                    x2 = matchResult.groupValues[1].toInt(),
-                    y2 = matchResult.groupValues[2].toInt()
-                )
-            )
-        }.toList().first { it.id == screenId }
-    }
 }

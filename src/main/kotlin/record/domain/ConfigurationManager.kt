@@ -4,10 +4,10 @@ import screen.domain.WindowBounds
 
 data class ConfigurationManager(
     val frameRate: Int = 30,
-    val durationInSeconds: Int = 10,
+    val durationInSeconds: Int = 5,
     val videoCodecName: String = "libx264",
     val outputFile: String = "/Users/takiacademy/Desktop/Videos/output.mp4",
-    val screenId: Int = 1,
+    val screenId: String = "1",
     val format: String = "avfoundation",
     val windowBounds: WindowBounds? = WindowBounds(
         x1 = 0,

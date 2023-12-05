@@ -2,7 +2,7 @@ package record.domain
 
 import screen.domain.WindowBounds
 
-interface RecorderRepository {
+interface RecordRepository {
     fun startRecording(config: ConfigurationManager, bounds: WindowBounds?)
     fun stopRecording()
     fun pauseRecording()
