@@ -11,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import home.presentation.event.HomeEvent
 import home.presentation.state.HomeState
-import record.data.RecorderRepositoryImpl
 import record.domain.ConfigurationManager
 import screen.domain.WindowBounds
 
@@ -28,11 +27,9 @@ fun HomeScreen(
             Button(
                 onClick = {
                     onEvent(
-                        HomeEvent.Record
-                    )
-                    recorderRepositoryImpl.recordScreen(
-                        config = ConfigurationManager(),
-                        bounds = null
+                        HomeEvent.Record(
+                            config = ConfigurationManager(),
+                        )
                     )
                 }
             ) {
@@ -42,7 +39,12 @@ fun HomeScreen(
             Button(
                 onClick = {
                     val bounds = WindowBounds(x1 = 100, y1 = 100, x2 = 500, y2 = 400)
-                    recorderRepositoryImpl.recordScreen(bounds = bounds, config = ConfigurationManager())
+                    onEvent(
+                        HomeEvent.RecordSection(
+                            config = ConfigurationManager(),
+                            bounds = bounds
+                        )
+                    )
                 }
             ) {
                 Text("Record Section")
@@ -50,10 +52,10 @@ fun HomeScreen(
 
             Button(
                 onClick = {
-                    recorderRepositoryImpl.recordScreenWithAudio(
+                    onEvent(HomeEvent.RecordWithAudio(
                         config = ConfigurationManager(),
                         audioSource = "default"
-                    )
+                    ))
                 }
             ) {
                 Text("Record with Audio")
@@ -61,10 +63,11 @@ fun HomeScreen(
 
             Button(
                 onClick = {
-                    recorderRepositoryImpl.startRecording(
+                    onEvent(HomeEvent.StartRecording(
                         config = ConfigurationManager(),
                         bounds = null
-                    )
+
+                    ))
                 }
             ) {
                 Text("Start Recording")
@@ -72,7 +75,7 @@ fun HomeScreen(
 
             Button(
                 onClick = {
-                    recorderRepositoryImpl.stopRecording()
+                    onEvent(HomeEvent.StopRecording)
                 }
             ) {
                 Text("Stop Recording")

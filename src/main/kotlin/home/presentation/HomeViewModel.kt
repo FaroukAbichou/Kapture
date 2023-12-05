@@ -26,11 +26,21 @@ class HomeViewModel : KoinComponent {
 
     fun onEvent(event: HomeEvent) {
         when (event) {
-            HomeEvent.Record -> TODO()
-            is HomeEvent.RecordSection -> TODO()
-            HomeEvent.RecordWithAudio -> TODO()
-            HomeEvent.StartRecording -> TODO()
-            HomeEvent.StopRecording -> TODO()
+            is HomeEvent.Record -> {
+                repository.recordScreen(event.config,bounds =  null)
+            }
+            is HomeEvent.RecordSection -> {
+                repository.recordScreen(event.config, event.bounds)
+            }
+            is HomeEvent.RecordWithAudio -> {
+                repository.recordScreenWithAudio(event.config, event.audioSource)
+            }
+            is HomeEvent.StartRecording -> {
+                repository.startRecording(event.config, event.bounds)
+            }
+            HomeEvent.StopRecording -> {
+                repository.stopRecording()
+            }
         }
     }
 }

@@ -19,6 +19,7 @@ class RecorderRepositoryImpl(
 ) : RecorderRepository {
     private val ffmpeg = FFmpeg(FFmpegPath)
     private val ffprobe = FFprobe(FFprobePath)
+
     private var recordingThread: Future<*>? = null
     private val executorService = Executors.newSingleThreadExecutor()
 

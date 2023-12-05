@@ -1,11 +1,16 @@
 package home.presentation.event
 
+import record.domain.ConfigurationManager
+import screen.domain.WindowBounds
+
 sealed class HomeEvent {
-    data object Record : HomeEvent()
     data class RecordSection(
-        val x: Int
+        val config: ConfigurationManager,val bounds: WindowBounds?
     ) : HomeEvent()
-    data object RecordWithAudio : HomeEvent()
-    data object StartRecording : HomeEvent()
+
+    data class Record(val config: ConfigurationManager) : HomeEvent()
+    data class RecordWithAudio(val config: ConfigurationManager,val  audioSource: String) : HomeEvent()
+    data class StartRecording(val config: ConfigurationManager,val bounds: WindowBounds?) : HomeEvent()
+
     data object StopRecording : HomeEvent()
 }
