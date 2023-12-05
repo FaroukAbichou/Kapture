@@ -22,7 +22,7 @@ class HomeViewModel : KoinComponent {
             viewModelScope,
             SharingStarted.WhileSubscribed(5000),
             HomeState()
-        )
+        ).value
 
     fun onEvent(event: HomeEvent) {
         when (event) {
