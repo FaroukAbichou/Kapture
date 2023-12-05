@@ -13,7 +13,6 @@ import androidx.compose.ui.unit.dp
 @Composable
 @Preview
 fun App(screenRecorder: ScreenRecorder) {
-    val bonds = WindowBounds(400, 1000, 100, 100)
     MaterialTheme {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -21,14 +20,18 @@ fun App(screenRecorder: ScreenRecorder) {
         ) {
             Button(
                 onClick = {
-                    screenRecorder.recordScreen("output.mp4", 5)
+                    screenRecorder.recordScreen(
+                        config = ConfigurationManager(),
+                        bounds = null
+                    )
                 }
             ) {
                 Text("Record")
             }
             Button(
                 onClick = {
-                    screenRecorder.recordScreenSection("output.mp4", 5, bonds)
+                    val bounds = WindowBounds(x1 = 100, y1 = 100, x2 = 500, y2 = 400)
+                    screenRecorder.recordScreen(bounds = bounds, config = ConfigurationManager())
                 }
             ) {
                 Text("Record Section")
