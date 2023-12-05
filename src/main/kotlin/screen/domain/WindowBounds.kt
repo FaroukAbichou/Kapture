@@ -1,3 +1,5 @@
+package screen.domain
+
 data class WindowBounds(
     val x1: Int,
     val y1: Int,
