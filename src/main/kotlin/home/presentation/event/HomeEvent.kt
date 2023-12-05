@@ -11,5 +11,7 @@ sealed class HomeEvent {
     data class Record(val config: ConfigurationManager) : HomeEvent()
     data class RecordWithAudio(val config: ConfigurationManager, val audioSource: String) : HomeEvent()
     data class StartRecording(val config: ConfigurationManager, val bounds: WindowBounds?) : HomeEvent()
+    data class SelectScreen(val screenId: Int) : HomeEvent()
+
     data object StopRecording : HomeEvent()
 }

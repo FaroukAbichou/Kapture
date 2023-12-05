@@ -51,15 +51,31 @@ class HomeViewModel : KoinComponent {
             HomeEvent.StopRecording -> {
                 recorderRepository.stopRecording()
             }
+
+            is HomeEvent.SelectScreen -> {
+                _state.value = _state.value.copy(
+                    selectedScreenId = event.screenId
+                )
+            }
         }
     }
 
     private fun getScreensInfo() {
+        _state.value = _state.value.copy(
+            isLoading = true,
+        )
         val resolutions = screenRepository.getScreenResolutions()
         val numberOfScreens = screenRepository.getNumberOfScreens()
+        println( "resolutions: $resolutions")
+
+        println( "numberOfScreens: $numberOfScreens")
+        println( "isLoading: ${_state.value.isLoading}")
         _state.value = _state.value.copy(
             resolutions = resolutions,
             numberOfScreens = numberOfScreens,
+            isLoading = false,
         )
+        println( "isLoading: ${_state.value.isLoading}")
+
     }
 }

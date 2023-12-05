@@ -18,72 +18,102 @@ fun HomeScreen(
     state: HomeState,
     onEvent: (HomeEvent) -> Unit = {},
 ) {
+    if (state.isLoading) {
+        Text("Loading...")
+    } else{
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            Button(
+                onClick = {
+                    onEvent(
+                        HomeEvent.Record(
+                            config = ConfigurationManager(),
+                        )
+                    )
+                }
+            ) {
+                Text("Record")
+            }
+
+            Button(
+                onClick = {
+                    val bounds = WindowBounds(x1 = 100, y1 = 100, x2 = 500, y2 = 400)
+                    onEvent(
+                        HomeEvent.RecordSection(
+                            config = ConfigurationManager(
+                                screenId = state.selectedScreenId,
+                                windowBounds = bounds
+                            ),
+                            bounds = bounds
+                        )
+                    )
+                }
+            ) {
+                Text("Record Section")
+            }
+
+            Button(
+                onClick = {
+                    onEvent(
+                        HomeEvent.RecordWithAudio(
+                            config = ConfigurationManager(),
+                            audioSource = "default"
+                        )
+                    )
+                }
+            ) {
+                Text("Record with Audio")
+            }
+
+            Button(
+                onClick = {
+                    onEvent(
+                        HomeEvent.StartRecording(
+                            config = ConfigurationManager(),
+                            bounds = null
+
+                        )
+                    )
+                }
+            ) {
+                Text("Start Recording")
+            }
+
+            Button(
+                onClick = {
+                    onEvent(HomeEvent.StopRecording)
+                }
+            ) {
+                Text("Stop Recording")
+            }
+            ScreenSelector(state = state, onEvent = onEvent)
+        }
+    }
+}
+
+@Composable
+fun ScreenSelector(
+    state: HomeState,
+    onEvent: (HomeEvent) -> Unit = {},
+) {
     Column(
         modifier = Modifier.padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        Button(
-            onClick = {
-                onEvent(
-                    HomeEvent.Record(
-                        config = ConfigurationManager(),
+        repeat(state.numberOfScreens) {
+            Button(
+                onClick = {
+                    onEvent(
+                        HomeEvent.SelectScreen(
+                            screenId = it
+                        )
                     )
-                )
+                }
+            ) {
+                Text("Screen $it")
             }
-        ) {
-            Text("Record")
-        }
-
-        Button(
-            onClick = {
-                val bounds = WindowBounds(x1 = 100, y1 = 100, x2 = 500, y2 = 400)
-                onEvent(
-                    HomeEvent.RecordSection(
-                        config = ConfigurationManager(
-                            screenId = state.selectedScreenId,
-                            windowBounds = bounds
-                        ),
-                        bounds = bounds
-                    )
-                )
-            }
-        ) {
-            Text("Record Section")
-        }
-
-        Button(
-            onClick = {
-                onEvent(
-                    HomeEvent.RecordWithAudio(
-                        config = ConfigurationManager(),
-                        audioSource = "default"
-                    )
-                )
-            }
-        ) {
-            Text("Record with Audio")
-        }
-
-        Button(
-            onClick = {
-                onEvent(
-                    HomeEvent.StartRecording(
-                        config = ConfigurationManager(),
-                        bounds = null
-
-                    )
-                )
-            }
-        ) {
-            Text("Start Recording")
-        }
-
-        Button(
-            onClick = {
-                onEvent(HomeEvent.StopRecording)
-            }
-        ) {
-            Text("Stop Recording")
         }
     }
 }
