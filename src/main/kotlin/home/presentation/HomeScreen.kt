@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -19,71 +18,69 @@ fun HomeScreen(
     state: HomeState,
     onEvent: (HomeEvent) -> Unit = {},
 ) {
-    MaterialTheme {
-        Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
+    Column(
+        modifier = Modifier.padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        Button(
+            onClick = {
+                onEvent(
+                    HomeEvent.Record(
+                        config = ConfigurationManager(),
+                    )
+                )
+            }
         ) {
-            Button(
-                onClick = {
-                    onEvent(
-                        HomeEvent.Record(
-                            config = ConfigurationManager(),
-                        )
+            Text("Record")
+        }
+
+        Button(
+            onClick = {
+                val bounds = WindowBounds(x1 = 100, y1 = 100, x2 = 500, y2 = 400)
+                onEvent(
+                    HomeEvent.RecordSection(
+                        config = ConfigurationManager(),
+                        bounds = bounds
                     )
-                }
-            ) {
-                Text("Record")
+                )
             }
+        ) {
+            Text("Record Section")
+        }
 
-            Button(
-                onClick = {
-                    val bounds = WindowBounds(x1 = 100, y1 = 100, x2 = 500, y2 = 400)
-                    onEvent(
-                        HomeEvent.RecordSection(
-                            config = ConfigurationManager(),
-                            bounds = bounds
-                        )
+        Button(
+            onClick = {
+                onEvent(
+                    HomeEvent.RecordWithAudio(
+                        config = ConfigurationManager(),
+                        audioSource = "default"
                     )
-                }
-            ) {
-                Text("Record Section")
+                )
             }
+        ) {
+            Text("Record with Audio")
+        }
 
-            Button(
-                onClick = {
-                    onEvent(
-                        HomeEvent.RecordWithAudio(
-                            config = ConfigurationManager(),
-                            audioSource = "default"
-                        )
+        Button(
+            onClick = {
+                onEvent(
+                    HomeEvent.StartRecording(
+                        config = ConfigurationManager(),
+                        bounds = null
+
                     )
-                }
-            ) {
-                Text("Record with Audio")
+                )
             }
+        ) {
+            Text("Start Recording")
+        }
 
-            Button(
-                onClick = {
-                    onEvent(
-                        HomeEvent.StartRecording(
-                            config = ConfigurationManager(),
-                            bounds = null
-
-                        )
-                    )
-                }
-            ) {
-                Text("Start Recording")
+        Button(
+            onClick = {
+                onEvent(HomeEvent.StopRecording)
             }
-
-            Button(
-                onClick = {
-                    onEvent(HomeEvent.StopRecording)
-                }
-            ) {
-                Text("Stop Recording")
-            }
+        ) {
+            Text("Stop Recording")
         }
     }
 }

@@ -24,6 +24,10 @@ class HomeViewModel : KoinComponent {
             HomeState()
         ).value
 
+    init {
+        getScreen()
+    }
+
     fun onEvent(event: HomeEvent) {
         when (event) {
             is HomeEvent.Record -> {
@@ -46,5 +50,9 @@ class HomeViewModel : KoinComponent {
                 repository.stopRecording()
             }
         }
+    }
+
+    private fun getScreen() {
+        TODO("Not yet implemented")
     }
 }
