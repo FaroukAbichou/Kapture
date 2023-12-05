@@ -9,12 +9,12 @@ import kotlinx.coroutines.flow.stateIn
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import record.domain.RecorderRepository
-import screen.data.ScreenRepository
+import screen.domain.ScreenRepository
 
 class HomeViewModel : KoinComponent {
 
     private val recorderRepository: RecorderRepository by inject()
-    private val screenRepository: ScreenRepository = ScreenRepository()
+    private val screenRepository: ScreenRepository by inject()
 
     private val viewModelScope = MainScope()
 
@@ -27,7 +27,7 @@ class HomeViewModel : KoinComponent {
         ).value
 
     init {
-        getScreensInfo()
+        getScreens()
     }
 
     fun onEvent(event: HomeEvent) {
@@ -60,16 +60,9 @@ class HomeViewModel : KoinComponent {
         }
     }
 
-    private fun getScreensInfo() {
+    private fun getScreens() {
         _state.value = _state.value.copy(
-            isLoading = true,
-        )
-        val resolutions = screenRepository.getScreenResolutions()
-        val numberOfScreens = screenRepository.getNumberOfScreens()
-
-        _state.value = _state.value.copy(
-            resolutions = resolutions,
-            numberOfScreens = numberOfScreens,
+            screens = screenRepository.getScreenList(),
             isLoading = false,
         )
     }
