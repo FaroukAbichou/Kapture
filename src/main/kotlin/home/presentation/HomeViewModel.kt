@@ -66,16 +66,11 @@ class HomeViewModel : KoinComponent {
         )
         val resolutions = screenRepository.getScreenResolutions()
         val numberOfScreens = screenRepository.getNumberOfScreens()
-        println( "resolutions: $resolutions")
 
-        println( "numberOfScreens: $numberOfScreens")
-        println( "isLoading: ${_state.value.isLoading}")
         _state.value = _state.value.copy(
             resolutions = resolutions,
             numberOfScreens = numberOfScreens,
             isLoading = false,
         )
-        println( "isLoading: ${_state.value.isLoading}")
-
     }
 }
