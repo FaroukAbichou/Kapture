@@ -2,7 +2,6 @@ package home.presentation
 
 import home.presentation.event.HomeEvent
 import home.presentation.state.HomeState
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,11 +15,10 @@ class HomeViewModel : KoinComponent {
     private val recordRepository: RecordRepository by inject()
     private val screenRepository: ScreenRepository by inject()
 
-    private val viewModelScope = MainScope()
+//    private val viewModelScope = MainScope()
 
     private val _state = MutableStateFlow(HomeState())
 
-    // Expose as a read-only StateFlow
     val state: StateFlow<HomeState> = _state.asStateFlow()
 
     init {
@@ -55,9 +53,9 @@ class HomeViewModel : KoinComponent {
 
     private fun selectScreen(screenId: String) {
         val selectedScreen = screenRepository.getScreens().find { it.id == screenId }
-            _state.value = _state.value.copy(
-                selectedScreen = selectedScreen,
-            )
+        _state.value = _state.value.copy(
+            selectedScreen = selectedScreen,
+        )
     }
 
     private fun getScreens() {

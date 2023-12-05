@@ -25,7 +25,6 @@ fun HomeContent(
         Button(
             onClick = {
                 state.selectedScreen?.let {
-                    println("selected Screnn is ${it}")
                     onEvent(
                         HomeEvent.Record(
                             config =
@@ -44,7 +43,6 @@ fun HomeContent(
             onClick = {
                 val bounds = WindowBounds(x1 = 100, y1 = 100, x2 = 500, y2 = 400)
                 state.selectedScreen?.let {
-                    println("selected Screnn is ${it}")
                     onEvent(
                         HomeEvent.RecordSection(
                             config = ConfigurationManager(
@@ -62,8 +60,6 @@ fun HomeContent(
         state.screens.forEach { screen ->
             Button(
                 onClick = {
-                    println("selected Screnn is ${screen.id}")
-
                     onEvent(
                         HomeEvent.SelectScreen(
                             screenId = screen.id
@@ -79,7 +75,7 @@ fun HomeContent(
 
     state.selectedScreen?.let {
         Text(
-            text = "Selected screen: ${it}"
+            text = "Selected screen: ${it.id}"
         )
     }
 }
