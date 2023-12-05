@@ -56,7 +56,7 @@ class HomeViewModel : KoinComponent {
     private fun selectScreen(screenId: String) {
         val selectedScreen = screenRepository.getScreens().find { it.id == screenId }
             _state.value = _state.value.copy(
-                selectedScreen = selectedScreen!!,
+                selectedScreen = selectedScreen,
             )
     }
 

@@ -24,15 +24,17 @@ fun HomeContent(
     ) {
         Button(
             onClick = {
-                println( "selected Screnn is ${state.selectedScreen.id}")
-
-                onEvent(
-                    HomeEvent.Record(
-                        config = ConfigurationManager(
-                            screenId = state.selectedScreen.id
+                state.selectedScreen?.let {
+                    println("selected Screnn is ${it}")
+                    onEvent(
+                        HomeEvent.Record(
+                            config =
+                            ConfigurationManager(
+                                screenId = it.id,
+                            )
                         )
                     )
-                )
+                }
             }
         ) {
             Text("Record")
@@ -41,16 +43,18 @@ fun HomeContent(
         Button(
             onClick = {
                 val bounds = WindowBounds(x1 = 100, y1 = 100, x2 = 500, y2 = 400)
-                println( "selected Screnn is ${state.selectedScreen.id}")
-                onEvent(
-                    HomeEvent.RecordSection(
-                        config = ConfigurationManager(
-                            screenId = state.selectedScreen.id,
-                            windowBounds = bounds
-                        ),
-                        bounds = bounds
+                state.selectedScreen?.let {
+                    println("selected Screnn is ${it}")
+                    onEvent(
+                        HomeEvent.RecordSection(
+                            config = ConfigurationManager(
+                                screenId = state.selectedScreen.id,
+                                windowBounds = bounds
+                            ),
+                            bounds = bounds
+                        )
                     )
-                )
+                }
             }
         ) {
             Text("Record Section")
@@ -58,7 +62,7 @@ fun HomeContent(
         state.screens.forEach { screen ->
             Button(
                 onClick = {
-                    println( "selected Screnn is ${screen.id}")
+                    println("selected Screnn is ${screen.id}")
 
                     onEvent(
                         HomeEvent.SelectScreen(
@@ -73,7 +77,9 @@ fun HomeContent(
 
     }
 
-    Text(
-        text = "Selected screen: ${state.selectedScreen.id}"
-    )
+    state.selectedScreen?.let {
+        Text(
+            text = "Selected screen: ${it}"
+        )
+    }
 }
