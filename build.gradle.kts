@@ -2,7 +2,8 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
     kotlin("jvm")
-    id("org.jetbrains.compose")
+    alias(libs.plugins.compose)
+    alias(libs.plugins.kotlinx.serialization)
 }
 
 group = "com.farouk-abichou"
@@ -16,7 +17,9 @@ repositories {
 
 dependencies {
     implementation(compose.desktop.currentOs)
-    implementation("net.bramp.ffmpeg:ffmpeg:0.8.0")
+    implementation(libs.ffmpeg)
+    implementation(libs.koin.core)
+
 }
 
 compose.desktop {

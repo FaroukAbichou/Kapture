@@ -1,11 +1,11 @@
-package home.data
+package record.data
 
-import home.domain.ConfigurationManager
-import home.domain.RecorderRepository
 import net.bramp.ffmpeg.FFmpeg
 import net.bramp.ffmpeg.FFmpegExecutor
 import net.bramp.ffmpeg.FFprobe
 import net.bramp.ffmpeg.builder.FFmpegBuilder
+import record.domain.ConfigurationManager
+import record.domain.RecorderRepository
 import screen.data.ScreenInfo
 import screen.domain.WindowBounds
 import util.FFmpegUtils.FFmpegPath

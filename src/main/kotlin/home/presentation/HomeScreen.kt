@@ -9,8 +9,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import home.data.RecorderRepositoryImpl
-import home.domain.ConfigurationManager
+import record.data.RecorderRepositoryImpl
+import record.domain.ConfigurationManager
 import screen.domain.WindowBounds
 
 @Composable

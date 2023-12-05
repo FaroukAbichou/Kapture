@@ -1,0 +1,45 @@
+[versions]
+kotlin = "1.9.21"
+compose = "1.5.11"
+ffmpeg = "0.8.0"
+sqldelight = "2.0.0"
+koin = "3.2.0"
+serializationJson = "1.4.1"
+coroutines = "1.7.3"
+datetime = "0.4.0"
+detekt = "1.23.1"
+ksp = "1.9.21-1.0.15"
+multiplatformSettings = "1.1.1"
+
+[libraries]
+
+# KotlinX
+kotlinx-serializationJson = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serializationJson" }
+kotlinx-coroutinesCore = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+kotlinx-coroutinesSwing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "coroutines" }
+kotlinx-dateTime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "datetime" }
+
+# FFmpeg
+ffmpeg = { module = "net.bramp.ffmpeg:ffmpeg", version.ref = "ffmpeg" }
+
+# SQLDelight
+sqldelight-sqliteDriver = { module = "app.cash.sqldelight:sqlite-driver", version.ref = "sqldelight" }
+sqldelight-coroutinesExtensions = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqldelight" }
+sqldelight_sqlite_dialect = { module = "app.cash.sqldelight:sqlite-3-24-dialect", version.ref = "sqldelight" }
+
+# Koin
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+
+# MultiplatformSettings
+multiplatformSettings = { module = "com.russhwolf:multiplatform-settings", version.ref = "multiplatformSettings" }
+multiplatformSettings-no-arg = { module = "com.russhwolf:multiplatform-settings-no-arg", version.ref = "multiplatformSettings" }
+multiplatformSettings-datastore = { module = "com.russhwolf:multiplatform-settings-datastore", version.ref = "multiplatformSettings" }
+
+[plugins]
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+compose = { id = "org.jetbrains.compose", version.ref = "compose" }
+sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
+ksp = { id = 'com.google.devtools.ksp', version.ref = 'ksp' }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt"}
+

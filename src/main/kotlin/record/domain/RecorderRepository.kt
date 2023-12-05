@@ -1,4 +1,4 @@
-package home.domain
+package record.domain
 
 import screen.domain.WindowBounds
 

@@ -1,4 +1,4 @@
-package home.domain
+package record.domain
 
 data class ConfigurationManager(
     val frameRate: Int = 30,
