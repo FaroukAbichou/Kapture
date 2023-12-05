@@ -9,13 +9,16 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import home.presentation.event.HomeEvent
+import home.presentation.state.HomeState
 import record.data.RecorderRepositoryImpl
 import record.domain.ConfigurationManager
 import screen.domain.WindowBounds
 
 @Composable
 fun HomeScreen(
-    recorderRepositoryImpl: RecorderRepositoryImpl
+    state: HomeState,
+    onEvent: (HomeEvent) -> Unit = {},
 ) {
     MaterialTheme {
         Column(
@@ -24,6 +27,9 @@ fun HomeScreen(
         ) {
             Button(
                 onClick = {
+                    onEvent(
+                        HomeEvent.Record
+                    )
                     recorderRepositoryImpl.recordScreen(
                         config = ConfigurationManager(),
                         bounds = null

@@ -3,14 +3,17 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import record.data.RecorderRepositoryImpl
 import home.presentation.HomeScreen
+import home.presentation.HomeViewModel
 
 @Composable
 @Preview
-fun App(
-    recorderRepositoryImpl: RecorderRepositoryImpl
-) {
+fun App() {
     MaterialTheme {
-        HomeScreen(recorderRepositoryImpl)
+        val viewModel = HomeViewModel()
+        HomeScreen(
+            state = HomeState(),
+            event = HomeEvent(),
+        )
     }
 }
 
