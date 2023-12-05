@@ -1,3 +1,4 @@
+package home.domain
 
 data class ConfigurationManager(
     val frameRate: Int = 30,

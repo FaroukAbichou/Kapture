@@ -1,6 +1,5 @@
 package home.domain
 
-import ConfigurationManager
 import screen.domain.WindowBounds
 
 interface RecorderRepository {

@@ -1,7 +1,5 @@
 package home.presentation
 
-import ConfigurationManager
-import screen.domain.WindowBounds
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -12,6 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import home.data.RecorderRepositoryImpl
+import home.domain.ConfigurationManager
+import screen.domain.WindowBounds
 
 @Composable
 fun HomeScreen(
@@ -32,6 +32,7 @@ fun HomeScreen(
             ) {
                 Text("Record")
             }
+
             Button(
                 onClick = {
                     val bounds = WindowBounds(x1 = 100, y1 = 100, x2 = 500, y2 = 400)

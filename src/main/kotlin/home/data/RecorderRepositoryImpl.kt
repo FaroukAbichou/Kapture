@@ -1,6 +1,6 @@
 package home.data
 
-import ConfigurationManager
+import home.domain.ConfigurationManager
 import home.domain.RecorderRepository
 import net.bramp.ffmpeg.FFmpeg
 import net.bramp.ffmpeg.FFmpegExecutor
@@ -14,13 +14,13 @@ import java.util.concurrent.Executors
 import java.util.concurrent.Future
 import java.util.concurrent.TimeUnit
 
-
-class RecorderRepositoryImpl : RecorderRepository {
+class RecorderRepositoryImpl(
+    screenInfo: ScreenInfo
+) : RecorderRepository {
     private val ffmpeg = FFmpeg(FFmpegPath)
     private val ffprobe = FFprobe(FFprobePath)
     private var recordingThread: Future<*>? = null
     private val executorService = Executors.newSingleThreadExecutor()
-    val screenInfo = ScreenInfo()
 
     val resolutions = screenInfo.getScreenResolutions()
     val numberOfScreens = screenInfo.getNumberOfScreens()
