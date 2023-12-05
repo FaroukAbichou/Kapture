@@ -7,7 +7,7 @@ fun main() {
     application {
         Window(
             onCloseRequest = ::exitApplication,
-            title = "Screen Recorder"
+            title = "Kapture"
         ) {
             App()
         }
