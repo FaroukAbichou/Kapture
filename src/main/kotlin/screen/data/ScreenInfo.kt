@@ -5,7 +5,6 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 
 class ScreenInfo {
-
     fun getScreenResolutions(): List<Resolution> {
         val command = listOf("/usr/sbin/system_profiler", "SPDisplaysDataType")
         val process = ProcessBuilder(command).start()

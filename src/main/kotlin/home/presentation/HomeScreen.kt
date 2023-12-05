@@ -52,10 +52,12 @@ fun HomeScreen(
 
             Button(
                 onClick = {
-                    onEvent(HomeEvent.RecordWithAudio(
-                        config = ConfigurationManager(),
-                        audioSource = "default"
-                    ))
+                    onEvent(
+                        HomeEvent.RecordWithAudio(
+                            config = ConfigurationManager(),
+                            audioSource = "default"
+                        )
+                    )
                 }
             ) {
                 Text("Record with Audio")
@@ -63,11 +65,13 @@ fun HomeScreen(
 
             Button(
                 onClick = {
-                    onEvent(HomeEvent.StartRecording(
-                        config = ConfigurationManager(),
-                        bounds = null
+                    onEvent(
+                        HomeEvent.StartRecording(
+                            config = ConfigurationManager(),
+                            bounds = null
 
-                    ))
+                        )
+                    )
                 }
             ) {
                 Text("Start Recording")
