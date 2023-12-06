@@ -15,8 +15,6 @@ class HomeViewModel : KoinComponent {
     private val recordRepository: RecordRepository by inject()
     private val screenRepository: ScreenRepository by inject()
 
-//    private val viewModelScope = MainScope()
-
     private val _state = MutableStateFlow(HomeState())
 
     val state: StateFlow<HomeState> = _state.asStateFlow()

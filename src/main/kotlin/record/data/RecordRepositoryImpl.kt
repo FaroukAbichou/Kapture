@@ -9,11 +9,13 @@ import record.domain.RecordRepository
 import screen.domain.WindowBounds
 import util.FFmpegUtils.FFmpegPath
 import util.FFmpegUtils.FFprobePath
+import util.FilePaths.VideosPath
 import java.io.File
 import java.io.OutputStreamWriter
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
 import java.util.concurrent.TimeUnit
+
 
 class RecordRepositoryImpl : RecordRepository {
     private val ffmpeg = FFmpeg(FFmpegPath)
@@ -27,9 +29,7 @@ class RecordRepositoryImpl : RecordRepository {
         config: ConfigurationManager,
         bounds: WindowBounds?
     ) {
-        val cropFilter = bounds?.let {
-            "crop=${it.width}:${it.height}:${it.x1}:${it.y1}"
-        }
+        val cropFilter = createCropFilter(bounds)
 
         val builder = FFmpegBuilder()
             .setInput(config.screenId)
@@ -46,14 +46,13 @@ class RecordRepositoryImpl : RecordRepository {
                 if (cropFilter != null) {
                     setVideoFilter(cropFilter)
                 }
-                if(config.windowBounds != null) {
+                if (config.windowBounds != null) {
                     setVideoResolution(config.windowBounds.width, config.windowBounds.height)
                 }
             }
             .done()
 
-        val executor = FFmpegExecutor(ffmpeg, ffprobe)
-        executor.createJob(builder).run()
+        executeFFmpegJob(builder)
     }
 
     override fun recordScreenWithAudio(
@@ -61,9 +60,7 @@ class RecordRepositoryImpl : RecordRepository {
         bounds: WindowBounds?,
         audioSource: String
     ) {
-        val cropFilter = bounds?.let {
-            "crop=${it.width}:${it.height}:${it.x1}:${it.y1}"
-        }
+        val cropFilter = createCropFilter(bounds)
         val builder = FFmpegBuilder()
             .setInput(config.screenId)
             .setInput(audioSource)
@@ -79,24 +76,21 @@ class RecordRepositoryImpl : RecordRepository {
                 if (cropFilter != null) {
                     setVideoFilter(cropFilter)
                 }
-                if(config.windowBounds != null) {
+                if (config.windowBounds != null) {
                     setVideoResolution(config.windowBounds.width, config.windowBounds.height)
                 }
             }
             .setAudioCodec("aac")
             .done()
 
-        val executor = FFmpegExecutor(ffmpeg, ffprobe)
-        executor.createJob(builder).run()
+        executeFFmpegJob(builder)
     }
 
     override fun startRecording(
         config: ConfigurationManager,
         bounds: WindowBounds?
     ) {
-        val cropFilter = bounds?.let {
-            "crop=${it.width}:${it.height}:${it.x1}:${it.y1}"
-        }
+        val cropFilter = createCropFilter(bounds)
         val pixelFormat = "uyvy422"
 
         val ffmpegCommand = mutableListOf(FFmpegPath)
@@ -112,7 +106,7 @@ class RecordRepositoryImpl : RecordRepository {
                 if (cropFilter != null) {
                     setVideoFilter(cropFilter)
                 }
-                if(config.windowBounds != null) {
+                if (config.windowBounds != null) {
                     setVideoResolution(config.windowBounds.width, config.windowBounds.height)
                 }
             }
@@ -123,7 +117,7 @@ class RecordRepositoryImpl : RecordRepository {
         recordingThread = executorService.submit {
             try {
                 val processBuilder = ProcessBuilder(ffmpegCommand)
-                processBuilder.directory(File("/Users/takiacademy/Desktop"))
+                processBuilder.directory(File(VideosPath))
 
                 ffmpegProcess = processBuilder.start()
             } catch (e: Exception) {
@@ -168,6 +162,15 @@ class RecordRepositoryImpl : RecordRepository {
 
     override fun setRecordingArea(bounds: WindowBounds) {
         TODO("Not yet implemented")
+    }
+
+    private fun executeFFmpegJob(builder: FFmpegBuilder) {
+        val executor = FFmpegExecutor(ffmpeg, ffprobe)
+        executor.createJob(builder).run()
+    }
+
+    private fun createCropFilter(bounds: WindowBounds?) = bounds?.let {
+        "crop=${it.width}:${it.height}:${it.x1}:${it.y1}"
     }
 }
 
