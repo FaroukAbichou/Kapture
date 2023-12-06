@@ -2,12 +2,12 @@ package home.presentation.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import home.presentation.event.HomeEvent
 import home.presentation.state.HomeState
 import record.domain.ConfigurationManager
@@ -19,8 +19,9 @@ fun HomeContent(
     onEvent: (HomeEvent) -> Unit = {},
 ) {
     Column(
-        modifier = Modifier.padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp)
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Button(
             onClick = {
@@ -34,14 +35,15 @@ fun HomeContent(
                         )
                     )
                 }
-            }
+            },
+            enabled = state.selectedScreen != null
         ) {
             Text("Record")
         }
 
         Button(
             onClick = {
-                val bounds = WindowBounds(x1 = 100, y1 = 100, x2 = 1500, y2 = 1500)
+                val bounds = WindowBounds(x1 = 100, y1 = 100, x2 = 1000, y2 = 1000)
                 state.selectedScreen?.let {
                     onEvent(
                         HomeEvent.RecordSection(
@@ -53,32 +55,40 @@ fun HomeContent(
                         )
                     )
                 }
-            }
+            },
+            enabled = state.selectedScreen != null
         ) {
             Text("Record Section")
         }
         Button(
             onClick = {
+                val bounds = WindowBounds(x1 = 100, y1 = 100, x2 = 1000, y2 = 1000)
+
                 state.selectedScreen?.let {
                     onEvent(
                         HomeEvent.StartRecording(
                             config = ConfigurationManager(
                                 screenId = state.selectedScreen.id,
+                                windowBounds = bounds
                             ),
-                            bounds = null
+                            bounds = bounds
                         )
                     )
                 }
-            }
+            },
+            enabled = state.selectedScreen != null
         ) {
             Text("Start Recording")
         }
         Button(
             onClick = {
+
                 state.selectedScreen?.let {
                     onEvent(HomeEvent.StopRecording)
                 }
-            }
+            },
+            enabled = state.selectedScreen != null
+
         ) {
             Text("Stop Recording")
         }
@@ -90,7 +100,7 @@ fun HomeContent(
                             screenId = screen.id
                         )
                     )
-                }
+                },
             ) {
                 Text("Screen ${screen.id}")
             }

@@ -36,7 +36,7 @@ class HomeViewModel : KoinComponent {
             }
 
             is HomeEvent.RecordWithAudio -> {
-                recordRepository.recordScreenWithAudio(event.config, event.audioSource)
+                recordRepository.recordScreenWithAudio(event.config,event.bounds, event.audioSource)
             }
 
             is HomeEvent.StartRecording -> {

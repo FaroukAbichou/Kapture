@@ -43,13 +43,12 @@ class RecordRepositoryImpl : RecordRepository {
             .setVideoFrameRate(config.frameRate, 1)
 
             .apply {
-                if (cropFilter != null)
+                if (cropFilter != null) {
                     setVideoFilter(cropFilter)
-                if (config.windowBounds != null)
-                    setVideoResolution(
-                        config.windowBounds.width,
-                        config.windowBounds.height
-                    )
+                }
+                if(config.windowBounds != null) {
+                    setVideoResolution(config.windowBounds.width, config.windowBounds.height)
+                }
             }
             .done()
 
@@ -59,11 +58,15 @@ class RecordRepositoryImpl : RecordRepository {
 
     override fun recordScreenWithAudio(
         config: ConfigurationManager,
+        bounds: WindowBounds?,
         audioSource: String
     ) {
+        val cropFilter = bounds?.let {
+            "crop=${it.width}:${it.height}:${it.x1}:${it.y1}"
+        }
         val builder = FFmpegBuilder()
             .setInput(config.screenId)
-            .setInput(audioSource) // Specify audio source
+            .setInput(audioSource)
             .setFormat(config.format)
             .addOutput(config.outputFile)
             .setDuration(
@@ -73,11 +76,12 @@ class RecordRepositoryImpl : RecordRepository {
             .setVideoCodec(config.videoCodecName)
             .setVideoFrameRate(config.frameRate, 1)
             .apply {
-                if (config.windowBounds != null)
-                    setVideoResolution(
-                        config.windowBounds.width,
-                        config.windowBounds.height
-                    )
+                if (cropFilter != null) {
+                    setVideoFilter(cropFilter)
+                }
+                if(config.windowBounds != null) {
+                    setVideoResolution(config.windowBounds.width, config.windowBounds.height)
+                }
             }
             .setAudioCodec("aac")
             .done()
@@ -86,40 +90,40 @@ class RecordRepositoryImpl : RecordRepository {
         executor.createJob(builder).run()
     }
 
-    override fun startRecording(config: ConfigurationManager, bounds: WindowBounds?) {
+    override fun startRecording(
+        config: ConfigurationManager,
+        bounds: WindowBounds?
+    ) {
         val cropFilter = bounds?.let {
             "crop=${it.width}:${it.height}:${it.x1}:${it.y1}"
         }
-        val pixelFormat = "uyvy422" // Set the pixel format
+        val pixelFormat = "uyvy422"
 
-        // Create the FFmpeg command with FFmpegPath as the first element
         val ffmpegCommand = mutableListOf(FFmpegPath)
 
-        // Build the rest of the command using FFmpegBuilder
         val builder = FFmpegBuilder()
             .setInput(config.screenId)
             .setFormat(config.format)
             .addOutput(config.outputFile)
             .setVideoCodec(config.videoCodecName)
             .setVideoFrameRate(config.frameRate, 1)
-            .addExtraArgs("-pix_fmt", pixelFormat) // Add the pixel format argument
+            .addExtraArgs("-pix_fmt", pixelFormat)
             .apply {
-                if (config.windowBounds != null) {
-                    setVideoResolution(config.windowBounds.width, config.windowBounds.height)
-                }
                 if (cropFilter != null) {
                     setVideoFilter(cropFilter)
+                }
+                if(config.windowBounds != null) {
+                    setVideoResolution(config.windowBounds.width, config.windowBounds.height)
                 }
             }
             .done()
 
-        // Add the built FFmpeg arguments to the command
         ffmpegCommand.addAll(builder.build())
 
         recordingThread = executorService.submit {
             try {
                 val processBuilder = ProcessBuilder(ffmpegCommand)
-                processBuilder.directory(File("/Users/takiacademy/Desktop")) // Set the working directory
+                processBuilder.directory(File("/Users/takiacademy/Desktop"))
 
                 ffmpegProcess = processBuilder.start()
             } catch (e: Exception) {
@@ -128,12 +132,13 @@ class RecordRepositoryImpl : RecordRepository {
             }
         }
     }
+
     override fun stopRecording() {
         ffmpegProcess?.let { process ->
             if (process.isAlive) {
                 process.outputStream?.let { inputStream ->
                     val writer = OutputStreamWriter(inputStream)
-                    writer.write("q") // Sends 'q' to FFmpeg to stop recording gracefully
+                    writer.write("q")
                     writer.flush()
                     writer.close()
                 } ?: println("FFmpeg process input stream is null")
@@ -142,7 +147,7 @@ class RecordRepositoryImpl : RecordRepository {
             }
         } ?: println("FFmpeg process is null")
 
-        recordingThread?.cancel(true) // Cancel the recording thread if needed
+        recordingThread?.cancel(true)
     }
 
     override fun pauseRecording() {
