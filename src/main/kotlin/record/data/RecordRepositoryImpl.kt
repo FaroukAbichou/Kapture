@@ -63,7 +63,7 @@ class RecordRepositoryImpl : RecordRepository {
         val cropFilter = createCropFilter(bounds)
         val builder = FFmpegBuilder()
             .setInput(config.screenId)
-            .setInput(audioSource)
+            .setInput(config.audioSource)
             .setFormat(config.format)
             .addOutput(config.outputFile)
             .setDuration(
