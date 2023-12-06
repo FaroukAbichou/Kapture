@@ -92,37 +92,36 @@ class RecordRepositoryImpl : RecordRepository {
         }
         val pixelFormat = "uyvy422" // Set the pixel format
 
+        // Create the FFmpeg command with FFmpegPath as the first element
+        val ffmpegCommand = mutableListOf(FFmpegPath)
+
+        // Build the rest of the command using FFmpegBuilder
         val builder = FFmpegBuilder()
-            .setInput(config.screenId.toString())
+            .setInput(config.screenId)
             .setFormat(config.format)
             .addOutput(config.outputFile)
             .setVideoCodec(config.videoCodecName)
             .setVideoFrameRate(config.frameRate, 1)
             .addExtraArgs("-pix_fmt", pixelFormat) // Add the pixel format argument
             .apply {
-                if (config.windowBounds != null)
-                    setVideoResolution(
-                        config.windowBounds.width,
-                        config.windowBounds.height
-                    )
-            }
-            .apply {
+                if (config.windowBounds != null) {
+                    setVideoResolution(config.windowBounds.width, config.windowBounds.height)
+                }
                 if (cropFilter != null) {
                     setVideoFilter(cropFilter)
                 }
             }
             .done()
-        println(
-            "Recording started with config: $config and bounds: $bounds"
-        )
-        val ffmpegCommand = builder.build()
+
+        // Add the built FFmpeg arguments to the command
+        ffmpegCommand.addAll(builder.build())
+
         recordingThread = executorService.submit {
             try {
                 val processBuilder = ProcessBuilder(ffmpegCommand)
-                processBuilder.directory(File("/path/to/working/dir")) // Set this if necessary
+                processBuilder.directory(File("/Users/takiacademy/Desktop")) // Set the working directory
 
                 ffmpegProcess = processBuilder.start()
-
             } catch (e: Exception) {
                 e.printStackTrace()
                 println("Error starting FFmpeg process")
@@ -132,12 +131,12 @@ class RecordRepositoryImpl : RecordRepository {
     override fun stopRecording() {
         ffmpegProcess?.let { process ->
             if (process.isAlive) {
-                process.outputStream?.let { outputStream ->
-                    val writer = OutputStreamWriter(outputStream)
+                process.outputStream?.let { inputStream ->
+                    val writer = OutputStreamWriter(inputStream)
                     writer.write("q") // Sends 'q' to FFmpeg to stop recording gracefully
                     writer.flush()
                     writer.close()
-                } ?: println("FFmpeg process output stream is null")
+                } ?: println("FFmpeg process input stream is null")
             } else {
                 println("FFmpeg process is not running")
             }
