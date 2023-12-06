@@ -9,6 +9,8 @@ import record.domain.RecordRepository
 import screen.domain.WindowBounds
 import util.FFmpegUtils.FFmpegPath
 import util.FFmpegUtils.FFprobePath
+import java.io.File
+import java.io.OutputStreamWriter
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
 import java.util.concurrent.TimeUnit
@@ -19,7 +21,7 @@ class RecordRepositoryImpl : RecordRepository {
 
     private var recordingThread: Future<*>? = null
     private val executorService = Executors.newSingleThreadExecutor()
-
+    private var ffmpegProcess: Process? = null
 
     override fun recordScreen(
         config: ConfigurationManager,
@@ -84,20 +86,19 @@ class RecordRepositoryImpl : RecordRepository {
         executor.createJob(builder).run()
     }
 
-    override fun startRecording(
-        config: ConfigurationManager,
-        bounds: WindowBounds?
-    ) {
+    override fun startRecording(config: ConfigurationManager, bounds: WindowBounds?) {
         val cropFilter = bounds?.let {
             "crop=${it.width}:${it.height}:${it.x1}:${it.y1}"
         }
+        val pixelFormat = "uyvy422" // Set the pixel format
 
         val builder = FFmpegBuilder()
-            .setInput(config.screenId)
+            .setInput(config.screenId.toString())
             .setFormat(config.format)
             .addOutput(config.outputFile)
             .setVideoCodec(config.videoCodecName)
             .setVideoFrameRate(config.frameRate, 1)
+            .addExtraArgs("-pix_fmt", pixelFormat) // Add the pixel format argument
             .apply {
                 if (config.windowBounds != null)
                     setVideoResolution(
@@ -105,17 +106,44 @@ class RecordRepositoryImpl : RecordRepository {
                         config.windowBounds.height
                     )
             }
-            .apply { if (cropFilter != null) setVideoFilter(cropFilter) }
+            .apply {
+                if (cropFilter != null) {
+                    setVideoFilter(cropFilter)
+                }
+            }
             .done()
-
+        println(
+            "Recording started with config: $config and bounds: $bounds"
+        )
+        val ffmpegCommand = builder.build()
         recordingThread = executorService.submit {
-            val executor = FFmpegExecutor(ffmpeg, ffprobe)
-            executor.createJob(builder).run()
+            try {
+                val processBuilder = ProcessBuilder(ffmpegCommand)
+                processBuilder.directory(File("/path/to/working/dir")) // Set this if necessary
+
+                ffmpegProcess = processBuilder.start()
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+                println("Error starting FFmpeg process")
+            }
         }
     }
-
     override fun stopRecording() {
-        recordingThread?.cancel(true)
+        ffmpegProcess?.let { process ->
+            if (process.isAlive) {
+                process.outputStream?.let { outputStream ->
+                    val writer = OutputStreamWriter(outputStream)
+                    writer.write("q") // Sends 'q' to FFmpeg to stop recording gracefully
+                    writer.flush()
+                    writer.close()
+                } ?: println("FFmpeg process output stream is null")
+            } else {
+                println("FFmpeg process is not running")
+            }
+        } ?: println("FFmpeg process is null")
+
+        recordingThread?.cancel(true) // Cancel the recording thread if needed
     }
 
     override fun pauseRecording() {

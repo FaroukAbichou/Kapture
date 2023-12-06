@@ -41,7 +41,7 @@ fun HomeContent(
 
         Button(
             onClick = {
-                val bounds = WindowBounds(x1 = 100, y1 = 100, x2 = 500, y2 = 400)
+                val bounds = WindowBounds(x1 = 100, y1 = 100, x2 = 1500, y2 = 1500)
                 state.selectedScreen?.let {
                     onEvent(
                         HomeEvent.RecordSection(
@@ -56,6 +56,31 @@ fun HomeContent(
             }
         ) {
             Text("Record Section")
+        }
+        Button(
+            onClick = {
+                state.selectedScreen?.let {
+                    onEvent(
+                        HomeEvent.StartRecording(
+                            config = ConfigurationManager(
+                                screenId = state.selectedScreen.id,
+                            ),
+                            bounds = null
+                        )
+                    )
+                }
+            }
+        ) {
+            Text("Start Recording")
+        }
+        Button(
+            onClick = {
+                state.selectedScreen?.let {
+                    onEvent(HomeEvent.StopRecording)
+                }
+            }
+        ) {
+            Text("Stop Recording")
         }
         state.screens.forEach { screen ->
             Button(
