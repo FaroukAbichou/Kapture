@@ -19,7 +19,6 @@ dependencies {
     implementation(compose.desktop.currentOs)
     implementation(libs.ffmpeg)
     implementation(libs.koin.core)
-
 }
 
 compose.desktop {
@@ -30,6 +29,23 @@ compose.desktop {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "Kapture"
             packageVersion = "1.0.0"
+
+            description = "AnnoDoc"
+            copyright = "© 2023 Softylines. All rights reserved."
+            vendor = "Softylines"
+            licenseFile.set(project.file("LICENSE.txt"))
+
+            appResourcesRootDir.set(project.layout.projectDirectory.dir("lib"))
+
+            macOS {
+                iconFile.set(project.file("logo.icns"))
+
+                jvmArgs(
+                    "-Xdock:name=Kapture",
+                    "-Dapple.awt.application.appearance=system",
+                )
+            }
+
         }
     }
 }

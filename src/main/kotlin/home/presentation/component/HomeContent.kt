@@ -121,7 +121,7 @@ fun HomeContent(
                     ))
                 }
             },
-            enabled = state.selectedScreen != null
+            enabled = false
         ) {
             Text("Resume Recording")
         }

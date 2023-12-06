@@ -52,7 +52,15 @@ class RecordRepositoryImpl : RecordRepository {
             }
             .done()
 
-        executeFFmpegJob(builder)
+        recordingThread = executorService.submit {
+            try {
+                executeFFmpegJob(builder)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                println("Error starting FFmpeg process")
+            }
+        }
+//        executeFFmpegJob(builder)
     }
 
     override fun recordScreenWithAudio(
@@ -83,7 +91,14 @@ class RecordRepositoryImpl : RecordRepository {
             .setAudioCodec("aac")
             .done()
 
-        executeFFmpegJob(builder)
+        recordingThread = executorService.submit {
+            try {
+                executeFFmpegJob(builder)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                println("Error starting FFmpeg process")
+            }
+        }
     }
 
     override fun startRecording(

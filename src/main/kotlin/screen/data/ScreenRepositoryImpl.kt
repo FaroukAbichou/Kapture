@@ -4,7 +4,6 @@ import screen.domain.Screen
 import screen.domain.ScreenRepository
 import screen.domain.WindowBounds
 import java.io.BufferedReader
-import java.io.IOException
 import java.io.InputStreamReader
 
 
@@ -34,7 +33,6 @@ class ScreenRepositoryImpl : ScreenRepository {
                 )
             )
         }.toList()
-        requestScreenRecordingPermission()
         return screens
     }
 
@@ -53,19 +51,5 @@ class ScreenRepositoryImpl : ScreenRepository {
         return pixelFormats
     }
 
-    fun requestScreenRecordingPermission() {
-        try {
-            val script = """tell application "System Preferences"
-reveal anchor "Privacy_ScreenCapture" of pane id "com.apple.preference.security"
-activate
-end tell"""
-            val command = arrayOf("osascript", "-e", script)
-            val processBuilder = ProcessBuilder(*command)
-            processBuilder.start()
-        } catch (e: IOException) {
-            e.printStackTrace()
-            // Handle exceptions
-        }
-    }
 
 }
