@@ -80,6 +80,51 @@ fun HomeContent(
         ) {
             Text("Start Recording")
         }
+
+        Button(
+            onClick = {
+                val bounds = WindowBounds(x1 = 100, y1 = 100, x2 = 1000, y2 = 1000)
+
+                state.selectedScreen?.let {
+                    onEvent(HomeEvent.PauseRecording)
+                }
+            },
+            enabled = state.selectedScreen != null
+        ) {
+            Text("Pause Recording")
+        }
+
+        Button(
+            onClick = {
+                val bounds = WindowBounds(x1 = 100, y1 = 100, x2 = 1000, y2 = 1000)
+
+                state.selectedScreen?.let {
+                    onEvent(HomeEvent.DiscardRecording)
+                }
+            },
+            enabled = state.selectedScreen != null
+        ) {
+            Text("Discard Recording")
+        }
+
+        Button(
+            onClick = {
+                val bounds = WindowBounds(x1 = 100, y1 = 100, x2 = 1000, y2 = 1000)
+
+                state.selectedScreen?.let {
+                    onEvent(HomeEvent.ResumeRecording(
+                        config = ConfigurationManager(
+                            screenId = state.selectedScreen.id,
+                            windowBounds = bounds
+                        ),
+                        bounds = bounds
+                    ))
+                }
+            },
+            enabled = state.selectedScreen != null
+        ) {
+            Text("Resume Recording")
+        }
         Button(
             onClick = {
 

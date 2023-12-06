@@ -12,4 +12,16 @@ sealed class HomeEvent {
     data class StartRecording(val config: ConfigurationManager, val bounds: WindowBounds?) : HomeEvent()
     data class SelectScreen(val screenId: String) : HomeEvent()
     data object StopRecording : HomeEvent()
+    data object DiscardRecording: HomeEvent()
+
+    data class SaveRecording(
+        val outputFilePath: String
+    ): HomeEvent()
+
+    data object PauseRecording: HomeEvent()
+
+    data class ResumeRecording(val config: ConfigurationManager, val bounds: WindowBounds?): HomeEvent()
+
+    data class SetRecordingArea(val bounds: WindowBounds) : HomeEvent()
+
 }

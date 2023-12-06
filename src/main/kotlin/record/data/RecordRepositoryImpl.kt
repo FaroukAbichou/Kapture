@@ -144,20 +144,70 @@ class RecordRepositoryImpl : RecordRepository {
         recordingThread?.cancel(true)
     }
 
+    private var isRecordingPaused = false
+    private var tempFiles = mutableListOf<File>()
     override fun pauseRecording() {
-        TODO("Not yet implemented")
+        if (!isRecordingPaused) {
+            stopRecordingInternal()
+            isRecordingPaused = true
+        }
     }
 
-    override fun resumeRecording() {
-        TODO("Not yet implemented")
+    override fun resumeRecording(config: ConfigurationManager, bounds: WindowBounds?) {
+        if (isRecordingPaused) {
+            val tempFile = File.createTempFile("recording_", ".mp4", File(VideosPath))
+            tempFiles.add(tempFile)
+
+            startRecordingInternal(config, bounds, tempFile.absolutePath)
+            isRecordingPaused = false
+        }
+    }
+
+    private fun startRecordingInternal(config: ConfigurationManager, bounds: WindowBounds?, outputPath: String) {
+        val cropFilter = createCropFilter(bounds)
+        val pixelFormat = "uyvy422"
+        val builder = FFmpegBuilder()
+            .setInput(config.screenId)
+            .setFormat(config.format)
+            .addOutput(outputPath)
+            .setVideoCodec(config.videoCodecName)
+            .setVideoFrameRate(config.frameRate, 1)
+            .addExtraArgs("-pix_fmt", pixelFormat)
+            .apply {
+                if (cropFilter != null) {
+                    setVideoFilter(cropFilter)
+                }
+                if (config.windowBounds != null) {
+                    setVideoResolution(config.windowBounds.width, config.windowBounds.height)
+                }
+            }
+            .done()
+        executeFFmpegJob(builder)
+    }
+
+    private fun stopRecordingInternal() {
+        ffmpegProcess?.let { process ->
+            if (process.isAlive) {
+                process.outputStream?.let { inputStream ->
+                    val writer = OutputStreamWriter(inputStream)
+                    writer.write("q")
+                    writer.flush()
+                    writer.close()
+                }
+            }
+        }
+        recordingThread?.cancel(true)
     }
 
     override fun saveRecording(outputFilePath: String) {
-        TODO("Not yet implemented")
+        // Combine all temporary files into the final output file
+        // This can be done using FFmpeg's concat demuxer or similar approach
     }
 
     override fun discardRecording() {
-        TODO("Not yet implemented")
+        tempFiles.forEach { it.delete() }
+        tempFiles.clear()
+        isRecordingPaused = false
     }
 
     override fun setRecordingArea(bounds: WindowBounds) {

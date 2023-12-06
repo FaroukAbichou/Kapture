@@ -46,6 +46,27 @@ class HomeViewModel : KoinComponent {
             HomeEvent.StopRecording -> {
                 recordRepository.stopRecording()
             }
+
+            HomeEvent.DiscardRecording -> {
+                recordRepository.discardRecording()
+            }
+
+            is HomeEvent.SaveRecording -> {
+                recordRepository.saveRecording(event.outputFilePath )
+            }
+
+            HomeEvent.PauseRecording -> {
+                recordRepository.pauseRecording()
+            }
+
+            is HomeEvent.ResumeRecording -> {
+                recordRepository.resumeRecording(event.config, event.bounds)
+            }
+
+            is HomeEvent.SetRecordingArea -> {
+                recordRepository.setRecordingArea(event.bounds)
+            }
+
         }
     }
 

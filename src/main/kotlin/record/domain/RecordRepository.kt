@@ -6,7 +6,7 @@ interface RecordRepository {
     fun startRecording(config: ConfigurationManager, bounds: WindowBounds?)
     fun stopRecording()
     fun pauseRecording()
-    fun resumeRecording()
+    fun resumeRecording(config: ConfigurationManager, bounds: WindowBounds?)
     fun discardRecording()
     fun saveRecording(outputFilePath: String)
     fun setRecordingArea(bounds: WindowBounds)
