@@ -18,6 +18,7 @@ fun HomeContent(
     state: HomeState,
     onEvent: (HomeEvent) -> Unit = {},
 ) {
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,

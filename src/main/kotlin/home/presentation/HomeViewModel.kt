@@ -1,6 +1,7 @@
 package home.presentation
 
 import home.presentation.event.HomeEvent
+import home.presentation.event.RecordingFrameEvent
 import home.presentation.state.HomeState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -9,6 +10,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import record.domain.RecordRepository
 import screen.domain.ScreenRepository
+import screen.domain.WindowPlacement
 
 class HomeViewModel : KoinComponent {
 
@@ -34,11 +36,11 @@ class HomeViewModel : KoinComponent {
             }
 
             is HomeEvent.RecordWithAudio -> {
-                recordRepository.recordScreenWithAudio(event.config,event.bounds, event.audioSource)
+                recordRepository.recordScreenWithAudio(event.config, event.bounds, event.audioSource)
             }
 
             is HomeEvent.StartRecording -> {
-                recordRepository.startRecording(event.config, event.bounds)
+                recordRepository.startRecording(event.config, event.bounds,recordingArea = _state.value.recordingArea)
             }
 
             is HomeEvent.SelectScreen -> selectScreen(event.screenId)
@@ -52,7 +54,7 @@ class HomeViewModel : KoinComponent {
             }
 
             is HomeEvent.SaveRecording -> {
-                recordRepository.saveRecording(event.outputFilePath )
+                recordRepository.saveRecording(event.outputFilePath)
             }
 
             HomeEvent.PauseRecording -> {
@@ -64,7 +66,31 @@ class HomeViewModel : KoinComponent {
             }
 
             is HomeEvent.SetRecordingArea -> {
-                recordRepository.setRecordingArea(event.bounds)
+//                recordRepository.setRecordingArea(event.bounds)
+            }
+
+        }
+    }
+
+    fun onRecordingFrameEvent(event: RecordingFrameEvent) {
+        when (event) {
+            is RecordingFrameEvent.UpdateWindowPlacement -> {
+                recordRepository.setRecordingArea(
+                    position = WindowPlacement(
+                        x = event.x,
+                        y = event.y,
+                        width = event.width,
+                        height = event.height
+                    )
+                )
+                _state.value = _state.value.copy(
+                    recordingArea = WindowPlacement(
+                        x = event.x,
+                        y = event.y,
+                        width = event.width,
+                        height = event.height
+                    )
+                )
             }
 
         }

@@ -6,6 +6,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.saveable.rememberSaveable
 import home.presentation.HomeScreen
 import home.presentation.HomeViewModel
+import home.presentation.component.RecordingFrame
 
 @Composable
 @Preview
@@ -16,6 +17,9 @@ fun App() {
         HomeScreen(
             state = state.value,
             onEvent = viewModel::onEvent
+        )
+        RecordingFrame(
+            onEvent = viewModel::onRecordingFrameEvent
         )
     }
 }
