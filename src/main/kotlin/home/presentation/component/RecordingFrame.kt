@@ -45,7 +45,6 @@ fun RecordingFrame(
         transparent = true,
         undecorated = true,
     ) {
-
         val currentSize = windowState.size
         Canvas(
             modifier = Modifier
@@ -58,7 +57,6 @@ fun RecordingFrame(
         ) {
 
         }
-
     }
 }
 

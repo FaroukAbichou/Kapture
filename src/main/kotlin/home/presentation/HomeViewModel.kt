@@ -28,7 +28,10 @@ class HomeViewModel : KoinComponent {
     fun onEvent(event: HomeEvent) {
         when (event) {
             is HomeEvent.Record -> {
-                recordRepository.recordScreen(event.config, bounds = null)
+                recordRepository.recordScreen(
+                    event.config,
+                    bounds = null
+                )
             }
 
             is HomeEvent.RecordSection -> {
@@ -36,11 +39,18 @@ class HomeViewModel : KoinComponent {
             }
 
             is HomeEvent.RecordWithAudio -> {
-                recordRepository.recordScreenWithAudio(event.config, event.bounds, event.audioSource)
+                recordRepository.recordScreenWithAudio(
+                    event.config,
+                    event.bounds,
+                    event.audioSource
+                )
             }
 
             is HomeEvent.StartRecording -> {
-                recordRepository.startRecording(event.config, event.bounds,recordingArea = _state.value.recordingArea)
+                recordRepository.startRecording(
+                    event.config, event.bounds,
+                    recordingArea = _state.value.recordingArea
+                )
             }
 
             is HomeEvent.SelectScreen -> selectScreen(event.screenId)
@@ -62,7 +72,10 @@ class HomeViewModel : KoinComponent {
             }
 
             is HomeEvent.ResumeRecording -> {
-                recordRepository.resumeRecording(event.config, event.bounds)
+                recordRepository.resumeRecording(
+                    event.config,
+                    event.bounds
+                )
             }
 
             is HomeEvent.SetRecordingArea -> {

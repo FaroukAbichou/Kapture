@@ -26,8 +26,6 @@ class RecordRepositoryImpl : RecordRepository {
     private val executorService = Executors.newSingleThreadExecutor()
     private var ffmpegProcess: Process? = null
 
-    private var windowPlacement: WindowPlacement = WindowPlacement.Default
-
     override fun recordScreen(
         config: ConfigurationManager,
         bounds: WindowBounds?
@@ -110,7 +108,7 @@ class RecordRepositoryImpl : RecordRepository {
         recordingArea: WindowPlacement
     ) {
 //        val cropFilter = createCropFilter(bounds)
-        val cropFilter = createCropFilterWithWindowPlacement(bounds)
+        val cropFilter = createCropFilterWithWindowPlacement(recordingArea)
         val pixelFormat = "uyvy422"
 
         val ffmpegCommand = mutableListOf(FFmpegPath)
@@ -126,9 +124,9 @@ class RecordRepositoryImpl : RecordRepository {
                 if (cropFilter != null) {
                     setVideoFilter(cropFilter)
                 }
-                if (config.windowBounds != null) {
-                    setVideoResolution(config.windowBounds.width, config.windowBounds.height)
-                }
+//                if (config.windowBounds != null) {
+//                    setVideoResolution(config.windowBounds.width, config.windowBounds.height)
+//                }
             }
             .done()
 
@@ -243,9 +241,8 @@ class RecordRepositoryImpl : RecordRepository {
         "crop=${it.width}:${it.height}:${it.x1}:${it.y1}"
     }
 
-    private fun createCropFilterWithWindowPlacement(bounds: WindowBounds?) = bounds?.let {
-        windowPlacement = WindowPlacement.fromBounds(bounds)
-        "crop=${it.width}:${it.height}:${it.x1}:${it.y1}"
+    private fun createCropFilterWithWindowPlacement(bounds: WindowPlacement?) = bounds?.let {
+        "crop=${it.width}:${it.height}:${it.x}:${it.y}"
     }
 }
 
