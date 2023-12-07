@@ -1,11 +1,15 @@
 package util
 
+import java.io.File
+
 object FFmpegUtils {
-    const val FFmpegPath = "/opt/homebrew/bin/ffmpeg"
+//    const val FFmpegPath = "/Users/takiacademy/IdeaProjects/Kapture/lib/macos/ffmpeg"
 
-//    val FFmpegPath: String by lazy {
-//        File(System.getProperty("compose.application.resources.dir"), "ffmpeg").path
-//    }
+    val FFmpegPath: String by lazy {
+        File(System.getProperty("compose.application.resources.dir"), "ffmpeg").path
+    }
 
-    const val FFprobePath = "/opt/homebrew/bin/ffprobe"
+    val FFprobePath: String by lazy {
+        File(System.getProperty("compose.application.resources.dir"), "ffprobe").path
+    }
 }
