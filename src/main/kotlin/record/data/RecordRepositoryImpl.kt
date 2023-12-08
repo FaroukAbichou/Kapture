@@ -61,7 +61,6 @@ class RecordRepositoryImpl : RecordRepository {
                 println("Error starting FFmpeg process")
             }
         }
-//        executeFFmpegJob(builder)
     }
 
     override fun recordScreenWithAudio(
