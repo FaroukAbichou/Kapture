@@ -18,6 +18,12 @@ repositories {
 
 dependencies {
     implementation(compose.desktop.currentOs)
+    implementation(compose.runtime)
+    implementation(compose.foundation)
+    implementation(compose.material)
+    implementation(compose.material3)
+    implementation(compose.materialIconsExtended)
+    implementation(libs.kotlinx.serializationJson)
     implementation(libs.ffmpeg)
     implementation(libs.koin.core)
     implementation(libs.kotlinx.coroutinesCore)
