@@ -10,8 +10,8 @@ data class Screen(
         val defaultScreen = Screen(
             id = "0",
             name = "Screen 0",
-            width = 1920,
-            height = 1080
+            width = 640,
+            height = 480
         )
     }
 }
