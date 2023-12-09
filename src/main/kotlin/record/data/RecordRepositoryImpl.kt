@@ -6,6 +6,7 @@ import net.bramp.ffmpeg.FFprobe
 import net.bramp.ffmpeg.builder.FFmpegBuilder
 import record.domain.ConfigurationManager
 import record.domain.RecordRepository
+import screen.domain.Screen
 import screen.domain.WindowBounds
 import screen.domain.WindowPlacement
 import util.FFmpegUtils.FFmpegPath
@@ -104,16 +105,20 @@ class RecordRepositoryImpl : RecordRepository {
     override fun startRecording(
         config: ConfigurationManager,
         bounds: WindowBounds?,
-        recordingArea: WindowPlacement
+        recordingArea: WindowPlacement,
+        selectedScreen: Screen
     ) {
 //        val cropFilter = createCropFilter(bounds)
-        val cropFilter = createCropFilterWithWindowPlacement(recordingArea)
+        val cropFilter = createCropFilterWithWindowPlacement(
+            screen =selectedScreen,
+            recordingArea
+        )
         val pixelFormat = "uyvy422"
 
         val ffmpegCommand = mutableListOf(FFmpegPath)
 
         val builder = FFmpegBuilder()
-            .setInput(config.screenId)
+            .setInput(selectedScreen.id)
             .setFormat(config.format)
             .addOutput(config.outputFile)
             .setVideoCodec(config.videoCodecName)
@@ -123,9 +128,6 @@ class RecordRepositoryImpl : RecordRepository {
                 if (cropFilter != null) {
                     setVideoFilter(cropFilter)
                 }
-//                if (config.windowBounds != null) {
-//                    setVideoResolution(config.windowBounds.width, config.windowBounds.height)
-//                }
             }
             .done()
 
@@ -240,8 +242,17 @@ class RecordRepositoryImpl : RecordRepository {
         "crop=${it.width}:${it.height}:${it.x1}:${it.y1}"
     }
 
-    private fun createCropFilterWithWindowPlacement(bounds: WindowPlacement?) = bounds?.let {
-        "crop=${it.width}:${it.height}:${it.x}:${it.y}"
+    private fun createCropFilterWithWindowPlacement(
+        screen: Screen,
+        bounds: WindowPlacement?
+    ) = bounds?.let {
+        "crop=${it.width}:${it.height}:${
+            if (it.x < 0) {
+                screen.width + it.x
+            } else {
+                it.x
+            }
+        }:${it.y}"
     }
 }
 

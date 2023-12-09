@@ -1,7 +1,6 @@
 import org.gradle.internal.os.OperatingSystem
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
-
 plugins {
     kotlin("jvm")
     alias(libs.plugins.compose)

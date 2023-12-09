@@ -18,7 +18,6 @@ fun HomeContent(
     state: HomeState,
     onEvent: (HomeEvent) -> Unit = {},
 ) {
-
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -64,7 +63,6 @@ fun HomeContent(
         Button(
             onClick = {
                 val bounds = WindowBounds(x1 = 100, y1 = 100, x2 = 1000, y2 = 1000)
-
                 state.selectedScreen?.let {
                     onEvent(
                         HomeEvent.StartRecording(

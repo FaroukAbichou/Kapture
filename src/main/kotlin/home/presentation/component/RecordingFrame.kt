@@ -1,7 +1,9 @@
 package home.presentation.component
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -11,9 +13,13 @@ import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.PaintingStyle
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
+import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.rememberWindowState
 import home.presentation.event.RecordingFrameEvent
 
@@ -26,6 +32,7 @@ fun RecordingFrame(
     val windowOutlineColor = Color(0xFF525252)
     val windowOutlineWidth = 2.dp
     val windowState = rememberWindowState()
+    val density = LocalDensity.current
 
     LaunchedEffect(windowState.size, windowState.position) {
         onEvent(
@@ -45,17 +52,44 @@ fun RecordingFrame(
         transparent = true,
         undecorated = true,
     ) {
-        val currentSize = windowState.size
-        Canvas(
+
+        Column(
             modifier = Modifier
                 .fillMaxSize()
-                .dashedBorder(
-                    width = windowOutlineWidth,
-                    radius = 12.dp,
-                    color = windowOutlineColor
-                )
-        ) {
+        ){
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(30.dp)
+                    .background(Color.Green)
+                    .pointerInput(Unit) {
+                        detectDragGestures { change, dragAmount ->
+                            val dragAmountDp = with(density) {
+                                DpOffset(dragAmount.x.toDp(), dragAmount.y.toDp())
+                            }
 
+                            if (windowState.position is WindowPosition.Absolute) {
+                                val currentPosition = windowState.position as WindowPosition.Absolute
+                                val newX = currentPosition.x + dragAmountDp.x
+                                val newY = currentPosition.y + dragAmountDp.y
+
+                                windowState.position = WindowPosition.Absolute(newX, newY)
+                            }
+                        }
+                    }
+
+            )
+            Canvas(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .dashedBorder(
+                        width = windowOutlineWidth,
+                        radius = 12.dp,
+                        color = windowOutlineColor
+                    )
+            ) {
+
+            }
         }
     }
 }

@@ -2,7 +2,6 @@ package screen.data
 
 import screen.domain.Screen
 import screen.domain.ScreenRepository
-import screen.domain.WindowBounds
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
@@ -25,12 +24,8 @@ class ScreenRepositoryImpl : ScreenRepository {
             Screen(
                 id =   screenNumber.toString(),
                 name = matchResult.groupValues[2],
-                bounds = WindowBounds(
-                    x1 = 0,
-                    y1 = 0,
-                    x2 = matchResult.groupValues[1].toInt(),
-                    y2 = matchResult.groupValues[2].toInt()
-                )
+                width = matchResult.groupValues[1].toInt(),
+                height = matchResult.groupValues[2].toInt()
             )
         }.toList()
         return screens

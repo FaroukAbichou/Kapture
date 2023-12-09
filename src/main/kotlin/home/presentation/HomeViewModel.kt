@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import record.domain.RecordRepository
+import screen.domain.Screen
 import screen.domain.ScreenRepository
 import screen.domain.WindowPlacement
 
@@ -48,12 +49,16 @@ class HomeViewModel : KoinComponent {
 
             is HomeEvent.StartRecording -> {
                 recordRepository.startRecording(
-                    event.config, event.bounds,
+                    event.config,
+                    event.bounds,
+                    selectedScreen = _state.value.selectedScreen,
                     recordingArea = _state.value.recordingArea
                 )
             }
 
-            is HomeEvent.SelectScreen -> selectScreen(event.screenId)
+            is HomeEvent.SelectScreen -> {
+                selectScreen(event.screenId)
+            }
 
             HomeEvent.StopRecording -> {
                 recordRepository.stopRecording()
@@ -102,15 +107,22 @@ class HomeViewModel : KoinComponent {
                         y = event.y,
                         width = event.width,
                         height = event.height
-                    )
+                    ),
+                    selectedScreen = Screen(
+                        id = if (event.x >= 0) "0" else "1",
+                        name = "Screen ${if (event.x >= 0) "0" else "1"}",
+                        width = _state.value.selectedScreen.width,
+                        height = _state.value.selectedScreen.height,
+                    ),
                 )
+                println( event.x)
+                println( _state.value.selectedScreen.id)
             }
-
         }
     }
 
     private fun selectScreen(screenId: String) {
-        val selectedScreen = screenRepository.getScreens().find { it.id == screenId }
+        val selectedScreen = screenRepository.getScreens().find { it.id == screenId } ?: return
         _state.value = _state.value.copy(
             selectedScreen = selectedScreen,
         )
