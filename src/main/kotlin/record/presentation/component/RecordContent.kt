@@ -26,27 +26,42 @@ fun RecordContent(
             modifier = Modifier
                 .padding(16.dp)
         )
-
-        when (selectedSectionIndex){
-            0 -> RecordButtonsGrid(
-                state = state,
-                onEvent = onEvent
-            )
-            1 -> RecordSettings(
-                state = state,
-                onEvent = onEvent
-            )
-            2 -> RecordPreview(
-                state = state,
-                onEvent = onEvent
-            )
-            3 -> RecordPreview(
-                state = state,
-                onEvent = onEvent
-            )
+        RecordPagesSection(
+            selectedSectionIndex = selectedSectionIndex,
+            state = state,
+            onEvent = onEvent
+        )
 
 
-        }
+    }
+}
 
+
+@Composable
+fun RecordPagesSection(
+    selectedSectionIndex: Int,
+    state: RecordState,
+    onEvent: (RecordEvent) -> Unit
+) {
+    when (selectedSectionIndex) {
+        0 -> GetStartedSection(
+            state = state,
+            onEvent = onEvent
+        )
+
+        1 -> VideosSection(
+            state = state,
+            onEvent = onEvent
+        )
+
+        2 -> ImagesSection(
+            state = state,
+            onEvent = onEvent
+        )
+
+        3 -> AudiosSection(
+            state = state,
+            onEvent = onEvent
+        )
     }
 }
