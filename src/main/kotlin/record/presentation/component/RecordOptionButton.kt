@@ -41,11 +41,11 @@ fun RecordOptionButton(
                 painter = painterResource(imageResource.resourceId),
                 contentDescription = text,
                 modifier = Modifier
-                    .size(56.dp)
+                    .size(64.dp)
             )
             Text(
                 text = text,
-                modifier = Modifier.width(120.dp),
+                modifier = Modifier.width(160.dp),
                 style = MaterialTheme.typography.titleSmall.copy(
                     textAlign = TextAlign.Center
                 ),

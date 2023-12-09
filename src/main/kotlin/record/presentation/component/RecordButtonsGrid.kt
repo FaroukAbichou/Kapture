@@ -1,12 +1,10 @@
 package record.presentation.component
 
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.staggeredgrid.LazyHorizontalStaggeredGrid
-import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridState
-import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import core.ImageResource
 import record.presentation.event.RecordEvent
 import record.presentation.state.RecordState
 
@@ -15,23 +13,77 @@ fun RecordButtonsGrid(
     state: RecordState,
     onEvent: (RecordEvent) -> Unit
 ) {
-    LazyHorizontalStaggeredGrid(
-        rows = StaggeredGridCells.Fixed(2),
-        state = LazyStaggeredGridState(),
-        modifier = Modifier
-//            .fillMaxSize()
-            .padding(16.dp)
+    Column (
+        modifier = Modifier.padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        items(state.recordTypes.size) { index ->
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
             RecordOptionButton(
-                text = state.recordTypes[index].name,
+                text = "Select Recording Area",
                 onClick = {
 //                    onEvent(RecordEvent.RecordTypeSelected(index))
                 },
-                imageResource = state.recordTypes[index].icon,
+                imageResource = ImageResource.crop,
+                modifier = Modifier
+                    .padding(8.dp)
+            )
+            RecordOptionButton(
+                text = "Full Screen",
+                onClick = {
+//                    onEvent(RecordEvent.RecordTypeSelected(index))
+                },
+                imageResource = ImageResource.display,
+                modifier = Modifier
+                    .padding(8.dp)
+            )
+            RecordOptionButton(
+                text = "Specific Window",
+                onClick = {
+//                    onEvent(RecordEvent.RecordTypeSelected(index))
+                },
+                imageResource = ImageResource.lockDisplay,
                 modifier = Modifier
                     .padding(8.dp)
             )
         }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            RecordOptionButton(
+                text = "Device Recording",
+                onClick = {
+//                    onEvent(RecordEvent.RecordTypeSelected(index))
+                },
+                imageResource = ImageResource.cameraLens,
+                modifier = Modifier
+                    .padding(8.dp)
+            )
+            RecordOptionButton(
+                text = "Audio only",
+                onClick = {
+//                    onEvent(RecordEvent.RecordTypeSelected(index))
+                },
+                imageResource = ImageResource.waveformCircle,
+                modifier = Modifier
+                    .padding(8.dp)
+            )
+            RecordOptionButton(
+                text = "All Windows",
+                onClick = {
+//                    onEvent(RecordEvent.RecordTypeSelected(index))
+                },
+                imageResource = ImageResource.multipleDisplay,
+                modifier = Modifier
+                    .padding(8.dp)
+            )
+        }
+
     }
 }
