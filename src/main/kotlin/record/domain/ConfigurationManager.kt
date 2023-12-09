@@ -1,7 +1,7 @@
 package record.domain
 
 import screen.domain.WindowBounds
-import util.FilePaths.VideosPath
+import core.util.FilePaths.VideosPath
 
 data class ConfigurationManager(
     val frameRate: Int = 30,

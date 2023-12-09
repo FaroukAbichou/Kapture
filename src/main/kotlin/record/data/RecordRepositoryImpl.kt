@@ -9,9 +9,9 @@ import record.domain.RecordRepository
 import screen.domain.Screen
 import screen.domain.WindowBounds
 import screen.domain.WindowPlacement
-import util.FFmpegUtils.FFmpegPath
-import util.FFmpegUtils.FFprobePath
-import util.FilePaths.VideosPath
+import core.util.FFmpegUtils.FFmpegPath
+import core.util.FFmpegUtils.FFprobePath
+import core.util.FilePaths.VideosPath
 import java.io.File
 import java.io.OutputStreamWriter
 import java.util.concurrent.Executors
