@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import record.presentation.event.RecordEvent
 import record.presentation.state.RecordState
+import video.presentation.VideosSection
 
 @Composable
 fun RecordContent(
@@ -50,8 +51,8 @@ fun RecordPagesSection(
         )
 
         1 -> VideosSection(
-            state = state,
-            onEvent = onEvent
+//            state = state,
+//            onEvent = onEvent
         )
 
         2 -> ImagesSection(
