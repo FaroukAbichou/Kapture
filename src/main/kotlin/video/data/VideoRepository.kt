@@ -53,8 +53,8 @@ class VideoRepository(
         return attr.creationTime().toString()
     }
 
-    private fun getVideoThumbnail(path: Path, timestamp: String = "00:00:01"): String {
-        val outputFilePath = "${FilePaths.VideosPath}/Images/${path.fileName.toString().replace(".mp4", ".jpg")}"
+    private fun getVideoThumbnail(path: Path, timestamp: String = "00:00:02"): String {
+        val outputFilePath = "${FilePaths.VideosPath}/${path.fileName.toString().replace(".mp4", ".jpg")}"
         val command = "ffmpeg -i \"${path.toAbsolutePath()}\" -ss $timestamp -vframes 1 \"$outputFilePath\""
 
         try {

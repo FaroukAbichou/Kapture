@@ -5,15 +5,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import core.ImageResource
+import record.domain.ConfigurationManager
 import record.presentation.event.RecordEvent
 import record.presentation.state.RecordState
+import screen.domain.WindowBounds
 
 @Composable
 fun RecordButtonsGrid(
     state: RecordState,
-    onEvent: (RecordEvent) -> Unit
+    onEvent: (RecordEvent) -> Unit,
 ) {
-    Column (
+    Column(
         modifier = Modifier.padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
@@ -25,7 +27,17 @@ fun RecordButtonsGrid(
             RecordOptionButton(
                 text = "Select Recording Area",
                 onClick = {
-//                    onEvent(RecordEvent.RecordTypeSelected(index))
+                    onEvent(
+                        RecordEvent.RecordSection(
+                            config =ConfigurationManager(),
+                            bounds = WindowBounds(
+                                x1 = 0,
+                                y1 = 0,
+                                x2 = 400,
+                                y2 = 400
+                            )
+                        )
+                    )
                 },
                 imageResource = ImageResource.crop,
                 modifier = Modifier
@@ -34,7 +46,11 @@ fun RecordButtonsGrid(
             RecordOptionButton(
                 text = "Full Screen",
                 onClick = {
-//                    onEvent(RecordEvent.RecordTypeSelected(index))
+//                    onEvent(
+//                        RecordEvent.RecordSelectedScreen(
+//                            config = ,
+//                        )
+//                    )
                 },
                 imageResource = ImageResource.display,
                 modifier = Modifier
@@ -43,7 +59,11 @@ fun RecordButtonsGrid(
             RecordOptionButton(
                 text = "Specific Window",
                 onClick = {
-//                    onEvent(RecordEvent.RecordTypeSelected(index))
+                    onEvent(
+                        RecordEvent.Record(
+                            config = ConfigurationManager(),
+                        )
+                    )
                 },
                 imageResource = ImageResource.lockDisplay,
                 modifier = Modifier
@@ -59,7 +79,7 @@ fun RecordButtonsGrid(
             RecordOptionButton(
                 text = "Device Recording",
                 onClick = {
-//                    onEvent(RecordEvent.RecordTypeSelected(index))
+                    onEvent(RecordEvent.RecordDevice)
                 },
                 imageResource = ImageResource.cameraLens,
                 modifier = Modifier
@@ -68,7 +88,13 @@ fun RecordButtonsGrid(
             RecordOptionButton(
                 text = "Audio only",
                 onClick = {
-//                    onEvent(RecordEvent.RecordTypeSelected(index))
+                    onEvent(
+                        RecordEvent.RecordAudio(
+                            config = ConfigurationManager(
+                                audioSource = "default"
+                            )
+                        )
+                    )
                 },
                 imageResource = ImageResource.waveformCircle,
                 modifier = Modifier
@@ -77,7 +103,13 @@ fun RecordButtonsGrid(
             RecordOptionButton(
                 text = "All Windows",
                 onClick = {
-//                    onEvent(RecordEvent.RecordTypeSelected(index))
+                    onEvent(
+                        RecordEvent.RecordAllWindows(
+                            config = ConfigurationManager(
+                                audioSource = "default"
+                            )
+                        )
+                    )
                 },
                 imageResource = ImageResource.multipleDisplay,
                 modifier = Modifier

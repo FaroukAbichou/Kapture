@@ -22,8 +22,91 @@ class RecordViewModel : KoinComponent {
 
     fun onEvent(event: RecordEvent) {
         when (event) {
-            RecordEvent.Load -> TODO()
+            is RecordEvent.Record -> {
+                recordRepository.recordScreen(
+                    event.config,
+                    bounds = null
+                )
+            }
+
+            is RecordEvent.RecordSection -> {
+                recordRepository.recordScreen(event.config, event.bounds)
+            }
+
+            is RecordEvent.RecordWithAudio -> {
+                recordRepository.recordScreenWithAudio(
+                    event.config,
+                    event.bounds,
+                    event.audioSource
+                )
+            }
+
+            is RecordEvent.StartRecording -> {
+                recordRepository.startRecording(
+                    event.config,
+                    event.bounds,
+                    selectedScreen = _state.value.selectedScreen,
+                    recordingArea = _state.value.recordingArea
+                )
+            }
+
+            is RecordEvent.SelectScreen -> {
+                selectScreen(event.screenId)
+            }
+
+            RecordEvent.StopRecording -> {
+                recordRepository.stopRecording()
+            }
+
+            RecordEvent.DiscardRecording -> {
+                recordRepository.discardRecording()
+            }
+
+            is RecordEvent.SaveRecording -> {
+                recordRepository.saveRecording(event.outputFilePath)
+            }
+
+            RecordEvent.PauseRecording -> {
+                recordRepository.pauseRecording()
+            }
+
+            is RecordEvent.ResumeRecording -> {
+                recordRepository.resumeRecording(
+                    event.config,
+                    event.bounds
+                )
+            }
+
+            is RecordEvent.SetRecordingArea -> {
+//                recordRepository.setRecordingArea(event.bounds)
+            }
+
+            is RecordEvent.RecordAllWindows -> {
+
+            }
+
+            is RecordEvent.RecordAudio -> {
+
+            }
+
+            RecordEvent.RecordDevice -> {
+
+            }
         }
+    }
+
+    private fun selectScreen(screenId: String) {
+        val selectedScreen = screenRepository.getScreens().find { it.id == screenId } ?: return
+        _state.value = _state.value.copy(
+            selectedScreen = selectedScreen,
+        )
+    }
+
+    private fun getScreens() {
+        _state.value = _state.value.copy(
+            screens = screenRepository.getScreens(),
+            isLoading = false,
+        )
     }
 
 }

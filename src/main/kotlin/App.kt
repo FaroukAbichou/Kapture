@@ -18,6 +18,9 @@ fun App() {
     val recordViewModel = rememberSaveable { RecordViewModel() }
     val recordState = recordViewModel.state.collectAsState()
     KaptureTheme {
+        RecordingFrame(
+            onEvent = homeViewModel::onRecordingFrameEvent
+        )
         RecordScreen(
             state = recordState.value,
             onEvent = recordViewModel::onEvent
@@ -26,8 +29,5 @@ fun App() {
 //            state = homeState.value,
 //            onEvent = homeViewModel::onEvent
 //        )
-        RecordingFrame(
-            onEvent = homeViewModel::onRecordingFrameEvent
-        )
     }
 }
