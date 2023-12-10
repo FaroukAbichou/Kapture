@@ -5,7 +5,7 @@ import core.util.FilePaths.VideosPath
 
 data class ConfigurationManager(
     val frameRate: Int = 30,
-    val screenId: String = "1",
+    val screenId: String = "0",
     val durationInSeconds: Int = 5,
     val audioSource: String = "none",
     val isAudioEnabled: Boolean = false,
@@ -15,7 +15,7 @@ data class ConfigurationManager(
     val windowBounds: WindowBounds? = WindowBounds(
         x1 = 0,
         y1 = 0,
-        x2 = 1920,
-        y2 = 1080
+        x2 = 720,
+        y2 = 720
     )
 )
