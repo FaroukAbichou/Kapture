@@ -12,14 +12,11 @@ import record.presentation.RecordViewModel
 @Composable
 @Preview
 fun App() {
-    val homeViewModel = rememberSaveable { HomeViewModel() }
-    val homeState = homeViewModel.state.collectAsState()
-
     val recordViewModel = rememberSaveable { RecordViewModel() }
     val recordState = recordViewModel.state.collectAsState()
     KaptureTheme {
         RecordingFrame(
-            onEvent = homeViewModel::onRecordingFrameEvent
+            onEvent = recordViewModel::onRecordingFrameEvent
         )
         RecordScreen(
             state = recordState.value,
