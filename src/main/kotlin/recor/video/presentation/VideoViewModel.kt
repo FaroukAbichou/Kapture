@@ -9,7 +9,7 @@ import probe.domain.Screen
 import probe.domain.ScreenRepository
 import probe.domain.WindowPlacement
 import recor.home.presentation.event.RecordingFrameEvent
-import recor.video.data.VideoRepository
+import recor.video.domain.VideoRepository
 import recor.video.presentation.event.VideoEvent
 import recor.video.presentation.state.VideoState
 

@@ -9,12 +9,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import recor.home.presentation.state.HomeState
-import recor.record.presentation.event.RecordEvent
+import recor.video.presentation.event.VideoEvent
 
 @Composable
 fun ScreenSelector(
     state: HomeState,
-    onEvent: (RecordEvent) -> Unit = {},
+    onEvent: (VideoEvent) -> Unit = {},
 ) {
     Column(
         modifier = Modifier.padding(16.dp),
@@ -24,7 +24,7 @@ fun ScreenSelector(
             Button(
                 onClick = {
                     onEvent(
-                        RecordEvent.SelectScreen(
+                        VideoEvent.SelectScreen(
                             screenId = state.screens[it].id
                         )
                     )

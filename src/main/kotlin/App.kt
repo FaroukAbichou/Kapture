@@ -8,7 +8,6 @@ import recor.audio.presentation.AudioViewModel
 import recor.home.presentation.component.RecordingFrame
 import recor.image.presentation.ImageViewModel
 import recor.record.presentation.RecordScreen
-import recor.record.presentation.RecordViewModel
 import recor.video.presentation.VideoViewModel
 
 @Composable

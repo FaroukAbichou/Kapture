@@ -10,6 +10,7 @@ import probe.domain.Screen
 import probe.domain.WindowBounds
 import probe.domain.WindowPlacement
 import recor.record.domain.ConfigurationManager
+import recor.video.domain.VideoRepository
 import recor.video.presentation.state.Video
 import java.io.BufferedReader
 import java.io.File
@@ -24,10 +25,9 @@ import java.util.concurrent.Future
 import java.util.concurrent.TimeUnit
 import java.util.stream.Collectors
 
+class VideoRepositoryImpl : VideoRepository {
 
-class VideoRepository{
-
-    fun getVideosByPath(filePath: String): List<Video> {
+    override fun getVideosByPath(filePath: String): List<Video> {
         val videos = Files.walk(Paths.get(filePath))
             .filter { path -> path.toString().endsWith(".mp4") }
             .collect(Collectors.toList())
@@ -88,7 +88,7 @@ class VideoRepository{
     private val executorService = Executors.newSingleThreadExecutor()
     private var ffmpegProcess: Process? = null
 
-     fun recordScreen(
+    override fun recordScreen(
         config: ConfigurationManager,
         bounds: WindowBounds?
     ) {
@@ -125,7 +125,7 @@ class VideoRepository{
         }
     }
 
-     fun recordScreenWithAudio(
+    override fun recordScreenWithAudio(
         config: ConfigurationManager,
         bounds: WindowBounds?,
         audioSource: String
@@ -163,7 +163,7 @@ class VideoRepository{
         }
     }
 
-     fun startRecording(
+    override fun startRecording(
         config: ConfigurationManager,
         bounds: WindowBounds?,
         recordingArea: WindowPlacement,
@@ -207,7 +207,7 @@ class VideoRepository{
         }
     }
 
-     fun stopRecording() {
+    override fun stopRecording() {
         ffmpegProcess?.let { process ->
             if (process.isAlive) {
                 process.outputStream?.let { inputStream ->
@@ -226,14 +226,14 @@ class VideoRepository{
 
     private var isRecordingPaused = false
     private var tempFiles = mutableListOf<File>()
-     fun pauseRecording() {
+    override fun pauseRecording() {
         if (!isRecordingPaused) {
             stopRecordingInternal()
             isRecordingPaused = true
         }
     }
 
-     fun resumeRecording(config: ConfigurationManager, bounds: WindowBounds?) {
+    override fun resumeRecording(config: ConfigurationManager, bounds: WindowBounds?) {
         if (isRecordingPaused) {
             val tempFile = File.createTempFile("recording_", ".mp4", File(FilePaths.VideosPath))
             tempFiles.add(tempFile)
@@ -279,18 +279,18 @@ class VideoRepository{
         recordingThread?.cancel(true)
     }
 
-     fun saveRecording(outputFilePath: String) {
+    override fun saveRecording(outputFilePath: String) {
         // Combine all temporary files into the final output file
         // This can be done using FFmpeg's concat demuxer or similar approach
     }
 
-     fun discardRecording() {
+    override fun discardRecording() {
         tempFiles.forEach { it.delete() }
         tempFiles.clear()
         isRecordingPaused = false
     }
 
-     fun setRecordingArea(position: WindowPlacement) {
+    override fun setRecordingArea(position: WindowPlacement) {
 
     }
 
@@ -315,4 +315,5 @@ class VideoRepository{
             }
         }:${it.y}"
     }
+
 }
