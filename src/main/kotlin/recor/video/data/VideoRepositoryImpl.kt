@@ -13,7 +13,7 @@ import probe.domain.WindowBounds
 import probe.domain.WindowPlacement
 import probe.domain.model.Screen
 import recor.video.domain.VideoRepository
-import recor.video.domain.model.ConfigurationManager
+import recor.video.domain.model.RecordSettings
 import recor.video.domain.model.Video
 import java.io.BufferedReader
 import java.io.File
@@ -75,8 +75,8 @@ class VideoRepositoryImpl : VideoRepository {
     private val executorService = Executors.newSingleThreadExecutor()
     private var ffmpegProcess: Process? = null
 
-    override fun recordScreen(
-        config: ConfigurationManager,
+    override fun recordScreenWithTimeout(
+        config: RecordSettings,
         bounds: WindowBounds?
     ) {
         val cropFilter = createCropFilter(bounds)
@@ -112,46 +112,9 @@ class VideoRepositoryImpl : VideoRepository {
         }
     }
 
-    override fun recordScreenWithAudio(
-        config: ConfigurationManager,
-        bounds: WindowBounds?,
-        audioSource: String
-    ) {
-        val cropFilter = createCropFilter(bounds)
-        val builder = FFmpegBuilder()
-            .setInput("1")
-            .setInput(config.audioSource)
-            .setFormat(config.format)
-            .addOutput(config.outputFile)
-            .setDuration(
-                config.durationInSeconds.toLong(),
-                TimeUnit.SECONDS
-            )
-            .setVideoCodec(config.videoCodecName)
-            .setVideoFrameRate(config.frameRate, 1)
-            .apply {
-                if (cropFilter != null) {
-                    setVideoFilter(cropFilter)
-                }
-                if (config.windowBounds != null) {
-                    setVideoResolution(config.windowBounds.width, config.windowBounds.height)
-                }
-            }
-            .setAudioCodec("aac")
-            .done()
-
-        recordingThread = executorService.submit {
-            try {
-                executeFFmpegJob(builder)
-            } catch (e: Exception) {
-                e.printStackTrace()
-                println("Error starting FFmpeg process")
-            }
-        }
-    }
 
     override fun startRecording(
-        config: ConfigurationManager,
+        config: RecordSettings,
         bounds: WindowBounds?,
         recordingArea: WindowPlacement,
         selectedScreen: Screen
@@ -220,7 +183,7 @@ class VideoRepositoryImpl : VideoRepository {
         }
     }
 
-    override fun resumeRecording(config: ConfigurationManager, bounds: WindowBounds?) {
+    override fun resumeRecording(config: RecordSettings, bounds: WindowBounds?) {
         if (isRecordingPaused) {
             val tempFile = File.createTempFile("recording_", ".mp4", File(FilePaths.VideosPath))
             tempFiles.add(tempFile)
@@ -230,7 +193,7 @@ class VideoRepositoryImpl : VideoRepository {
         }
     }
 
-    private fun startRecordingInternal(config: ConfigurationManager, bounds: WindowBounds?, outputPath: String) {
+    private fun startRecordingInternal(config: RecordSettings, bounds: WindowBounds?, outputPath: String) {
         val cropFilter = createCropFilter(bounds)
         val pixelFormat = "uyvy422"
         val builder = FFmpegBuilder()

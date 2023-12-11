@@ -5,8 +5,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import core.ImageResource
+import core.util.TimeHelper.getRecordingOutputFileName
 import probe.domain.WindowBounds
-import recor.video.domain.model.ConfigurationManager
+import recor.video.domain.model.RecordSettings
 import recor.video.presentation.event.VideoEvent
 import recor.video.presentation.state.VideoState
 
@@ -29,7 +30,7 @@ fun RecordButtonsGrid(
                 onClick = {
                     onEvent(
                         VideoEvent.RecordSection(
-                            config = ConfigurationManager(),
+                            config = RecordSettings(),
                             bounds = WindowBounds(
                                 x1 = 0,
                                 y1 = 0,
@@ -61,9 +62,12 @@ fun RecordButtonsGrid(
                 onClick = {
                     onEvent(
                         VideoEvent.Record(
-                            config = ConfigurationManager(),
+                            config = RecordSettings(
+                                outputFile = getRecordingOutputFileName()
+                            ),
                         )
                     )
+                    println( "currentTime: ${getRecordingOutputFileName()}")
                 },
                 imageResource = ImageResource.lockDisplay,
                 modifier = Modifier
@@ -90,7 +94,7 @@ fun RecordButtonsGrid(
                 onClick = {
                     onEvent(
                         VideoEvent.RecordAudio(
-                            config = ConfigurationManager(
+                            config = RecordSettings(
                                 audioSource = "default"
                             )
                         )
@@ -105,7 +109,7 @@ fun RecordButtonsGrid(
                 onClick = {
                     onEvent(
                         VideoEvent.RecordAllWindows(
-                            config = ConfigurationManager(
+                            config = RecordSettings(
                                 audioSource = "default"
                             )
                         )

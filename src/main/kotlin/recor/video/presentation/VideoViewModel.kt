@@ -24,22 +24,14 @@ class VideoViewModel : KoinComponent {
     fun onEvent(event: VideoEvent) {
         when (event) {
             is VideoEvent.Record -> {
-                videoRepository.recordScreen(
+                videoRepository.recordScreenWithTimeout(
                     event.config,
                     bounds = null
                 )
             }
 
             is VideoEvent.RecordSection -> {
-                videoRepository.recordScreen(event.config, event.bounds)
-            }
-
-            is VideoEvent.RecordWithAudio -> {
-                videoRepository.recordScreenWithAudio(
-                    event.config,
-                    event.bounds,
-                    event.audioSource
-                )
+                videoRepository.recordScreenWithTimeout(event.config, event.bounds)
             }
 
             is VideoEvent.StartRecording -> {

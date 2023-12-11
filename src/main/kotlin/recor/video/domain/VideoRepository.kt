@@ -3,22 +3,21 @@ package recor.video.domain
 import probe.domain.WindowBounds
 import probe.domain.WindowPlacement
 import probe.domain.model.Screen
-import recor.video.domain.model.ConfigurationManager
+import recor.video.domain.model.RecordSettings
 import recor.video.domain.model.Video
 
 interface VideoRepository  {
     fun getVideosByPath(filePath: String): List<Video>
-    fun recordScreen(config: ConfigurationManager, bounds: WindowBounds?)
-    fun recordScreenWithAudio(config: ConfigurationManager, bounds: WindowBounds?, audioSource: String)
+    fun recordScreenWithTimeout(config: RecordSettings, bounds: WindowBounds?)
     fun startRecording(
-        config: ConfigurationManager,
+        config: RecordSettings,
         bounds: WindowBounds?,
         recordingArea: WindowPlacement,
         selectedScreen: Screen
     )
 
     fun stopRecording()
-    fun resumeRecording(config: ConfigurationManager, bounds: WindowBounds?)
+    fun resumeRecording(config: RecordSettings, bounds: WindowBounds?)
     fun saveRecording(outputFilePath: String)
     fun discardRecording()
     fun setRecordingArea(position: WindowPlacement)
