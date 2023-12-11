@@ -9,7 +9,6 @@ import net.bramp.ffmpeg.FFmpeg
 import net.bramp.ffmpeg.FFmpegExecutor
 import net.bramp.ffmpeg.FFprobe
 import net.bramp.ffmpeg.builder.FFmpegBuilder
-import probe.domain.WindowBounds
 import probe.domain.WindowPlacement
 import probe.domain.model.Screen
 import recor.video.domain.VideoRepository
@@ -67,7 +66,6 @@ class VideoRepositoryImpl : VideoRepository {
     }
 
 
-
     private val ffmpeg = FFmpeg(FFmpegUtils.FFmpegPath)
     private val ffprobe = FFprobe(FFmpegUtils.FFprobePath)
 
@@ -77,10 +75,13 @@ class VideoRepositoryImpl : VideoRepository {
 
     override fun recordScreenWithTimeout(
         config: RecordSettings,
-        bounds: WindowBounds?
+        windowPlacement: WindowPlacement?,
+        selectedScreen: Screen,
     ) {
-        val cropFilter = createCropFilter(bounds)
-
+        val cropFilter = createCropFilter(
+            screen = selectedScreen,
+            windowPlacement = windowPlacement,
+        )
         val builder = FFmpegBuilder()
             .setInput("1")
             .setFormat(config.format)
@@ -96,8 +97,11 @@ class VideoRepositoryImpl : VideoRepository {
                 if (cropFilter != null) {
                     setVideoFilter(cropFilter)
                 }
-                if (config.windowBounds != null) {
-                    setVideoResolution(config.windowBounds.width, config.windowBounds.height)
+                if (windowPlacement != null) {
+                    setVideoResolution(
+                        windowPlacement.width,
+                        windowPlacement.height
+                    )
                 }
             }
             .done()
@@ -115,14 +119,12 @@ class VideoRepositoryImpl : VideoRepository {
 
     override fun startRecording(
         config: RecordSettings,
-        bounds: WindowBounds?,
-        recordingArea: WindowPlacement,
+        windowPlacement: WindowPlacement,
         selectedScreen: Screen
     ) {
-//        val cropFilter = createCropFilter(bounds)
-        val cropFilter = createCropFilterWithWindowPlacement(
-            screen =selectedScreen,
-            recordingArea
+        val cropFilter = createCropFilter(
+            screen = selectedScreen,
+            windowPlacement = windowPlacement,
         )
         val pixelFormat = "uyvy422"
 
@@ -174,89 +176,16 @@ class VideoRepositoryImpl : VideoRepository {
         recordingThread?.cancel(true)
     }
 
-    private var isRecordingPaused = false
-    private var tempFiles = mutableListOf<File>()
-    override fun pauseRecording() {
-        if (!isRecordingPaused) {
-            stopRecordingInternal()
-            isRecordingPaused = true
-        }
-    }
-
-    override fun resumeRecording(config: RecordSettings, bounds: WindowBounds?) {
-        if (isRecordingPaused) {
-            val tempFile = File.createTempFile("recording_", ".mp4", File(FilePaths.VideosPath))
-            tempFiles.add(tempFile)
-
-            startRecordingInternal(config, bounds, tempFile.absolutePath)
-            isRecordingPaused = false
-        }
-    }
-
-    private fun startRecordingInternal(config: RecordSettings, bounds: WindowBounds?, outputPath: String) {
-        val cropFilter = createCropFilter(bounds)
-        val pixelFormat = "uyvy422"
-        val builder = FFmpegBuilder()
-            .setInput(config.screenId)
-            .setFormat(config.format)
-            .addOutput(outputPath)
-            .setVideoCodec(config.videoCodecName)
-            .setVideoFrameRate(config.frameRate, 1)
-            .addExtraArgs("-pix_fmt", pixelFormat)
-            .apply {
-                if (cropFilter != null) {
-                    setVideoFilter(cropFilter)
-                }
-                if (config.windowBounds != null) {
-                    setVideoResolution(config.windowBounds.width, config.windowBounds.height)
-                }
-            }
-            .done()
-        executeFFmpegJob(builder)
-    }
-
-    private fun stopRecordingInternal() {
-        ffmpegProcess?.let { process ->
-            if (process.isAlive) {
-                process.outputStream?.let { inputStream ->
-                    val writer = OutputStreamWriter(inputStream)
-                    writer.write("q")
-                    writer.flush()
-                    writer.close()
-                }
-            }
-        }
-        recordingThread?.cancel(true)
-    }
-
-    override fun saveRecording(outputFilePath: String) {
-        // Combine all temporary files into the final output file
-        // This can be done using FFmpeg's concat demuxer or similar approach
-    }
-
-    override fun discardRecording() {
-        tempFiles.forEach { it.delete() }
-        tempFiles.clear()
-        isRecordingPaused = false
-    }
-
-    override fun setRecordingArea(position: WindowPlacement) {
-
-    }
 
     private fun executeFFmpegJob(builder: FFmpegBuilder) {
         val executor = FFmpegExecutor(ffmpeg, ffprobe)
         executor.createJob(builder).run()
     }
 
-    private fun createCropFilter(bounds: WindowBounds?) = bounds?.let {
-        "crop=${it.width}:${it.height}:${it.x1}:${it.y1}"
-    }
-
-    private fun createCropFilterWithWindowPlacement(
+    private fun createCropFilter(
         screen: Screen,
-        bounds: WindowPlacement?
-    ) = bounds?.let {
+        windowPlacement: WindowPlacement?
+    ) = windowPlacement?.let {
         "crop=${it.width}:${it.height}:${
             if (it.x < 0) {
                 screen.width + it.x

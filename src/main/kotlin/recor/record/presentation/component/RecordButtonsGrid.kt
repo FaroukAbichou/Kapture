@@ -5,8 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import core.ImageResource
-import core.util.TimeHelper.getRecordingOutputFileName
-import probe.domain.WindowBounds
+import probe.domain.WindowPlacement
 import recor.video.domain.model.RecordSettings
 import recor.video.presentation.event.VideoEvent
 import recor.video.presentation.state.VideoState
@@ -31,12 +30,7 @@ fun RecordButtonsGrid(
                     onEvent(
                         VideoEvent.RecordSection(
                             config = RecordSettings(),
-                            bounds = WindowBounds(
-                                x1 = 0,
-                                y1 = 0,
-                                x2 = 400,
-                                y2 = 400
-                            )
+                            windowPlacement = WindowPlacement.Default
                         )
                     )
                 },
@@ -47,13 +41,10 @@ fun RecordButtonsGrid(
             RecordOptionButton(
                 text = "Full Screen",
                 onClick = {
-//                    onEvent(
-//                        RecordEvent.RecordSelectedScreen(
-//                            config = ,
-//                        )
-//                    )
+
                 },
                 imageResource = ImageResource.display,
+                enabled = false,
                 modifier = Modifier
                     .padding(8.dp)
             )
@@ -62,12 +53,10 @@ fun RecordButtonsGrid(
                 onClick = {
                     onEvent(
                         VideoEvent.Record(
-                            config = RecordSettings(
-                                outputFile = getRecordingOutputFileName()
-                            ),
+                            config = RecordSettings(),
+                            windowPlacement = WindowPlacement.Default
                         )
                     )
-                    println( "currentTime: ${getRecordingOutputFileName()}")
                 },
                 imageResource = ImageResource.lockDisplay,
                 modifier = Modifier
@@ -86,6 +75,7 @@ fun RecordButtonsGrid(
                     onEvent(VideoEvent.RecordDevice)
                 },
                 imageResource = ImageResource.cameraLens,
+                enabled = false,
                 modifier = Modifier
                     .padding(8.dp)
             )
@@ -94,9 +84,7 @@ fun RecordButtonsGrid(
                 onClick = {
                     onEvent(
                         VideoEvent.RecordAudio(
-                            config = RecordSettings(
-                                audioSource = "default"
-                            )
+                            config = RecordSettings(),
                         )
                     )
                 },
@@ -116,6 +104,7 @@ fun RecordButtonsGrid(
                     )
                 },
                 imageResource = ImageResource.multipleDisplay,
+                enabled = false,
                 modifier = Modifier
                     .padding(8.dp)
             )

@@ -26,20 +26,24 @@ class VideoViewModel : KoinComponent {
             is VideoEvent.Record -> {
                 videoRepository.recordScreenWithTimeout(
                     event.config,
-                    bounds = null
+                    windowPlacement= event.windowPlacement,
+                    selectedScreen = _state.value.selectedScreen,
                 )
             }
 
             is VideoEvent.RecordSection -> {
-                videoRepository.recordScreenWithTimeout(event.config, event.bounds)
+                videoRepository.recordScreenWithTimeout(
+                    config = event.config,
+                    windowPlacement = event.windowPlacement,
+                    selectedScreen = _state.value.selectedScreen,
+                )
             }
 
             is VideoEvent.StartRecording -> {
                 videoRepository.startRecording(
-                    event.config,
-                    event.bounds,
+                    config = event.config,
+                    windowPlacement = event.bounds,
                     selectedScreen = _state.value.selectedScreen,
-                    recordingArea = _state.value.recordingArea
                 )
             }
 
@@ -49,29 +53,6 @@ class VideoViewModel : KoinComponent {
 
             VideoEvent.StopRecording -> {
                 videoRepository.stopRecording()
-            }
-
-            VideoEvent.DiscardRecording -> {
-                videoRepository.discardRecording()
-            }
-
-            is VideoEvent.SaveRecording -> {
-                videoRepository.saveRecording(event.outputFilePath)
-            }
-
-            VideoEvent.PauseRecording -> {
-                videoRepository.pauseRecording()
-            }
-
-            is VideoEvent.ResumeRecording -> {
-                videoRepository.resumeRecording(
-                    event.config,
-                    event.bounds
-                )
-            }
-
-            is VideoEvent.SetRecordingArea -> {
-//                videoRepository.setRecordingArea(event.bounds)
             }
 
             is VideoEvent.RecordAllWindows -> {
@@ -97,14 +78,6 @@ class VideoViewModel : KoinComponent {
     fun onRecordingFrameEvent(event: RecordingFrameEvent) {
         when (event) {
             is RecordingFrameEvent.UpdateWindowPlacement -> {
-                videoRepository.setRecordingArea(
-                    position = WindowPlacement(
-                        x = event.x,
-                        y = event.y,
-                        width = event.width,
-                        height = event.height
-                    )
-                )
                 _state.value = _state.value.copy(
                     recordingArea = WindowPlacement(
                         x = event.x,

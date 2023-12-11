@@ -20,7 +20,7 @@ class AudioViewModel : KoinComponent {
         when (event) {
             is AudioEvent.GetAudiosByPath -> {
                 _state.value = _state.value.copy(
-                    audios = audioRepository.getAudiosByPath(event.path)
+                    audios = audioRepository.getAudioByPath(event.path)
                 )
             }
         }

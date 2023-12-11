@@ -1,24 +1,24 @@
 package recor.video.presentation.event
 
-import probe.domain.WindowBounds
+import probe.domain.WindowPlacement
 import recor.video.domain.model.RecordSettings
 
 sealed class VideoEvent {
     data class GetVideosByPath(val path: String) : VideoEvent()
 
-    //
     data class RecordSection(
         val config: RecordSettings,
-        val bounds: WindowBounds?,
+        val windowPlacement: WindowPlacement?,
     ) : VideoEvent()
 
     data class Record(
         val config: RecordSettings,
+        val windowPlacement: WindowPlacement?,
     ) : VideoEvent()
 
     data class StartRecording(
         val config: RecordSettings,
-        val bounds: WindowBounds?,
+        val bounds: WindowPlacement,
     ) : VideoEvent()
 
     data class SelectScreen(
@@ -26,17 +26,8 @@ sealed class VideoEvent {
     ) : VideoEvent()
 
     data object StopRecording : VideoEvent()
-    data object DiscardRecording : VideoEvent()
 
-    data class SaveRecording(
-        val outputFilePath: String,
-    ) : VideoEvent()
 
-    data object PauseRecording : VideoEvent()
-
-    data class ResumeRecording(val config: RecordSettings, val bounds: WindowBounds?) : VideoEvent()
-
-    data class SetRecordingArea(val bounds: WindowBounds) : VideoEvent()
     class RecordAllWindows(config: RecordSettings) : VideoEvent()
     class RecordAudio(config: RecordSettings) : VideoEvent()
     data object RecordDevice: VideoEvent()

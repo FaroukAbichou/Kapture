@@ -26,6 +26,7 @@ import dev.chrisbanes.haze.haze
 fun RecordOptionButton(
     text: String,
     onClick: () -> Unit,
+    enabled: Boolean = true,
     modifier: Modifier = Modifier,
     imageResource: ImageResource,
 ) {
@@ -47,6 +48,7 @@ fun RecordOptionButton(
         ),
         shape = MaterialTheme.shapes.small,
         contentPadding = PaddingValues(24.dp),
+        enabled = enabled,
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.onPrimary,
         )
