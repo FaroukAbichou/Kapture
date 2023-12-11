@@ -10,13 +10,13 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import recor.record.domain.RecordRepository
 import probe.domain.model.Screen
-import probe.domain.ScreenRepository
+import probe.domain.ProbRepository
 import probe.domain.WindowPlacement
 
 class HomeViewModel : KoinComponent {
 
     private val recordRepository: RecordRepository by inject()
-    private val screenRepository: ScreenRepository by inject()
+    private val probRepository: ProbRepository by inject()
 
     private val _state = MutableStateFlow(HomeState())
 

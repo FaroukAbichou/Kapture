@@ -1,12 +1,12 @@
 package probe.data
 
 import probe.domain.model.Screen
-import probe.domain.ScreenRepository
+import probe.domain.ProbRepository
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
 
-class ScreenRepositoryImpl : ScreenRepository {
+class ProbRepositoryImpl : ProbRepository {
 
     override fun getScreens(): List<Screen> {
         val command = listOf("/usr/sbin/system_profiler", "SPDisplaysDataType")

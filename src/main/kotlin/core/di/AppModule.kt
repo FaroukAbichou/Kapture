@@ -2,7 +2,7 @@ package core.di
 
 import org.koin.core.context.startKoin
 import org.koin.dsl.KoinAppDeclaration
-import probe.di.screenModule
+import probe.di.probModule
 import recor.audio.di.audioModule
 import recor.home.di.homeModule
 import recor.image.di.imageModule
@@ -16,11 +16,11 @@ fun initKoin(
         appDeclaration()
         modules(
             homeModule,
-            audioModule,
-            imageModule,
             videoModule,
+            imageModule,
+            audioModule,
             recordModule,
-            screenModule,
+            probModule,
         )
     }
 }

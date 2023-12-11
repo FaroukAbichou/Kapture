@@ -2,6 +2,6 @@ package probe.domain
 
 import probe.domain.model.Screen
 
-interface ScreenRepository {
+interface ProbRepository {
     fun getScreens(): List<Screen>
 }
