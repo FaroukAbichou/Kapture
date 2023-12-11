@@ -46,8 +46,6 @@ fun RecordContent(
             onImageEvent = onImageEvent,
             onAudioEvent = onAudioEvent,
         )
-
-
     }
 }
 

@@ -3,10 +3,12 @@ import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Modifier
 import core.theme.KaptureTheme
 import recor.audio.presentation.AudioViewModel
 import recor.home.presentation.HomeScreen
 import recor.home.presentation.component.RecordingFrame
+import recor.home.presentation.event.RecordingFrameEvent
 import recor.image.presentation.ImageViewModel
 import recor.video.presentation.VideoViewModel
 
@@ -22,8 +24,15 @@ fun App() {
     val audioState = audioViewModel.state.collectAsState()
     KaptureTheme {
         RecordingFrame(
-            onEvent = videoViewModel::onRecordingFrameEvent
-        )
+            modifier = Modifier,
+        ){ x: Int, y: Int, height: Int, width: Int ->
+            videoViewModel.onRecordingFrameEvent(
+                RecordingFrameEvent.UpdateWindowPlacement(
+                    x = x, y = y, height = height, width = width,
+                )
+            )
+        }
+
         HomeScreen(
             videoState = videoState.value,
             imageState = imageState.value,

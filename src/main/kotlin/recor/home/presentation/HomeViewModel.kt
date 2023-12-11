@@ -6,10 +6,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import probe.domain.ProbRepository
-import probe.domain.WindowPlacement
-import probe.domain.model.Screen
 import recor.home.presentation.event.HomeEvent
-import recor.home.presentation.event.RecordingFrameEvent
 import recor.home.presentation.state.HomeState
 
 class HomeViewModel : KoinComponent {
@@ -28,29 +25,5 @@ class HomeViewModel : KoinComponent {
             }
         }
     }
-
-    fun onRecordingFrameEvent(event: RecordingFrameEvent) {
-        when (event) {
-            is RecordingFrameEvent.UpdateWindowPlacement -> {
-                _state.value = _state.value.copy(
-                    recordingArea = WindowPlacement(
-                        x = event.x,
-                        y = event.y,
-                        width = event.width,
-                        height = event.height
-                    ),
-                    selectedScreen = Screen(
-                        id = if (event.x >= 0) "0" else "1",
-                        name = "Screen ${if (event.x >= 0) "0" else "1"}",
-                        width = _state.value.selectedScreen.width,
-                        height = _state.value.selectedScreen.height,
-                    ),
-                )
-                println( event.x)
-                println( _state.value.selectedScreen.id)
-            }
-        }
-    }
-
 
 }

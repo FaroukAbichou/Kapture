@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit
 class VideoRepositoryImpl : VideoRepository {
 
     override fun getVideosByPath(filePath: String): List<Video> {
-        val videos = getFilesWithExtension(filePath, ".mp4")
+        val videos = getFilesWithExtension(filePath, listOf("mp4", "mkv", "avi", "mov"))
 
         return videos.map { path ->
             Video(

@@ -22,7 +22,6 @@ class ImageViewModel : KoinComponent {
                 _state.value = _state.value.copy(
                     images = imageRepository.getImageByPath(event.path)
                 )
-                println(_state.value.images)
             }
         }
     }

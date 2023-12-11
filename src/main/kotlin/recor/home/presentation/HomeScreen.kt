@@ -1,5 +1,7 @@
 package recor.home.presentation
 
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import recor.audio.presentation.event.AudioEvent
 import recor.audio.presentation.state.AudioState
@@ -18,12 +20,18 @@ fun HomeScreen(
     onImageEvent: (ImageEvent) -> Unit,
     onAudioEvent: (AudioEvent) -> Unit,
 ) {
+    Scaffold(
+        topBar = {},
+        bottomBar = {},
+        containerColor = MaterialTheme.colorScheme.background,
+    ) {
         HomeContent(
             videoState = videoState,
             imageState = imageState,
             audioState = audioState,
-            onVideoEvent =onVideoEvent,
-            onImageEvent =onImageEvent,
-            onAudioEvent =onAudioEvent,
+            onVideoEvent = onVideoEvent,
+            onImageEvent = onImageEvent,
+            onAudioEvent = onAudioEvent,
         )
+    }
 }

@@ -5,6 +5,8 @@ import core.util.FileHelper.getFileSize
 import core.util.FileHelper.getFilesWithExtension
 import recor.audio.domain.AudioRepository
 import recor.audio.domain.model.Audio
+import java.io.BufferedReader
+import java.io.InputStreamReader
 import java.nio.file.Path
 
 class AudioRepositoryImpl : AudioRepository {
@@ -23,7 +25,12 @@ class AudioRepositoryImpl : AudioRepository {
     }
 
     private fun getAudioDuration(path: Path): String {
+        val command = arrayOf("/bin/sh", "-c", "ffmpeg -i \"${path.toAbsolutePath()}\" 2>&1 | grep Duration")
+        val process = Runtime.getRuntime().exec(command)
+        val reader = BufferedReader(InputStreamReader(process.inputStream))
 
+        val durationLine = reader.readLine() ?: return "Unknown duration"
+
+        return durationLine.substringAfter("Duration: ").substringBefore(",").trim()
     }
-
 }

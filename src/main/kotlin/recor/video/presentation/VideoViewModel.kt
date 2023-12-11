@@ -5,9 +5,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import probe.domain.model.Screen
 import probe.domain.ProbRepository
 import probe.domain.WindowPlacement
+import probe.domain.model.Screen
 import recor.home.presentation.event.RecordingFrameEvent
 import recor.video.domain.VideoRepository
 import recor.video.presentation.event.VideoEvent
@@ -95,7 +95,9 @@ class VideoViewModel : KoinComponent {
             }
 
             is VideoEvent.GetVideosByPath -> {
-                videoRepository.getVideosByPath(event.path)
+                _state.value = _state.value.copy(
+                    videos = videoRepository.getVideosByPath(event.path),
+                )
             }
         }
     }
@@ -125,8 +127,6 @@ class VideoViewModel : KoinComponent {
                         height = _state.value.selectedScreen.height,
                     ),
                 )
-                println( event.x)
-                println( _state.value.selectedScreen.id)
             }
         }
     }
