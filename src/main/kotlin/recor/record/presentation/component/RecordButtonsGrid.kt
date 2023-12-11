@@ -5,15 +5,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import core.ImageResource
-import recor.record.domain.ConfigurationManager
-import recor.record.presentation.event.RecordEvent
-import recor.record.presentation.state.RecordState
 import probe.domain.WindowBounds
+import recor.record.domain.ConfigurationManager
+import recor.video.presentation.event.VideoEvent
+import recor.video.presentation.state.VideoState
 
 @Composable
 fun RecordButtonsGrid(
-    state: RecordState,
-    onEvent: (RecordEvent) -> Unit,
+    state: VideoState,
+    onEvent: (VideoEvent) -> Unit,
 ) {
     Column(
         modifier = Modifier.padding(16.dp),
@@ -28,7 +28,7 @@ fun RecordButtonsGrid(
                 text = "Select Recording Area",
                 onClick = {
                     onEvent(
-                        RecordEvent.RecordSection(
+                        VideoEvent.RecordSection(
                             config =ConfigurationManager(),
                             bounds = WindowBounds(
                                 x1 = 0,
@@ -60,7 +60,7 @@ fun RecordButtonsGrid(
                 text = "Specific Window",
                 onClick = {
                     onEvent(
-                        RecordEvent.Record(
+                        VideoEvent.Record(
                             config = ConfigurationManager(),
                         )
                     )
@@ -79,7 +79,7 @@ fun RecordButtonsGrid(
             RecordOptionButton(
                 text = "Device Recording",
                 onClick = {
-                    onEvent(RecordEvent.RecordDevice)
+                    onEvent(VideoEvent.RecordDevice)
                 },
                 imageResource = ImageResource.cameraLens,
                 modifier = Modifier
@@ -89,7 +89,7 @@ fun RecordButtonsGrid(
                 text = "Audio only",
                 onClick = {
                     onEvent(
-                        RecordEvent.RecordAudio(
+                        VideoEvent.RecordAudio(
                             config = ConfigurationManager(
                                 audioSource = "default"
                             )
@@ -104,7 +104,7 @@ fun RecordButtonsGrid(
                 text = "All Windows",
                 onClick = {
                     onEvent(
-                        RecordEvent.RecordAllWindows(
+                        VideoEvent.RecordAllWindows(
                             config = ConfigurationManager(
                                 audioSource = "default"
                             )

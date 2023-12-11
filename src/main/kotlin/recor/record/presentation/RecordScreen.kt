@@ -3,17 +3,24 @@ package recor.record.presentation
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import recor.audio.presentation.event.AudioEvent
+import recor.audio.presentation.state.AudioState
+import recor.image.presentation.event.ImageEvent
 import recor.record.presentation.component.RecordContent
-import recor.record.presentation.event.RecordEvent
-import recor.record.presentation.state.RecordState
+import recor.video.presentation.event.VideoEvent
+import recor.video.presentation.state.ImageState
+import recor.video.presentation.state.VideoState
 
 @Composable
 fun RecordScreen(
-    state: RecordState,
-    onEvent: (RecordEvent) -> Unit,
+    videoState: VideoState,
+    imageState: ImageState,
+    audioState: AudioState,
+    onVideoEvent: (VideoEvent) -> Unit,
+    onImageEvent: (ImageEvent) -> Unit,
+    onAudioEvent: (AudioEvent) -> Unit,
 ) {
     Scaffold(
         topBar = { },
@@ -23,13 +30,17 @@ fun RecordScreen(
         modifier = Modifier
             .fillMaxSize(),
     ) { paddingValues ->
-        if (state.isLoading) {
-            Text("Loading...")
-        } else {
+//        if (state.isLoading) {
+//            Text("Loading...")
+//        } else {
             RecordContent(
-                state = state,
-                onEvent = onEvent
+                videoState = videoState,
+                imageState = imageState,
+                audioState = audioState,
+                onVideoEvent = onVideoEvent,
+                onImageEvent = onImageEvent,
+                onAudioEvent = onAudioEvent,
             )
-        }
+//        }
     }
 }

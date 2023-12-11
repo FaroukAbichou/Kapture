@@ -6,14 +6,22 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import recor.record.presentation.event.RecordEvent
-import recor.record.presentation.state.RecordState
+import recor.audio.presentation.event.AudioEvent
+import recor.audio.presentation.state.AudioState
+import recor.image.presentation.event.ImageEvent
 import recor.video.presentation.VideosSection
+import recor.video.presentation.event.VideoEvent
+import recor.video.presentation.state.ImageState
+import recor.video.presentation.state.VideoState
 
 @Composable
 fun RecordContent(
-    state: RecordState,
-    onEvent: (RecordEvent) -> Unit,
+    videoState: VideoState,
+    imageState: ImageState,
+    audioState: AudioState,
+    onVideoEvent: (VideoEvent) -> Unit,
+    onImageEvent: (ImageEvent) -> Unit,
+    onAudioEvent: (AudioEvent) -> Unit,
 ) {
     var selectedSectionIndex by remember {
         mutableStateOf(0)
@@ -29,8 +37,12 @@ fun RecordContent(
         )
         RecordPagesSection(
             selectedSectionIndex = selectedSectionIndex,
-            state = state,
-            onEvent = onEvent
+            videoState = videoState,
+            imageState = imageState,
+            audioState = audioState,
+            onVideoEvent = onVideoEvent,
+            onImageEvent = onImageEvent,
+            onAudioEvent = onAudioEvent,
         )
 
 
@@ -41,28 +53,32 @@ fun RecordContent(
 @Composable
 fun RecordPagesSection(
     selectedSectionIndex: Int,
-    state: RecordState,
-    onEvent: (RecordEvent) -> Unit
+    videoState: VideoState,
+    imageState: ImageState,
+    audioState: AudioState,
+    onVideoEvent: (VideoEvent) -> Unit,
+    onImageEvent: (ImageEvent) -> Unit,
+    onAudioEvent: (AudioEvent) -> Unit,
 ) {
     when (selectedSectionIndex) {
         0 -> GetStartedSection(
-            state = state,
-            onEvent = onEvent
+            state = videoState,
+            onEvent = onVideoEvent
         )
 
         1 -> VideosSection(
-//            state = state,
-//            onEvent = onEvent
+            state = videoState,
+            onEvent = onVideoEvent
         )
 
         2 -> ImagesSection(
-            state = state,
-            onEvent = onEvent
+            state = imageState,
+            onEvent = onImageEvent
         )
 
         3 -> AudiosSection(
-            state = state,
-            onEvent = onEvent
+            state = audioState,
+            onEvent = onAudioEvent
         )
     }
 }

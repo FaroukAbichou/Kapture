@@ -4,22 +4,35 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.saveable.rememberSaveable
 import core.theme.KaptureTheme
+import recor.audio.presentation.AudioViewModel
 import recor.home.presentation.component.RecordingFrame
+import recor.image.presentation.ImageViewModel
 import recor.record.presentation.RecordScreen
 import recor.record.presentation.RecordViewModel
+import recor.video.presentation.VideoViewModel
 
 @Composable
 @Preview
 fun App() {
-    val recordViewModel = rememberSaveable { RecordViewModel() }
-    val recordState = recordViewModel.state.collectAsState()
+    val videoViewModel = rememberSaveable { VideoViewModel() }
+    val imageViewModel = rememberSaveable { ImageViewModel() }
+    val audioViewModel = rememberSaveable { AudioViewModel() }
+
+    val videoState = videoViewModel.state.collectAsState()
+    val imageState = imageViewModel.state.collectAsState()
+    val audioState = audioViewModel.state.collectAsState()
     KaptureTheme {
         RecordingFrame(
-            onEvent = recordViewModel::onRecordingFrameEvent
+            onEvent = videoViewModel::onRecordingFrameEvent
         )
         RecordScreen(
-            state = recordState.value,
-            onEvent = recordViewModel::onEvent
+            videoState = videoState.value,
+            imageState = imageState.value,
+            audioState = audioState.value,
+            onVideoEvent = videoViewModel::onEvent,
+            onImageEvent = imageViewModel::onEvent,
+            onAudioEvent = audioViewModel::onEvent,
+
         )
 //        HomeScreen(
 //            state = homeState.value,

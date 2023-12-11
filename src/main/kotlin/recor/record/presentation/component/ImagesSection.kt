@@ -1,13 +1,13 @@
 package recor.record.presentation.component
 
 import androidx.compose.runtime.Composable
-import recor.record.presentation.event.RecordEvent
-import recor.record.presentation.state.RecordState
+import recor.image.presentation.event.ImageEvent
+import recor.video.presentation.state.ImageState
 
 @Composable
 fun ImagesSection(
-    state: RecordState,
-    onEvent: (RecordEvent) -> Unit
+    state: ImageState,
+    onEvent: (ImageEvent) -> Unit
 ) {
 
 }

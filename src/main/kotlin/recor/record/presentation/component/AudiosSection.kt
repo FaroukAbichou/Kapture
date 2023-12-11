@@ -1,13 +1,13 @@
 package recor.record.presentation.component
 
 import androidx.compose.runtime.Composable
-import recor.record.presentation.event.RecordEvent
-import recor.record.presentation.state.RecordState
+import recor.audio.presentation.event.AudioEvent
+import recor.audio.presentation.state.AudioState
 
 @Composable
 fun AudiosSection(
-    state: RecordState,
-    onEvent: (RecordEvent) -> Unit
+    state: AudioState,
+    onEvent: (AudioEvent) -> Unit
 ) {
 
 }
