@@ -1,51 +1,26 @@
 package recor.image.data
 
-import recor.image.domain.model.Image
+import core.util.FileHelper.getFileDate
+import core.util.FileHelper.getFileSize
+import core.util.FileHelper.getFilesWithExtension
 import recor.image.domain.ImageRepository
-import java.io.BufferedReader
-import java.io.InputStreamReader
-import java.nio.file.Files
-import java.nio.file.Path
-import java.nio.file.Paths
-import java.nio.file.attribute.BasicFileAttributes
-import java.util.stream.Collectors
+import recor.image.domain.model.Image
 
 
 class ImageRepositoryImpl : ImageRepository {
 
     override fun getImageByPath(filePath: String): List<Image> {
-        val videos = Files.walk(Paths.get(filePath))
-            .filter { path -> path.toString().endsWith(".mp4") }
-            .collect(Collectors.toList())
+        val images = getFilesWithExtension(filePath, listOf(".jpg", ".png", ".jpeg"))
 
-        return videos.map { path ->
+        return images.map { path ->
             Image(
                 name = path.fileName.toString(),
                 path = path.toString(),
-                size = getVideoSize(path).toString(),        // Implement this
-                date = getVideoDate(path),        // Implement this
+                size = getFileSize(path),
+                date = getFileDate(path),
             )
         }
     }
 
-    // Pseudocode for helper functions
-    private fun getVideoDuration(path: Path): String {
-        val command = arrayOf("/bin/sh", "-c", "ffmpeg -i \"${path.toAbsolutePath()}\" 2>&1 | grep Duration")
-        val process = Runtime.getRuntime().exec(command)
-        val reader = BufferedReader(InputStreamReader(process.inputStream))
-
-        val durationLine = reader.readLine() ?: return "Unknown duration"
-
-        return durationLine.substringAfter("Duration: ").substringBefore(",").trim()
-    }
-
-    private fun getVideoSize(path: Path): Long {
-        return Files.size(path)
-    }
-
-    private fun getVideoDate(path: Path): String {
-        val attr = Files.readAttributes(path, BasicFileAttributes::class.java)
-        return attr.creationTime().toString()
-    }
 
 }

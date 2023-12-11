@@ -1,50 +1,46 @@
 package recor.video.data
 
 import core.util.FFmpegUtils
+import core.util.FileHelper.getFileDate
+import core.util.FileHelper.getFileSize
+import core.util.FileHelper.getFilesWithExtension
 import core.util.FilePaths
 import net.bramp.ffmpeg.FFmpeg
 import net.bramp.ffmpeg.FFmpegExecutor
 import net.bramp.ffmpeg.FFprobe
 import net.bramp.ffmpeg.builder.FFmpegBuilder
-import probe.domain.model.Screen
 import probe.domain.WindowBounds
 import probe.domain.WindowPlacement
-import recor.video.domain.model.ConfigurationManager
+import probe.domain.model.Screen
 import recor.video.domain.VideoRepository
+import recor.video.domain.model.ConfigurationManager
 import recor.video.domain.model.Video
 import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
-import java.nio.file.Files
 import java.nio.file.Path
-import java.nio.file.Paths
-import java.nio.file.attribute.BasicFileAttributes
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
 import java.util.concurrent.TimeUnit
-import java.util.stream.Collectors
 
 class VideoRepositoryImpl : VideoRepository {
 
     override fun getVideosByPath(filePath: String): List<Video> {
-        val videos = Files.walk(Paths.get(filePath))
-            .filter { path -> path.toString().endsWith(".mp4") }
-            .collect(Collectors.toList())
+        val videos = getFilesWithExtension(filePath, ".mp4")
 
         return videos.map { path ->
             Video(
                 name = path.fileName.toString(),
                 path = path.toString(),
-                duration = getVideoDuration(path), // Implement this
-                size = getVideoSize(path).toString(),        // Implement this
-                date = getVideoDate(path),        // Implement this
-                thumbnail = getVideoThumbnail(path) // Implement this
+                size = getFileSize(path),
+                date = getFileDate(path),
+                duration = getVideoDuration(path),
+                thumbnail = getVideoThumbnail(path)
             )
         }
     }
 
-    // Pseudocode for helper functions
     private fun getVideoDuration(path: Path): String {
         val command = arrayOf("/bin/sh", "-c", "ffmpeg -i \"${path.toAbsolutePath()}\" 2>&1 | grep Duration")
         val process = Runtime.getRuntime().exec(command)
@@ -53,15 +49,6 @@ class VideoRepositoryImpl : VideoRepository {
         val durationLine = reader.readLine() ?: return "Unknown duration"
 
         return durationLine.substringAfter("Duration: ").substringBefore(",").trim()
-    }
-
-    private fun getVideoSize(path: Path): Long {
-        return Files.size(path)
-    }
-
-    private fun getVideoDate(path: Path): String {
-        val attr = Files.readAttributes(path, BasicFileAttributes::class.java)
-        return attr.creationTime().toString()
     }
 
     private fun getVideoThumbnail(path: Path, timestamp: String = "00:00:02"): String {

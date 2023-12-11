@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import recor.audio.data.AudioRepository
+import recor.audio.domain.AudioRepository
 import recor.audio.presentation.event.AudioEvent
 import recor.audio.presentation.state.AudioState
 

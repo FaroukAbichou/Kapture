@@ -1,8 +1,8 @@
 package recor.audio.di
 
 import org.koin.dsl.module
-import recor.audio.data.AudioRepository
-import recor.audio.domain.AudioRepositoryImpl
+import recor.audio.domain.AudioRepository
+import recor.audio.data.AudioRepositoryImpl
 
 val audioModule = module {
     single<AudioRepository> { AudioRepositoryImpl() }
