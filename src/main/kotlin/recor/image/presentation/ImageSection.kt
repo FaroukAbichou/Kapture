@@ -9,8 +9,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import core.util.FilePaths
+import recor.image.domain.model.Image
 import recor.image.presentation.event.ImageEvent
-import recor.image.presentation.state.Image
 
 @Composable
 fun ImageSection() {

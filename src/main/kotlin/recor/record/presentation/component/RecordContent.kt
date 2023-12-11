@@ -6,12 +6,14 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import recor.audio.presentation.component.AudiosSection
 import recor.audio.presentation.event.AudioEvent
 import recor.audio.presentation.state.AudioState
+import recor.image.presentation.component.ImagesSection
 import recor.image.presentation.event.ImageEvent
-import recor.video.presentation.VideosSection
-import recor.video.presentation.event.VideoEvent
 import recor.image.presentation.state.ImageState
+import recor.video.presentation.component.VideosSection
+import recor.video.presentation.event.VideoEvent
 import recor.video.presentation.state.VideoState
 
 @Composable

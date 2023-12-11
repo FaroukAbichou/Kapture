@@ -1,4 +1,4 @@
-package recor.video.presentation
+package recor.video.presentation.component
 
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme

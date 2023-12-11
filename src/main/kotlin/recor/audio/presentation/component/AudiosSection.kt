@@ -1,4 +1,4 @@
-package recor.record.presentation.component
+package recor.audio.presentation.component
 
 import androidx.compose.runtime.Composable
 import recor.audio.presentation.event.AudioEvent

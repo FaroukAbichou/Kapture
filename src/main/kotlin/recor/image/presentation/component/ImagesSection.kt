@@ -1,4 +1,4 @@
-package recor.record.presentation.component
+package recor.image.presentation.component
 
 import androidx.compose.runtime.Composable
 import recor.image.presentation.event.ImageEvent

@@ -1,29 +1,30 @@
 package recor.home.presentation.component
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import recor.home.presentation.event.HomeEvent
-import recor.home.presentation.state.HomeState
+import recor.audio.presentation.event.AudioEvent
+import recor.audio.presentation.state.AudioState
+import recor.image.presentation.event.ImageEvent
+import recor.image.presentation.state.ImageState
+import recor.record.presentation.component.RecordContent
+import recor.video.presentation.event.VideoEvent
+import recor.video.presentation.state.VideoState
 
 @Composable
 fun HomeContent(
-    state: HomeState,
-    onEvent: (HomeEvent) -> Unit = {},
+    videoState: VideoState,
+    imageState: ImageState,
+    audioState: AudioState,
+    onVideoEvent: (VideoEvent) -> Unit,
+    onImageEvent: (ImageEvent) -> Unit,
+    onAudioEvent: (AudioEvent) -> Unit,
 ) {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-
-    }
-
-    Text(
-        text = "Selected screen: ${state.selectedScreen.id}"
+    RecordContent(
+        videoState = videoState,
+        imageState = imageState,
+        audioState = audioState,
+        onVideoEvent = onVideoEvent,
+        onImageEvent = onImageEvent,
+        onAudioEvent = onAudioEvent,
     )
+
 }
