@@ -1,8 +1,9 @@
 package recor.record.domain
 
-import probe.domain.Screen
+import probe.domain.model.Screen
 import probe.domain.WindowBounds
 import probe.domain.WindowPlacement
+import recor.record.domain.model.ConfigurationManager
 
 interface RecordRepository {
     fun startRecording(
@@ -18,5 +19,5 @@ interface RecordRepository {
     fun saveRecording(outputFilePath: String)
     fun setRecordingArea(position: WindowPlacement)
     fun recordScreen(config: ConfigurationManager, bounds: WindowBounds?)
-    fun recordScreenWithAudio(config: ConfigurationManager,bounds: WindowBounds?, audioSource: String)
+    fun recordScreenWithAudio(config: ConfigurationManager, bounds: WindowBounds?, audioSource: String)
 }

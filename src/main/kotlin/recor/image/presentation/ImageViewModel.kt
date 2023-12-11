@@ -5,9 +5,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import recor.image.domain.ImageRepository
 import recor.image.presentation.event.ImageEvent
-import recor.video.data.ImageRepository
-import recor.video.presentation.state.ImageState
+import recor.image.presentation.state.ImageState
 
 class ImageViewModel : KoinComponent {
 

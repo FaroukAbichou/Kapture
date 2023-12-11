@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import recor.record.domain.RecordRepository
-import probe.domain.Screen
+import probe.domain.model.Screen
 import probe.domain.ScreenRepository
 import probe.domain.WindowPlacement
 

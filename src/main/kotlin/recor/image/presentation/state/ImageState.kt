@@ -1,6 +1,7 @@
-package recor.video.presentation.state
+package recor.image.presentation.state
 
-import recor.image.presentation.state.Image
+
+import recor.image.domain.model.Image
 
 data class ImageState(
     val images : List<Image> = emptyList()

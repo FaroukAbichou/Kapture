@@ -1,7 +1,8 @@
 package recor.video.presentation.state
 
-import probe.domain.Screen
+import probe.domain.model.Screen
 import probe.domain.WindowPlacement
+import recor.video.domain.model.Video
 
 data class VideoState(
     val videos : List<Video> = emptyList(),

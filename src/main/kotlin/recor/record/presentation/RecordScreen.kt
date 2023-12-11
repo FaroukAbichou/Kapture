@@ -10,7 +10,7 @@ import recor.audio.presentation.state.AudioState
 import recor.image.presentation.event.ImageEvent
 import recor.record.presentation.component.RecordContent
 import recor.video.presentation.event.VideoEvent
-import recor.video.presentation.state.ImageState
+import recor.image.presentation.state.ImageState
 import recor.video.presentation.state.VideoState
 
 @Composable

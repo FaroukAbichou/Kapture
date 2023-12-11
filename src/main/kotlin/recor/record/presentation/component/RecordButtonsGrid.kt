@@ -6,7 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import core.ImageResource
 import probe.domain.WindowBounds
-import recor.record.domain.ConfigurationManager
+import recor.record.domain.model.ConfigurationManager
 import recor.video.presentation.event.VideoEvent
 import recor.video.presentation.state.VideoState
 
@@ -29,7 +29,7 @@ fun RecordButtonsGrid(
                 onClick = {
                     onEvent(
                         VideoEvent.RecordSection(
-                            config =ConfigurationManager(),
+                            config = ConfigurationManager(),
                             bounds = WindowBounds(
                                 x1 = 0,
                                 y1 = 0,

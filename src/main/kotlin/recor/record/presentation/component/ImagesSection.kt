@@ -2,7 +2,7 @@ package recor.record.presentation.component
 
 import androidx.compose.runtime.Composable
 import recor.image.presentation.event.ImageEvent
-import recor.video.presentation.state.ImageState
+import recor.image.presentation.state.ImageState
 
 @Composable
 fun ImagesSection(

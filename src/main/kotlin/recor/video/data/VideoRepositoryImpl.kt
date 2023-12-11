@@ -6,12 +6,12 @@ import net.bramp.ffmpeg.FFmpeg
 import net.bramp.ffmpeg.FFmpegExecutor
 import net.bramp.ffmpeg.FFprobe
 import net.bramp.ffmpeg.builder.FFmpegBuilder
-import probe.domain.Screen
+import probe.domain.model.Screen
 import probe.domain.WindowBounds
 import probe.domain.WindowPlacement
-import recor.record.domain.ConfigurationManager
+import recor.record.domain.model.ConfigurationManager
 import recor.video.domain.VideoRepository
-import recor.video.presentation.state.Video
+import recor.video.domain.model.Video
 import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader

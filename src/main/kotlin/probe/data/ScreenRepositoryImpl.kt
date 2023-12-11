@@ -1,6 +1,6 @@
 package probe.data
 
-import probe.domain.Screen
+import probe.domain.model.Screen
 import probe.domain.ScreenRepository
 import java.io.BufferedReader
 import java.io.InputStreamReader

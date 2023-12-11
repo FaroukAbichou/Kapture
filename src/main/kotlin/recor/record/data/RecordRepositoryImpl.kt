@@ -1,17 +1,17 @@
 package recor.record.data
 
+import core.util.FFmpegUtils.FFmpegPath
+import core.util.FFmpegUtils.FFprobePath
+import core.util.FilePaths.VideosPath
 import net.bramp.ffmpeg.FFmpeg
 import net.bramp.ffmpeg.FFmpegExecutor
 import net.bramp.ffmpeg.FFprobe
 import net.bramp.ffmpeg.builder.FFmpegBuilder
-import recor.record.domain.ConfigurationManager
-import recor.record.domain.RecordRepository
-import probe.domain.Screen
+import probe.domain.model.Screen
 import probe.domain.WindowBounds
 import probe.domain.WindowPlacement
-import core.util.FFmpegUtils.FFmpegPath
-import core.util.FFmpegUtils.FFprobePath
-import core.util.FilePaths.VideosPath
+import recor.record.domain.RecordRepository
+import recor.record.domain.model.ConfigurationManager
 import java.io.File
 import java.io.OutputStreamWriter
 import java.util.concurrent.Executors

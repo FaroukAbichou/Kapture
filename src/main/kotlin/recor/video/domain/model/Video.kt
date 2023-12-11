@@ -1,6 +1,6 @@
-package recor.audio.presentation.state
+package recor.video.domain.model
 
-data class Audio(
+data class Video(
     val name: String,
     val path: String,
     val duration: String,

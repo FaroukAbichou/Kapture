@@ -8,7 +8,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import core.util.FilePaths
 import recor.video.presentation.event.VideoEvent
-import recor.video.presentation.state.Video
+import recor.video.domain.model.Video
 import recor.video.presentation.state.VideoState
 
 @Composable

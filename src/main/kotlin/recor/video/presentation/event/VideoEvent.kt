@@ -1,7 +1,7 @@
 package recor.video.presentation.event
 
 import probe.domain.WindowBounds
-import recor.record.domain.ConfigurationManager
+import recor.record.domain.model.ConfigurationManager
 
 sealed class VideoEvent {
     data class GetVideosByPath(val path: String) : VideoEvent()

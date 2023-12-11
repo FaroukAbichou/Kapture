@@ -1,4 +1,4 @@
-package probe.domain
+package probe.domain.model
 
 data class Screen(
     val id: String,

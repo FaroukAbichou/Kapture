@@ -1,4 +1,4 @@
-package recor.image.presentation.state
+package recor.image.domain.model
 
 data class Image(
     val name: String,

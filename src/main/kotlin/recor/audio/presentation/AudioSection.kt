@@ -10,7 +10,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import core.util.FilePaths
 import recor.audio.presentation.event.AudioEvent
-import recor.audio.presentation.state.Audio
+import recor.audio.domain.model.Audio
 
 @Composable
 fun AudioSection() {

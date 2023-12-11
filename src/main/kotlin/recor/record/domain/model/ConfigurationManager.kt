@@ -1,7 +1,7 @@
-package recor.record.domain
+package recor.record.domain.model
 
-import probe.domain.WindowBounds
 import core.util.FilePaths.VideosPath
+import probe.domain.WindowBounds
 
 data class ConfigurationManager(
     val frameRate: Int = 30,

@@ -1,6 +1,6 @@
 package recor.home.presentation.state
 
-import probe.domain.Screen
+import probe.domain.model.Screen
 import probe.domain.WindowPlacement
 
 data class HomeState(
