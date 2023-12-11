@@ -1,6 +1,6 @@
 # Kapture
 
-Kapture is a minimalist and user-friendly screen recording and video editing application, designed to offer a simple yet effective way to capture and refine your video content. Built using Kotlin and Jetpack Compose, Kapture integrates the powerful capabilities of FFmpeg to provide a seamless recording and editing experience.
+Kapture is a minimalist and user-friendly probe recording and recor.video editing application, designed to offer a simple yet effective way to capture and refine your recor.video content. Built using Kotlin and Jetpack Compose, Kapture integrates the powerful capabilities of FFmpeg to provide a seamless recording and editing experience.
 
 ## Getting Started
 

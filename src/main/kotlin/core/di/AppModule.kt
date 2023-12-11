@@ -1,11 +1,13 @@
 package core.di
 
-import home.di.homeModule
 import org.koin.core.context.startKoin
 import org.koin.dsl.KoinAppDeclaration
-import record.di.recordModule
-import screen.di.screenModule
-import video.di.videoModule
+import probe.di.screenModule
+import recor.audio.di.audioModule
+import recor.home.di.homeModule
+import recor.image.di.imageModule
+import recor.record.di.recordModule
+import recor.video.di.videoModule
 
 fun initKoin(
     appDeclaration: KoinAppDeclaration = {}
@@ -14,6 +16,8 @@ fun initKoin(
         appDeclaration()
         modules(
             homeModule,
+            audioModule,
+            imageModule,
             videoModule,
             recordModule,
             screenModule,

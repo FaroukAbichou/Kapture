@@ -27,6 +27,7 @@ dependencies {
     implementation(libs.ffmpeg)
     implementation(libs.koin.core)
     implementation(libs.kotlinx.coroutinesCore)
+    implementation("dev.chrisbanes.haze:haze:0.3.0")
 
 }
 
