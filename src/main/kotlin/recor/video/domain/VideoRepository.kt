@@ -1,11 +1,10 @@
 package recor.video.domain
 
-import probe.domain.model.Screen
 import probe.domain.WindowBounds
 import probe.domain.WindowPlacement
-import recor.record.domain.model.ConfigurationManager
+import probe.domain.model.Screen
+import recor.video.domain.model.ConfigurationManager
 import recor.video.domain.model.Video
-
 
 interface VideoRepository  {
     fun getVideosByPath(filePath: String): List<Video>

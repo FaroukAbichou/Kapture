@@ -7,8 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import core.util.FilePaths
-import recor.video.presentation.event.VideoEvent
 import recor.video.domain.model.Video
+import recor.video.presentation.event.VideoEvent
 import recor.video.presentation.state.VideoState
 
 @Composable
@@ -16,9 +16,6 @@ fun VideosSection(
     state: VideoState,
     onEvent: (VideoEvent) -> Unit
 ) {
-//    val videoViewModel = rememberSaveable { VideoViewModel() }
-//    val state = videoViewModel.state.collectAsState()
-
     LaunchedEffect(Unit){
         onEvent(VideoEvent.GetVideosByPath(FilePaths.VideosPath))
     }

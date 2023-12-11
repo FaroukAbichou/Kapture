@@ -1,4 +1,4 @@
-package recor.record.domain.model
+package recor.video.domain.model
 
 import core.util.FilePaths.VideosPath
 import probe.domain.WindowBounds

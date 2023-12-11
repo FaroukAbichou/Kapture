@@ -6,7 +6,6 @@ import probe.di.probModule
 import recor.audio.di.audioModule
 import recor.home.di.homeModule
 import recor.image.di.imageModule
-import recor.record.di.recordModule
 import recor.video.di.videoModule
 
 fun initKoin(
@@ -19,7 +18,6 @@ fun initKoin(
             videoModule,
             imageModule,
             audioModule,
-            recordModule,
             probModule,
         )
     }

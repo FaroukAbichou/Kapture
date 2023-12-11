@@ -9,7 +9,7 @@ import net.bramp.ffmpeg.builder.FFmpegBuilder
 import probe.domain.model.Screen
 import probe.domain.WindowBounds
 import probe.domain.WindowPlacement
-import recor.record.domain.model.ConfigurationManager
+import recor.video.domain.model.ConfigurationManager
 import recor.video.domain.VideoRepository
 import recor.video.domain.model.Video
 import java.io.BufferedReader
