@@ -1,7 +1,7 @@
 package recor.video.presentation.state
 
-import probe.domain.model.Screen
 import probe.domain.WindowPlacement
+import probe.domain.model.Screen
 import recor.video.domain.model.Video
 
 data class VideoState(
@@ -11,4 +11,5 @@ data class VideoState(
     val screens: List<Screen> = emptyList(),
     val selectedScreen: Screen = Screen.defaultScreen,
     val recordingArea : WindowPlacement = WindowPlacement.Default,
+    val isRecordSection: Boolean = false,
 )

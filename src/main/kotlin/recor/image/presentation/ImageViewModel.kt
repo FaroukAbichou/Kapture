@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import recor.home.presentation.event.RecordingFrameEvent
 import recor.image.domain.ImageRepository
 import recor.image.presentation.event.ImageEvent
 import recor.image.presentation.state.ImageState
@@ -22,6 +23,14 @@ class ImageViewModel : KoinComponent {
                 _state.value = _state.value.copy(
                     images = imageRepository.getImageByPath(event.path)
                 )
+            }
+        }
+    }
+
+    fun onRecordingFrameEvent(updateWindowPlacement: RecordingFrameEvent) {
+        when (updateWindowPlacement) {
+            is RecordingFrameEvent.UpdateWindowPlacement -> {
+
             }
         }
     }

@@ -26,10 +26,10 @@ sealed class VideoEvent {
     ) : VideoEvent()
 
     data object StopRecording : VideoEvent()
+    data object SelectScreenSection : VideoEvent()
 
-
-    class RecordAllWindows(config: RecordSettings) : VideoEvent()
-    class RecordAudio(config: RecordSettings) : VideoEvent()
+    data class RecordAllWindows(val config: RecordSettings) : VideoEvent()
+    class RecordAudio(val config: RecordSettings) : VideoEvent()
     data object RecordDevice: VideoEvent()
 
 }

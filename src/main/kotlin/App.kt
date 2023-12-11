@@ -1,4 +1,3 @@
-
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -23,10 +22,18 @@ fun App() {
     val imageState = imageViewModel.state.collectAsState()
     val audioState = audioViewModel.state.collectAsState()
     KaptureTheme {
-        RecordingFrame(
+        if (
+            videoState.value.isRecordSection ||
+            imageState.value.isRecordSection
+        ) RecordingFrame(
             modifier = Modifier,
-        ){ x: Int, y: Int, height: Int, width: Int ->
+        ) { x: Int, y: Int, height: Int, width: Int ->
             videoViewModel.onRecordingFrameEvent(
+                RecordingFrameEvent.UpdateWindowPlacement(
+                    x = x, y = y, height = height, width = width,
+                )
+            )
+            imageViewModel.onRecordingFrameEvent(
                 RecordingFrameEvent.UpdateWindowPlacement(
                     x = x, y = y, height = height, width = width,
                 )

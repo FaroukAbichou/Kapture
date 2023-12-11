@@ -19,6 +19,7 @@ fun VideosSection(
     LaunchedEffect(Unit){
         onEvent(VideoEvent.GetVideosByPath(FilePaths.VideosPath))
     }
+
     LazyColumn {
         state.videos.forEach { video: Video ->
             item{

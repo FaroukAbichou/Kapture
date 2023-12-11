@@ -66,6 +66,11 @@ class VideoViewModel : KoinComponent {
             VideoEvent.RecordDevice -> {
 
             }
+            VideoEvent.SelectScreenSection -> {
+                _state.value = _state.value.copy(
+                    isRecordSection = true,
+                )
+            }
 
             is VideoEvent.GetVideosByPath -> {
                 _state.value = _state.value.copy(

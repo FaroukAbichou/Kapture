@@ -33,6 +33,7 @@ fun RecordButtonsGrid(
                             windowPlacement = WindowPlacement.Default
                         )
                     )
+                    onEvent(VideoEvent.SelectScreenSection)
                 },
                 imageResource = ImageResource.crop,
                 modifier = Modifier
