@@ -5,6 +5,7 @@ package record.video.data
 //import net.bramp.ffmpeg.FFprobe
 //import net.bramp.ffmpeg.builder.FFmpegBuilder
 
+import core.util.FFmpegUtils.FFmpegPath
 import core.util.FileHelper.getFileDate
 import core.util.FileHelper.getFileSize
 import core.util.FileHelper.getFilesWithExtension
@@ -24,7 +25,6 @@ import java.io.OutputStreamWriter
 import java.nio.file.Path
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
-
 
 class VideoRepositoryImpl : VideoRepository {
 
@@ -88,31 +88,25 @@ class VideoRepositoryImpl : VideoRepository {
     fun recordScreen(
         config: RecordSettings,
         windowPlacement: WindowPlacement?,
-        selectedScreen: Screen?
+        selectedScreen: Screen
     ) {
-        val cropFilter = createCropFilter(selectedScreen!!, windowPlacement)
-
-        // Set up the FFmpeg command line using the ProcessBuilder
-        val pb = ProcessBuilder(
-            ffmpegPath,
-            "-f", config.format,
-            "-t", config.durationInSeconds.toString(),
-            "-r", config.frameRate.toString(),
-            "-i", "1",  // Your input setting here
-            "-vcodec", config.videoCodecName,  // ... other ffmpeg options ...
-            config.outputFile
-        )
-
-        // Apply the crop filter if it's not null
-        if (cropFilter != null) {
-            pb.command().add("-vf")
-            pb.command().add(cropFilter)
-        }
-
-        // Set the video resolution if windowPlacement is not null
-        if (windowPlacement != null) {
-            pb.command().add("-s")
-            pb.command().add("${windowPlacement.width}x${windowPlacement.height}")
+        val cropFilter = createCropFilter(selectedScreen, windowPlacement)
+        val pb = ProcessBuilder().apply {
+            command(
+                FFmpegPath,
+                "-f", "avfoundation", // Use avfoundation for macOS screen capture
+                "-pix_fmt", "uyvy422", // Use a supported pixel format
+                "-i", "0", // Replace with the correct screen capture input
+                "-t", config.durationInSeconds.toString(),
+                "-r", config.frameRate.toString(),
+                "-vcodec", "mpeg4",
+                "-vf", cropFilter ?: "", // Apply the crop filter if not null
+                config.outputFile + ".mp4"
+            )
+            if (windowPlacement != null) {
+                command().add("-s")
+                command().add("${windowPlacement.width}x${windowPlacement.height}")
+            }
         }
 
         // Start the recording in a new thread
@@ -120,7 +114,7 @@ class VideoRepositoryImpl : VideoRepository {
             try {
                 val process = pb.inheritIO().start()
                 process.waitFor()
-            } catch (e: java.lang.Exception) {
+            } catch (e: Exception) {
                 e.printStackTrace()
                 println("Error starting FFmpeg process")
             }
