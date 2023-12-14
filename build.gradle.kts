@@ -24,10 +24,12 @@ dependencies {
     implementation(compose.material3)
     implementation(compose.materialIconsExtended)
     implementation(libs.kotlinx.serializationJson)
-    implementation(libs.ffmpeg)
+//    implementation(libs.ffmpeg)
     implementation(libs.koin.core)
     implementation(libs.kotlinx.coroutinesCore)
     implementation("dev.chrisbanes.haze:haze:0.3.0")
+    implementation("org.bytedeco:ffmpeg-platform:6.0-1.5.9")
+
     implementation(libs.kotlinx.dateTime)
 }
 
