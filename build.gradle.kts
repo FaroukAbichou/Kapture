@@ -29,21 +29,9 @@ dependencies {
     implementation(libs.kotlinx.coroutinesCore)
     implementation("dev.chrisbanes.haze:haze:0.3.0")
     implementation(libs.kotlinx.dateTime)
-
-
 }
 
 val os: OperatingSystem = OperatingSystem.current()
-
-tasks.register<Exec>("makeExecutable") {
-    // hedhi btetbadel
-    commandLine = listOf("chmod", "+x", "lib/macos/ffmpeg")
-}
-
-tasks.named("build"){
-    dependsOn("makeExecutable")
-}
-
 
 compose.desktop {
     

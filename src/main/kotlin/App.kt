@@ -4,12 +4,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import core.theme.KaptureTheme
-import recor.audio.presentation.AudioViewModel
-import recor.home.presentation.HomeScreen
-import recor.home.presentation.component.RecordingFrame
-import recor.home.presentation.event.RecordingFrameEvent
-import recor.image.presentation.ImageViewModel
-import recor.video.presentation.VideoViewModel
+import record.audio.presentation.AudioViewModel
+import record.home.presentation.HomeScreen
+import record.home.presentation.component.RecordingFrame
+import record.home.presentation.event.RecordingFrameEvent
+import record.image.presentation.ImageViewModel
+import record.video.presentation.VideoViewModel
 
 @Composable
 @Preview

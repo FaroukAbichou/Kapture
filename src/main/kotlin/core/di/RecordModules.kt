@@ -1,9 +1,9 @@
 package core.di
 
-import recor.audio.di.audioModule
-import recor.home.di.homeModule
-import recor.image.di.imageModule
-import recor.video.di.videoModule
+import record.audio.di.audioModule
+import record.home.di.homeModule
+import record.image.di.imageModule
+import record.video.di.videoModule
 
 val recordModules = listOf(
     homeModule,
