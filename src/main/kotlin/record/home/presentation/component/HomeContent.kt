@@ -1,17 +1,12 @@
 package record.home.presentation.component
 
-import FileDialog
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import core.ImageResource
+import core.components.SelectOutputLocationSection
 import record.audio.presentation.event.AudioEvent
 import record.audio.presentation.state.AudioState
 import record.image.presentation.event.ImageEvent
@@ -38,110 +33,15 @@ fun HomeContent(
             modifier = Modifier
                 .padding(16.dp)
         )
-//
-//        RecordContent(
-//            videoState = videoState,
-//            imageState = imageState,
-//            audioState = audioState,
-//            onVideoEvent = onVideoEvent,
-//            onImageEvent = onImageEvent,
-//            onAudioEvent = onAudioEvent,
-//        )
+
+        RecordContent(
+            videoState = videoState,
+            imageState = imageState,
+            audioState = audioState,
+            onVideoEvent = onVideoEvent,
+            onImageEvent = onImageEvent,
+            onAudioEvent = onAudioEvent,
+        )
     }
-
-}
-
-@Composable
-fun SelectOutputLocationSection(
-    modifier: Modifier,
-    currentLocation: String,
-    folderLocation: (String) -> Unit
-) {
-    Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Column(
-            modifier = Modifier,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = "Select Folder to save output",
-                style = MaterialTheme.typography.displaySmall,
-                color = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier
-                    .padding(16.dp)
-            )
-            Row(
-                modifier = Modifier
-                    .padding(16.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "Output Location",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier
-                        .padding(16.dp)
-                )
-
-                TextField(
-                    value = currentLocation,
-                    onValueChange = { value ->
-                        folderLocation(value)
-                    },
-                    placeholder = {
-                        Text(
-                            text = "Select Folder",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurface,
-                            modifier = Modifier
-                        )
-                    },
-                    textStyle = MaterialTheme.typography.bodyMedium,
-                    trailingIcon = {
-                        SearchFolderIcon()
-                    },
-                    modifier = Modifier
-                        .padding(16.dp)
-                )
-            }
-        }
-
-    }
-}
-
-@Composable
-fun SearchFolderIcon() {
-
-    var showFileDialog by remember {
-        mutableStateOf(false)
-    }
-    var folderLocation by remember {
-        mutableStateOf("")
-    }
-    Image(
-        painter = painterResource(ImageResource.image.resourceId),
-        contentDescription = "Search Folder Icon",
-        modifier = Modifier
-            .size(24.dp)
-            .noRippleClickable {
-                showFileDialog = true
-            }
-    )
-
-    FileDialog(
-        title = "Select output location",
-        isOpen = showFileDialog,
-        fileExtensions = setOf("mp4"),
-        onResult = {
-            if (it != null) {
-                folderLocation = it.first()
-            }
-            showFileDialog = false
-
-        }
-    )
 
 }

@@ -83,7 +83,7 @@ class VideoViewModel : KoinComponent {
                 )
             }
 
-            is VideoEvent.DeleteVideo ->{
+            is VideoEvent.DeleteVideo -> {
 
             }
             is VideoEvent.SelectVideo -> {

@@ -83,11 +83,11 @@ fun RecordButtonsGrid(
             RecordOptionButton(
                 text = "Audio only",
                 onClick = {
-                    onEvent(
-                        VideoEvent.RecordAudio(
-                            config = RecordSettings(),
-                        )
-                    )
+//                    onEvent(
+//                        VideoEvent.RecordAudio(
+//                            config = RecordSettings(),
+//                        )
+//                    )
                 },
                 imageResource = ImageResource.waveformCircle,
                 modifier = Modifier
