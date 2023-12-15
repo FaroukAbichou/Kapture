@@ -87,7 +87,7 @@ class VideoRepositoryImpl : VideoRepository {
                 "-r", config.frameRate.toString(),
                 "-vcodec", "mpeg4",
                 "-vf", cropFilter ?: "",
-                config.outputFile + ".mp4"
+                config.outputFile + ".mp4",
             )
             if (windowPlacement != null) {
                 command().add("-s")
