@@ -21,6 +21,9 @@ class VideoViewModel : KoinComponent {
     private val _state = MutableStateFlow(VideoState())
     val state: StateFlow<VideoState> = _state.asStateFlow()
 
+    init {
+        probRepository.createDirectoriesIfNotExist()
+    }
     fun onEvent(event: VideoEvent) {
         when (event) {
             is VideoEvent.Record -> {

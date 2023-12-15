@@ -77,6 +77,8 @@ class VideoRepositoryImpl : VideoRepository {
         selectedScreen: Screen
     ) {
         val cropFilter = createCropFilter(selectedScreen, windowPlacement)
+        val outputPath = File(FilePaths.VideosPath, config.outputFile + ".mp4").path
+
         val pb = ProcessBuilder().apply {
             command(
                 FFmpegPath,
@@ -87,7 +89,7 @@ class VideoRepositoryImpl : VideoRepository {
                 "-r", config.frameRate.toString(),
                 "-vcodec", "mpeg4",
                 "-vf", cropFilter ?: "",
-                config.outputFile + ".mp4",
+                outputPath
             )
             if (windowPlacement != null) {
                 command().add("-s")

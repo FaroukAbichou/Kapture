@@ -1,8 +1,10 @@
 package probe.data
 
-import probe.domain.model.Screen
+import core.util.FilePaths
 import probe.domain.ProbRepository
+import probe.domain.model.Screen
 import java.io.BufferedReader
+import java.io.File
 import java.io.InputStreamReader
 
 
@@ -46,5 +48,19 @@ class ProbRepositoryImpl : ProbRepository {
         return pixelFormats
     }
 
+    override fun createDirectoriesIfNotExist() {
+        val directories = listOf(FilePaths.VideosPath, FilePaths.AudiosPath, FilePaths.ImagesPath)
+        directories.forEach { path ->
+            val directory = File(path)
+            if (!directory.exists()) {
+                val created = directory.mkdirs()
+                if (created) {
+                    println("Directory created: $path")
+                } else {
+                    println("Failed to create directory: $path")
+                }
+            }
+        }
+    }
 
 }
