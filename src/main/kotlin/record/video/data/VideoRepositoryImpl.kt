@@ -28,6 +28,10 @@ import java.util.concurrent.Future
 
 class VideoRepositoryImpl : VideoRepository {
 
+    init {
+        Loader.load(ffmpeg::class.java)
+        Loader.load(ffprobe::class.java)
+    }
     override fun getVideosByPath(filePath: String): List<Video> {
         val videos = getFilesWithExtension(filePath, listOf("mp4", "mkv", "avi", "mov"))
 
