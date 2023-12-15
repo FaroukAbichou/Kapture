@@ -60,7 +60,7 @@ fun RecordingFrame(
                     .height(30.dp)
                     .background(MaterialTheme.colorScheme.onPrimaryContainer)
                     .pointerInput(Unit) {
-                        detectDragGestures { change, dragAmount ->
+                        detectDragGestures { _, dragAmount ->
                             val dragAmountDp = with(density) {
                                 DpOffset(dragAmount.x.toDp(), dragAmount.y.toDp())
                             }

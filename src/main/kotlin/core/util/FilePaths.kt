@@ -2,7 +2,7 @@ package core.util
 
 
 object FilePaths {
-    const val VideosPath = "/Users/takiacademy/Desktop/Kapture/Videos"
-    const val ImagesPath = "/Users/takiacademy/Desktop/Kapture/Images"
-    const val AudiosPath = "/Users/takiacademy/Desktop/Kapture/Audios"
+    val VideosPath = "${System.getProperty("user.home")}/Videos"
+    val AudiosPath = "${System.getProperty("user.home")}/Music"
+    val ImagesPath = "${System.getProperty("user.home")}/Pictures"
 }

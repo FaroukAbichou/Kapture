@@ -1,14 +1,13 @@
 package record.video.data
 
-import core.util.FFmpegUtils
+import core.util.FFmpegUtils.FFmpegPath
 import core.util.FileHelper.getFileDate
 import core.util.FileHelper.getFileSize
 import core.util.FileHelper.getFilesWithExtension
 import core.util.FilePaths
-import net.bramp.ffmpeg.FFmpeg
-import net.bramp.ffmpeg.FFmpegExecutor
-import net.bramp.ffmpeg.FFprobe
-import net.bramp.ffmpeg.builder.FFmpegBuilder
+import org.bytedeco.ffmpeg.ffmpeg
+import org.bytedeco.ffmpeg.ffprobe
+import org.bytedeco.javacpp.Loader
 import probe.domain.WindowPlacement
 import probe.domain.model.Screen
 import record.video.domain.VideoRepository
@@ -21,9 +20,11 @@ import java.io.OutputStreamWriter
 import java.nio.file.Path
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
-import java.util.concurrent.TimeUnit
 
 class VideoRepositoryImpl : VideoRepository {
+
+    var ffmpegPath: String = Loader.load(ffmpeg::class.java)
+    var ffprobePath: String = Loader.load(ffprobe::class.java)
 
     override fun getVideosByPath(filePath: String): List<Video> {
         val videos = getFilesWithExtension(filePath, listOf("mp4", "mkv", "avi", "mov"))
@@ -65,50 +66,42 @@ class VideoRepositoryImpl : VideoRepository {
         return if (File(outputFilePath).exists()) outputFilePath else ""
     }
 
-
-    private val ffmpeg = FFmpeg(FFmpegUtils.FFmpegPath)
-    private val ffprobe = FFprobe(FFmpegUtils.FFprobePath)
-
     private var recordingThread: Future<*>? = null
+
     private val executorService = Executors.newSingleThreadExecutor()
     private var ffmpegProcess: Process? = null
 
     override fun recordScreenWithTimeout(
         config: RecordSettings,
         windowPlacement: WindowPlacement?,
-        selectedScreen: Screen,
+        selectedScreen: Screen
     ) {
-        val cropFilter = createCropFilter(
-            screen = selectedScreen,
-            windowPlacement = windowPlacement,
-        )
-        val builder = FFmpegBuilder()
-            .setInput("1")
-            .setFormat(config.format)
-            .addOutput(config.outputFile)
-            .setDuration(
-                config.durationInSeconds.toLong(),
-                TimeUnit.SECONDS
+        val cropFilter = createCropFilter(selectedScreen, windowPlacement)
+        val outputPath = File(FilePaths.VideosPath, config.outputFile + ".mp4").path
+
+        val pb = ProcessBuilder().apply {
+            command(
+                FFmpegPath,
+                "-f", "avfoundation",
+                "-pix_fmt", "uyvy422",
+                "-i", "0",
+                "-t", config.durationInSeconds.toString(),
+                "-r", config.frameRate.toString(),
+                "-vcodec", "mpeg4",
+                "-vf", cropFilter ?: "",
+                outputPath
             )
-            .setVideoCodec(config.videoCodecName)
-            .setVideoFrameRate(config.frameRate, 1)
-
-            .apply {
-                if (cropFilter != null) {
-                    setVideoFilter(cropFilter)
-                }
-                if (windowPlacement != null) {
-                    setVideoResolution(
-                        windowPlacement.width,
-                        windowPlacement.height
-                    )
-                }
+            if (windowPlacement != null) {
+                command().add("-s")
+                command().add("${windowPlacement.width}x${windowPlacement.height}")
             }
-            .done()
+        }
 
+        // Start the recording in a new thread
         recordingThread = executorService.submit {
             try {
-                executeFFmpegJob(builder)
+                val process = pb.inheritIO().start()
+                process.waitFor()
             } catch (e: Exception) {
                 e.printStackTrace()
                 println("Error starting FFmpeg process")
@@ -116,47 +109,11 @@ class VideoRepositoryImpl : VideoRepository {
         }
     }
 
-
     override fun startRecording(
         config: RecordSettings,
         windowPlacement: WindowPlacement,
         selectedScreen: Screen
     ) {
-        val cropFilter = createCropFilter(
-            screen = selectedScreen,
-            windowPlacement = windowPlacement,
-        )
-        val pixelFormat = "uyvy422"
-
-        val ffmpegCommand = mutableListOf(FFmpegUtils.FFmpegPath)
-
-        val builder = FFmpegBuilder()
-            .setInput(selectedScreen.id)
-            .setFormat(config.format)
-            .addOutput(config.outputFile)
-            .setVideoCodec(config.videoCodecName)
-            .setVideoFrameRate(config.frameRate, 1)
-            .addExtraArgs("-pix_fmt", pixelFormat)
-            .apply {
-                if (cropFilter != null) {
-                    setVideoFilter(cropFilter)
-                }
-            }
-            .done()
-
-        ffmpegCommand.addAll(builder.build())
-
-        recordingThread = executorService.submit {
-            try {
-                val processBuilder = ProcessBuilder(ffmpegCommand)
-                processBuilder.directory(File(FilePaths.VideosPath))
-
-                ffmpegProcess = processBuilder.start()
-            } catch (e: Exception) {
-                e.printStackTrace()
-                println("Error starting FFmpeg process")
-            }
-        }
     }
 
     override fun stopRecording() {
@@ -176,11 +133,6 @@ class VideoRepositoryImpl : VideoRepository {
         recordingThread?.cancel(true)
     }
 
-
-    private fun executeFFmpegJob(builder: FFmpegBuilder) {
-        val executor = FFmpegExecutor(ffmpeg, ffprobe)
-        executor.createJob(builder).run()
-    }
 
     private fun createCropFilter(
         screen: Screen,

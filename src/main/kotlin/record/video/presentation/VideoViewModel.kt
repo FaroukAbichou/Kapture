@@ -21,6 +21,9 @@ class VideoViewModel : KoinComponent {
     private val _state = MutableStateFlow(VideoState())
     val state: StateFlow<VideoState> = _state.asStateFlow()
 
+    init {
+        probRepository.createDirectoriesIfNotExist()
+    }
     fun onEvent(event: VideoEvent) {
         when (event) {
             is VideoEvent.Record -> {
@@ -59,10 +62,6 @@ class VideoViewModel : KoinComponent {
 
             }
 
-            is VideoEvent.RecordAudio -> {
-
-            }
-
             VideoEvent.RecordDevice -> {
 
             }
@@ -77,6 +76,18 @@ class VideoViewModel : KoinComponent {
                 _state.value = _state.value.copy(
                     videos = videoRepository.getVideosByPath(event.path),
                 )
+            }
+            is VideoEvent.ChangeVideosLocation -> {
+                _state.value = _state.value.copy(
+                    outputLocation = event.path,
+                )
+            }
+
+            is VideoEvent.DeleteVideo -> {
+
+            }
+            is VideoEvent.SelectVideo -> {
+
             }
         }
     }
