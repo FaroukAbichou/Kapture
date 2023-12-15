@@ -34,7 +34,7 @@ fun HomeContent(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         SelectOutputLocationSection(
-            folderLocation = { value -> onVideoEvent(VideoEvent.SelectVideosLocation(value)) },
+            folderLocation = { value -> onVideoEvent(VideoEvent.ChangeVideosLocation(value)) },
             currentLocation = videoState.outputLocation,
             modifier = Modifier
                 .padding(16.dp)

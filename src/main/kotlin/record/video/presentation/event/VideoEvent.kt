@@ -11,6 +11,7 @@ sealed class VideoEvent {
     data class DeleteVideo(val path: String) : VideoEvent()
     data class GetVideosByPath(val path: String) : VideoEvent()
     data class SelectScreen(val screenId: String) : VideoEvent()
+    data class ChangeVideosLocation(val path: String) : VideoEvent()
     data class RecordAllWindows(val config: RecordSettings) : VideoEvent()
     data class StartRecording(val config: RecordSettings,val bounds: WindowPlacement) : VideoEvent()
     data class Record(val config: RecordSettings, val windowPlacement: WindowPlacement?) : VideoEvent()
