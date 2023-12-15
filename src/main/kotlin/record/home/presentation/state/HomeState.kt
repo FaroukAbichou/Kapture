@@ -1,9 +1,9 @@
 package record.home.presentation.state
 
-import probe.domain.model.Screen
 import probe.domain.WindowPlacement
+import probe.domain.model.Screen
 
-data class HomeState(
+data class HomeState (
     val isLoading: Boolean = false,
     val screens: List<Screen> = emptyList(),
     val selectedScreen: Screen = Screen.defaultScreen,

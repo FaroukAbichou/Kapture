@@ -90,7 +90,7 @@ fun SelectOutputLocationSection(
                 TextField(
                     value = currentLocation,
                     onValueChange = { value ->
-                        folderLocation(value )
+                        folderLocation(value)
                     },
                     placeholder = {
                         Text(
@@ -128,21 +128,21 @@ fun SearchFolderIcon() {
         modifier = Modifier
             .size(24.dp)
             .noRippleClickable {
-            showFileDialog = true
+                showFileDialog = true
             }
     )
 
-        FileDialog(
-            title = "Select output location",
-            isOpen = showFileDialog,
-            fileExtensions = setOf("mp4"),
-            onResult = {
-                if (it != null) {
-                    folderLocation = it.first()
-                }
-                showFileDialog = false
-
+    FileDialog(
+        title = "Select output location",
+        isOpen = showFileDialog,
+        fileExtensions = setOf("mp4"),
+        onResult = {
+            if (it != null) {
+                folderLocation = it.first()
             }
-        )
+            showFileDialog = false
+
+        }
+    )
 
 }
