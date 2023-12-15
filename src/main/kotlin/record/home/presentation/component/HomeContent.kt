@@ -38,15 +38,15 @@ fun HomeContent(
             modifier = Modifier
                 .padding(16.dp)
         )
-
-        RecordContent(
-            videoState = videoState,
-            imageState = imageState,
-            audioState = audioState,
-            onVideoEvent = onVideoEvent,
-            onImageEvent = onImageEvent,
-            onAudioEvent = onAudioEvent,
-        )
+//
+//        RecordContent(
+//            videoState = videoState,
+//            imageState = imageState,
+//            audioState = audioState,
+//            onVideoEvent = onVideoEvent,
+//            onImageEvent = onImageEvent,
+//            onAudioEvent = onAudioEvent,
+//        )
     }
 
 }

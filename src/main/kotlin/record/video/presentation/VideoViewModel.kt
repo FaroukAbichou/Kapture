@@ -62,10 +62,6 @@ class VideoViewModel : KoinComponent {
 
             }
 
-            is VideoEvent.RecordAudio -> {
-
-            }
-
             VideoEvent.RecordDevice -> {
 
             }
@@ -81,10 +77,17 @@ class VideoViewModel : KoinComponent {
                     videos = videoRepository.getVideosByPath(event.path),
                 )
             }
-            is VideoEvent.SelectVideosLocation -> {
+            is VideoEvent.ChangeVideosLocation -> {
                 _state.value = _state.value.copy(
                     outputLocation = event.path,
                 )
+            }
+
+            is VideoEvent.DeleteVideo ->{
+
+            }
+            is VideoEvent.SelectVideo -> {
+
             }
         }
     }
