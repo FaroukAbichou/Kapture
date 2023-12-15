@@ -36,6 +36,8 @@ fun HomeContent(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         SelectOutputLocationSection(
+            folderLocation = { value -> onVideoEvent(VideoEvent.SelectVideosLocation(value)) },
+            currentLocation = videoState.outputLocation,
             modifier = Modifier
                 .padding(16.dp)
         )
@@ -54,11 +56,10 @@ fun HomeContent(
 
 @Composable
 fun SelectOutputLocationSection(
-    modifier: Modifier
+    modifier: Modifier,
+    currentLocation: String,
+    folderLocation: (String) -> Unit
 ) {
-    var folderLocation by remember {
-        mutableStateOf("")
-    }
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -89,9 +90,9 @@ fun SelectOutputLocationSection(
                 )
 
                 TextField(
-                    value = folderLocation,
-                    onValueChange = {
-                        folderLocation = it
+                    value = currentLocation,
+                    onValueChange = { value ->
+                        folderLocation(value )
                     },
                     placeholder = {
                         Text(
