@@ -49,7 +49,6 @@ fun RecordContent(
     }
 }
 
-
 @Composable
 fun RecordPagesSection(
     selectedSectionIndex: Int,

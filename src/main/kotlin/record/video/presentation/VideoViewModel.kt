@@ -81,6 +81,11 @@ class VideoViewModel : KoinComponent {
                     videos = videoRepository.getVideosByPath(event.path),
                 )
             }
+            is VideoEvent.SelectVideosLocation -> {
+                _state.value = _state.value.copy(
+                    outputLocation = event.path,
+                )
+            }
         }
     }
 

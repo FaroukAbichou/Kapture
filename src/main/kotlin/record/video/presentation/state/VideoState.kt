@@ -12,4 +12,5 @@ data class VideoState(
     val selectedScreen: Screen = Screen.defaultScreen,
     val recordingArea : WindowPlacement = WindowPlacement.Default,
     val isRecordSection: Boolean = false,
+    val outputLocation : String = "",
 )

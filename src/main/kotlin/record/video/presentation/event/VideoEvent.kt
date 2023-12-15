@@ -32,4 +32,6 @@ sealed class VideoEvent {
     class RecordAudio(val config: RecordSettings) : VideoEvent()
     data object RecordDevice: VideoEvent()
 
+    data class SelectVideosLocation(val path: String) : VideoEvent()
+
 }
