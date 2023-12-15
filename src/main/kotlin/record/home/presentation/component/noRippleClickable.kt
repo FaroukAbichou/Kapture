@@ -1,4 +1,4 @@
-package record.home.presentation.component.helper
+package record.home.presentation.component
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource

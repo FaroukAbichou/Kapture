@@ -14,7 +14,6 @@ import androidx.compose.ui.unit.dp
 import core.ImageResource
 import record.audio.presentation.event.AudioEvent
 import record.audio.presentation.state.AudioState
-import record.home.presentation.component.helper.noRippleClickable
 import record.image.presentation.event.ImageEvent
 import record.image.presentation.state.ImageState
 import record.video.presentation.event.VideoEvent
