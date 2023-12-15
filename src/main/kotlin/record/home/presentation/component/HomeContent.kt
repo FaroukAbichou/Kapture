@@ -12,9 +12,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import core.ImageResource
+//import core.util.FileHelper.VideoExtensions
 import record.audio.presentation.event.AudioEvent
 import record.audio.presentation.state.AudioState
 import record.home.presentation.component.helper.noRippleClickable
+//import record.home.presentation.component.helper.noRippleClickable
 import record.image.presentation.event.ImageEvent
 import record.image.presentation.state.ImageState
 import record.video.presentation.event.VideoEvent
@@ -118,6 +120,9 @@ fun SearchFolderIcon() {
     var showFileDialog by remember {
         mutableStateOf(false)
     }
+    var folderLocation by remember {
+        mutableStateOf("")
+    }
     Image(
         painter = painterResource(ImageResource.image.resourceId),
         contentDescription = "Search Folder Icon",
@@ -131,9 +136,13 @@ fun SearchFolderIcon() {
         FileDialog(
             title = "Select output location",
             isOpen = showFileDialog,
-            fileExtensions = ,
+            fileExtensions = setOf("mp4"),
             onResult = {
+                if (it != null) {
+                    folderLocation = it.first()
+                }
                 showFileDialog = false
+
             }
         )
 

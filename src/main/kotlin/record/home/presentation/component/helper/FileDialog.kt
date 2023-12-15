@@ -11,7 +11,7 @@ import javax.swing.SwingUtilities
 fun FileDialog(
     title: String,
     isOpen: Boolean,
-    fileExtensions: List<String>,
+    fileExtensions: Set<String>,
     onResult: (List<String>?) -> Unit
 ) {
     var dialog by remember { mutableStateOf<FileDialog?>(null) }

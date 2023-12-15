@@ -7,6 +7,23 @@ import java.nio.file.attribute.BasicFileAttributes
 import java.util.stream.Collectors
 
 object FileHelper {
+
+    val VideoExtensions = setOf(
+        ".mp4", ".mkv", ".avi", ".mov", ".webm", ".flv", ".wmv",
+        ".m4v", ".mpg", ".mpeg", ".m2v", ".3gp", ".3g2"
+    )
+    val ImageExtensions = setOf(
+        ".png", ".jpg", ".jpeg", ".bmp",
+        ".gif", ".webp", ".tiff", ".tif"
+    )
+    val AudioExtensions = setOf(
+        ".mp3", ".wav", ".wma", ".m4a", ".aac", ".flac", ".ogg",
+        ".opus", ".amr", ".mka", ".m4b", ".m4p", ".mpc", ".ra",
+        ".rm", ".tta", ".wv", ".wv", ".aiff", ".ape", ".dts",
+        ".dsf", ".dff", ".m4r", ".mid", ".mka", ".mp2", ".mpa",
+        ".mpc", ".ofr", ".oga", ".spx", ".vqf", ".w64", ".wma",
+        ".wv", ".xm"
+    )
     fun getFilesWithExtension(directoryPath: String, fileExtension: List<String>): List<Path> {
         return Files.walk(Paths.get(directoryPath))
             .filter { fileExtension.any { extension ->
