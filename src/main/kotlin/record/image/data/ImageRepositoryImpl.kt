@@ -17,7 +17,9 @@ class ImageRepositoryImpl : ImageRepository {
                 name = path.fileName.toString(),
                 path = path.toString(),
                 size = getFileSize(path),
-                date = getFileDate(path),
+                dateCreated = getFileDate(path),
+                thumbnail = null,
+                duration = null,
             )
         }
     }

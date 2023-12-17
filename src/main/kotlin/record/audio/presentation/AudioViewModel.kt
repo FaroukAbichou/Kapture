@@ -23,6 +23,19 @@ class AudioViewModel : KoinComponent {
                     audios = audioRepository.getAudioByPath(event.path)
                 )
             }
+
+            is AudioEvent.DeleteAudio -> {
+
+            }
+            is AudioEvent.SelectAudio -> {
+
+            }
+            is AudioEvent.SelectAudiosLocation -> {
+
+            }
+            AudioEvent.GetAudios -> {
+
+            }
         }
     }
 }
