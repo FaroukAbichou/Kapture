@@ -51,7 +51,6 @@ fun RecordingFrame(
         transparent = true,
         undecorated = true,
     ) {
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
