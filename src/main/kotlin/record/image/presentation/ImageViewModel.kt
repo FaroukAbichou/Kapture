@@ -24,6 +24,19 @@ class ImageViewModel : KoinComponent {
                     images = imageRepository.getImageByPath(event.path)
                 )
             }
+
+            is ImageEvent.DeleteImage -> {
+
+            }
+            ImageEvent.GetImages -> {
+
+            }
+            is ImageEvent.SelectImage -> {
+
+            }
+            is ImageEvent.SelectImagesLocation -> {
+                
+            }
         }
     }
 

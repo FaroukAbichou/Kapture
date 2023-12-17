@@ -21,8 +21,12 @@ fun AudiosSection(
     LaunchedEffect(Unit) {
         onEvent(AudioEvent.GetAudiosByPath(FilePaths.AudiosPath))
     }
+
     var searchedAudios by remember {
         mutableStateOf(state.audios)
+    }
+    var searchQuery by remember {
+        mutableStateOf("")
     }
 
     Column(
@@ -30,23 +34,28 @@ fun AudiosSection(
         modifier = Modifier
     ) {
         KpSearchBar(
-            searchQuery = "",
+            modifier = Modifier,
+            searchQuery = searchQuery,
             searchResults = searchedAudios,
-            onSearchQueryChange = {
+            onSearchQueryChange = { query ->
+                searchQuery = query
                 searchedAudios = state.audios.filter { video ->
-                    video.name.contains(it, ignoreCase = true)
+                    video.name.contains(query, ignoreCase = true)
                 }
             }
         )
-        LazyColumn {
-            state.audios.forEach { audio: Audio ->
-                item {
-                    Text(
-                        text = audio.name,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        modifier = Modifier,
-                    )
-                }
+    }
+    LazyColumn(
+        modifier = Modifier,
+        horizontalAlignment = Alignment.Start
+    ) {
+        state.audios.forEach { audio: Audio ->
+            item {
+                Text(
+                    text = audio.name,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    modifier = Modifier,
+                )
             }
         }
     }

@@ -1,9 +1,11 @@
 package record.home.presentation.component
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import record.audio.presentation.event.AudioEvent
 import record.audio.presentation.state.AudioState
 import record.image.presentation.event.ImageEvent
@@ -27,11 +29,11 @@ fun RecordContent(
         modifier = Modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-//        RecordTitlesSection(
-//            selectedIndex = { selectedSectionIndex = it },
-//            modifier = Modifier
-//                .padding(16.dp)
-//        )
+        RecordTitlesSection(
+            selectedIndex = { selectedSectionIndex = it },
+            modifier = Modifier
+                .padding(16.dp)
+        )
         RecordPagesSection(
             selectedSectionIndex = selectedSectionIndex,
             videoState = videoState,

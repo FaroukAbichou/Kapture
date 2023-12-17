@@ -1,5 +1,6 @@
 package record.audio.data
 
+import androidx.compose.ui.graphics.ImageBitmap
 import core.util.FileHelper.getFileDate
 import core.util.FileHelper.getFileSize
 import core.util.FileHelper.getFilesWithExtension
@@ -20,8 +21,9 @@ class AudioRepositoryImpl : AudioRepository {
                 name = path.fileName.toString(),
                 path = path.toString(),
                 size = getFileSize(path),
-                date = getFileDate(path),
-                duration = getAudioDuration(path),
+                dateCreated = getFileDate(path),
+                duration = 0.0,
+                thumbnail = ImageBitmap(1, 1)
             )
         }
     }

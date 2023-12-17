@@ -1,4 +1,4 @@
-package record.home.presentation.component
+package core.components
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -10,21 +10,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import core.MediaItem
-import record.video.domain.model.Video
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun KpSearchBar(
-    modifier : Modifier = Modifier,
-    searchQuery: String,
-    onSearch : () -> Unit = {},
-    searchResults: List<MediaItem>,
-    onSearchQueryChange: (String) -> Unit,
+fun KpFilterBar(
+    modifier: Modifier,
+    filterOptions: List<String>,
+    filterResults: List<MediaItem>,
+    onFilter : () -> Unit = {},
+    onFilterQueryChange: (String) -> Unit,
 ) {
     SearchBar(
-        query = searchQuery,
-        onQueryChange = onSearchQueryChange,
-        onSearch = { onSearch() },
+        query = filterOptions.toString(),
+        onQueryChange = onFilterQueryChange,
+        onSearch = { onFilter() },
         placeholder = {
             Text(
                 text = "Search...",
@@ -41,7 +40,7 @@ fun KpSearchBar(
         },
         trailingIcon = {
             IconButton(
-                onClick = { onSearch() },
+                onClick = { onFilter() },
                 modifier = Modifier
                     .padding(8.dp)
             ) {
@@ -57,7 +56,7 @@ fun KpSearchBar(
                 modifier = Modifier,
                 horizontalAlignment = Alignment.Start
             ) {
-                searchResults.forEach { item ->
+                filterResults.forEach { item ->
                     item{
                         Text(
                             text = item.name,
@@ -77,4 +76,5 @@ fun KpSearchBar(
         tonalElevation = 0.dp,
         modifier = modifier
     )
+
 }

@@ -1,5 +1,6 @@
 package record.video.presentation
 
+import core.util.FilePaths
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -22,8 +23,11 @@ class VideoViewModel : KoinComponent {
     val state: StateFlow<VideoState> = _state.asStateFlow()
 
     init {
-        probRepository.createDirectoriesIfNotExist()
+        createDirectory()
+        getScreens()
+        getVideosByPath()
     }
+
     fun onEvent(event: VideoEvent) {
         when (event) {
             is VideoEvent.Record -> {
@@ -77,6 +81,7 @@ class VideoViewModel : KoinComponent {
                     videos = videoRepository.getVideosByPath(event.path),
                 )
             }
+
             is VideoEvent.ChangeVideosLocation -> {
                 _state.value = _state.value.copy(
                     outputLocation = event.path,
@@ -90,6 +95,18 @@ class VideoViewModel : KoinComponent {
 
             }
         }
+    }
+
+    private fun getVideosByPath() {
+        _state.value = _state.value.copy(
+            videos = videoRepository.getVideosByPath(
+                FilePaths.VideosPath
+            ),
+        )
+    }
+
+    private fun createDirectory() {
+        probRepository.createDirectoriesIfNotExist()
     }
 
     fun onRecordingFrameEvent(event: RecordingFrameEvent) {
