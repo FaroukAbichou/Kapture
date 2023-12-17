@@ -38,19 +38,25 @@ fun VideosSection(
         KpSearchBar(
             searchQuery = searchQuery,
             searchResults = searchedVideos,
-            onSearchQueryChange = {
-                searchQuery = it
+            onSearchQueryChange = { query ->
+                searchQuery = query
                 searchedVideos = state.videos.filter { video ->
-                    video.name.contains(it, ignoreCase = true)
+                    video.name.contains(query, ignoreCase = true)
                 }
+                println(searchedVideos)
             }
         )
-        println( "VideosSection: ${state.videos}")
-        LazyColumn {
-            state.videos.forEach { video: Video ->
+        LazyColumn(
+            modifier = Modifier,
+            horizontalAlignment = Alignment.Start,
+
+        ) {
+            searchedVideos.forEach { video: Video ->
+                println( "video.name: ${video.name}")
                 item{
                     Text(
                         text = video.name,
+                        style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
                         modifier = Modifier,
                     )
@@ -58,7 +64,5 @@ fun VideosSection(
             }
         }
     }
-
-
 }
 

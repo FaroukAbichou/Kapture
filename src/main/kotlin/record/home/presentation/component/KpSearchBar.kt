@@ -11,17 +11,20 @@ import core.MediaItem
 @Composable
 fun KpSearchBar(
     searchQuery: String,
+    onSearch : () -> Unit = {},
     searchResults: List<MediaItem>,
-    onSearchQueryChange: (String) -> Unit
+    onSearchQueryChange: (String) -> Unit,
 ) {
     SearchBar(
         query = searchQuery,
         onQueryChange = onSearchQueryChange,
-        onSearch = {
-
-        },
+        onSearch = { onSearch() },
         placeholder = {
-//            Text(text = "Search movies")
+            Text(
+                text = "Search...",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface,
+            )
         },
         leadingIcon = {
             Icon(
