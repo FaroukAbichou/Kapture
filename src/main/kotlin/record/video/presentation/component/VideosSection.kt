@@ -50,14 +50,10 @@ fun VideosSection(
         )
         KpFilterBar(
             modifier = Modifier.height(200.dp),
-            filterQuery = searchQuery,
-            searchResults = searchedVideos,
-            onSearchQueryChange = { query ->
-                searchQuery = query
-                searchedVideos = state.videos.filter { video ->
-                    video.name.contains(query, ignoreCase = true)
-                }
-            }
+            filterOptions = listOf("All", "Videos", "Audios", "Images"),
+            filterResults = searchedVideos,
+            onFilter = { },
+            onFilterQueryChange = { }
         )
     }
 
