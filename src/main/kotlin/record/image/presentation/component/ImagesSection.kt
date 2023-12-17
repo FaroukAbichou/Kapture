@@ -26,6 +26,7 @@ fun ImagesSection(
     var searchedImages by remember {
         mutableStateOf(state.images)
     }
+
     var searchQuery by remember {
         mutableStateOf("")
     }
@@ -46,15 +47,19 @@ fun ImagesSection(
                 }
             }
         )
-        LazyColumn {
-            state.images.forEach { image: Image ->
-                item {
-                    Text(
-                        text = image.name,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        modifier = Modifier,
-                    )
-                }
+    }
+
+    LazyColumn(
+        modifier = Modifier,
+        horizontalAlignment = Alignment.Start
+    ) {
+        state.images.forEach { image: Image ->
+            item {
+                Text(
+                    text = image.name,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    modifier = Modifier,
+                )
             }
         }
     }

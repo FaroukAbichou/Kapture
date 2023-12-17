@@ -44,15 +44,18 @@ fun AudiosSection(
                 }
             }
         )
-        LazyColumn {
-            state.audios.forEach { audio: Audio ->
-                item {
-                    Text(
-                        text = audio.name,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        modifier = Modifier,
-                    )
-                }
+    }
+    LazyColumn(
+        modifier = Modifier,
+        horizontalAlignment = Alignment.Start
+    ) {
+        state.audios.forEach { audio: Audio ->
+            item {
+                Text(
+                    text = audio.name,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    modifier = Modifier,
+                )
             }
         }
     }

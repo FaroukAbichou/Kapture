@@ -28,10 +28,6 @@ fun VideosSection(
         mutableStateOf(state.videos)
     }
 
-    LaunchedEffect(searchedVideos){
-        println("searched Videos${searchedVideos}")
-    }
-
     var searchQuery by remember {
         mutableStateOf("")
     }
@@ -51,7 +47,6 @@ fun VideosSection(
                 }
             }
         )
-
     }
 
     LazyColumn(
@@ -61,7 +56,7 @@ fun VideosSection(
         searchedVideos.forEach { item ->
             item{
                 Text(
-                    text = item.path,
+                    text = item.name,
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                     modifier = Modifier,
@@ -69,6 +64,5 @@ fun VideosSection(
             }
         }
     }
-
 }
 
