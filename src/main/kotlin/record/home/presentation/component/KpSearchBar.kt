@@ -17,9 +17,11 @@ fun KpSearchBar(
     SearchBar(
         query = searchQuery,
         onQueryChange = onSearchQueryChange,
-        onSearch = {},
+        onSearch = {
+
+        },
         placeholder = {
-            Text(text = "Search movies")
+//            Text(text = "Search movies")
         },
         leadingIcon = {
             Icon(

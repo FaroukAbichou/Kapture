@@ -24,6 +24,9 @@ fun ImagesSection(
     var searchedImages by remember {
         mutableStateOf(state.images)
     }
+    var searchQuery by remember {
+        mutableStateOf("")
+    }
 
     Column(
         horizontalAlignment = Alignment.Start,
@@ -31,9 +34,10 @@ fun ImagesSection(
     ) {
 
         KpSearchBar(
-            searchQuery = "",
+            searchQuery = searchQuery,
             searchResults = searchedImages,
             onSearchQueryChange = {
+                searchQuery = it
                 searchedImages = state.images.filter { video ->
                     video.name.contains(it, ignoreCase = true)
                 }

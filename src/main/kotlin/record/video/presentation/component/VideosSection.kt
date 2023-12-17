@@ -26,22 +26,28 @@ fun VideosSection(
         mutableStateOf(state.videos)
     }
 
+    var searchQuery by remember {
+        mutableStateOf("")
+    }
+
     Column(
         horizontalAlignment = Alignment.Start,
         modifier = Modifier
     ) {
 
         KpSearchBar(
-            searchQuery = "",
+            searchQuery = searchQuery,
             searchResults = searchedVideos,
             onSearchQueryChange = {
+                searchQuery = it
                 searchedVideos = state.videos.filter { video ->
                     video.name.contains(it, ignoreCase = true)
                 }
             }
         )
+        println( "VideosSection: ${state.videos}")
         LazyColumn {
-            searchedVideos.forEach { video: Video ->
+            state.videos.forEach { video: Video ->
                 item{
                     Text(
                         text = video.name,

@@ -22,7 +22,7 @@ class AudioRepositoryImpl : AudioRepository {
                 path = path.toString(),
                 size = getFileSize(path),
                 dateCreated = getFileDate(path),
-                duration = getAudioDuration(path).toDouble(),
+                duration = 0.0,
                 thumbnail = ImageBitmap(1, 1)
             )
         }

@@ -24,17 +24,21 @@ fun AudiosSection(
     var searchedAudios by remember {
         mutableStateOf(state.audios)
     }
+    var searchQuery by remember {
+        mutableStateOf("")
+    }
 
     Column(
         horizontalAlignment = Alignment.Start,
         modifier = Modifier
     ) {
         KpSearchBar(
-            searchQuery = "",
+            searchQuery = searchQuery,
             searchResults = searchedAudios,
-            onSearchQueryChange = {
+            onSearchQueryChange = { query ->
+                searchQuery = query
                 searchedAudios = state.audios.filter { video ->
-                    video.name.contains(it, ignoreCase = true)
+                    video.name.contains(query, ignoreCase = true)
                 }
             }
         )
