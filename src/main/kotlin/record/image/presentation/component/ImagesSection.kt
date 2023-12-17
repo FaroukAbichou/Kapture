@@ -1,12 +1,14 @@
 package record.image.presentation.component
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import core.util.FilePaths
 import record.home.presentation.component.KpSearchBar
 import record.image.domain.model.Image
@@ -34,6 +36,7 @@ fun ImagesSection(
     ) {
 
         KpSearchBar(
+            modifier = Modifier,
             searchQuery = searchQuery,
             searchResults = searchedImages,
             onSearchQueryChange = {

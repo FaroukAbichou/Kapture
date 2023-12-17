@@ -15,6 +15,7 @@ import record.video.domain.model.Video
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun KpSearchBar(
+    modifier : Modifier = Modifier,
     searchQuery: String,
     onSearch : () -> Unit = {},
     searchResults: List<MediaItem>,
@@ -74,5 +75,6 @@ fun KpSearchBar(
 
         },
         tonalElevation = 0.dp,
+        modifier = modifier
     )
 }
