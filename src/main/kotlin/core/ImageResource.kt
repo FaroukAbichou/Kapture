@@ -10,12 +10,12 @@ enum class ImageResource(val resourceId: String) {
     cropTopStart("image/crop_top_start.svg"),
     display("image/display.svg"),
     dude("image/dude.svg"),
-    home("image/home.svg"),
+    home("image/recor.home.svg"),
     image("image/image.svg"),
     lockDisplay("image/lock_display.svg"),
     multipleDisplay("image/multiple_display.svg"),
     setting("image/setting.svg"),
     shape("image/shape.svg"),
-    video("image/video.svg"),
+    video("image/recor.video.svg"),
     waveformCircle("image/waveformcircle.svg")
 }
