@@ -1,5 +1,6 @@
 package record.video.data
 
+import androidx.compose.ui.graphics.ImageBitmap
 import core.util.FFmpegUtils.FFmpegPath
 import core.util.FileHelper.getFileDate
 import core.util.FileHelper.getFileSize
@@ -34,9 +35,9 @@ class VideoRepositoryImpl : VideoRepository {
                 name = path.fileName.toString(),
                 path = path.toString(),
                 size = getFileSize(path),
-                date = getFileDate(path),
-                duration = getVideoDuration(path),
-                thumbnail = getVideoThumbnail(path)
+                dateCreated = getFileDate(path),
+                duration = getVideoDuration(path).toDouble(),
+                thumbnail = ImageBitmap(1, 1)
             )
         }
     }
