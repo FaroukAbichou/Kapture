@@ -21,6 +21,7 @@ fun AudiosSection(
     LaunchedEffect(Unit) {
         onEvent(AudioEvent.GetAudiosByPath(FilePaths.AudiosPath))
     }
+
     var searchedAudios by remember {
         mutableStateOf(state.audios)
     }
