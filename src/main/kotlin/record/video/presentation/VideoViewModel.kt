@@ -23,7 +23,7 @@ class VideoViewModel : KoinComponent {
     val state: StateFlow<VideoState> = _state.asStateFlow()
 
     init {
-        probRepository.createDirectoriesIfNotExist()
+        createDirectory()
         getScreens()
         getVideosByPath()
     }
@@ -103,6 +103,10 @@ class VideoViewModel : KoinComponent {
                 FilePaths.VideosPath
             ),
         )
+    }
+
+    private fun createDirectory() {
+        probRepository.createDirectoriesIfNotExist()
     }
 
     fun onRecordingFrameEvent(event: RecordingFrameEvent) {
