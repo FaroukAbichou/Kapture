@@ -31,6 +31,7 @@ fun VideosSection(
     var searchedVideos by remember {
         mutableStateOf(state.videos)
     }
+    val filterOptions = listOf("All", "Movies", "TV Shows")
 
     var searchQuery by remember {
         mutableStateOf("")
@@ -53,9 +54,9 @@ fun VideosSection(
         )
         KpFilterDropdown(
             modifier = Modifier.height(200.dp).width(200.dp),
-            filterOptions = listOf("All", "Videos", "Audios", "Images"),
+            filterOptions = filterOptions,
             onFilter = {
-                searchedVideos = state.videos.filter { video ->
+                searchedVideos =if (it == "All") state.videos else state.videos.filter { video ->
                     video.name.contains(it, ignoreCase = true)
                 }
             }
