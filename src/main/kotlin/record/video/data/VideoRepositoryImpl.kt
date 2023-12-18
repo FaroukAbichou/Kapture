@@ -1,6 +1,8 @@
 package record.video.data
 
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.toComposeImageBitmap
 import core.util.FFmpegUtils.FFmpegPath
 import core.util.FileHelper.getFileDate
 import core.util.FileHelper.getFileSize
@@ -9,6 +11,7 @@ import core.util.FilePaths
 import org.bytedeco.ffmpeg.ffmpeg
 import org.bytedeco.ffmpeg.ffprobe
 import org.bytedeco.javacpp.Loader
+import org.jetbrains.skia.Image
 import probe.domain.WindowPlacement
 import probe.domain.model.Screen
 import record.video.domain.VideoRepository
@@ -18,14 +21,13 @@ import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
+import java.nio.file.Files
 import java.nio.file.Path
+import java.nio.file.Paths
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
 
 class VideoRepositoryImpl : VideoRepository {
-
-    var ffmpegPath: String = Loader.load(ffmpeg::class.java)
-    var ffprobePath: String = Loader.load(ffprobe::class.java)
 
     override fun getVideosByPath(filePath: String): List<Video> {
         val videos = getFilesWithExtension(filePath, listOf("mp4", "mkv", "avi", "mov"))
@@ -36,35 +38,53 @@ class VideoRepositoryImpl : VideoRepository {
                 path = path.toString(),
                 size = getFileSize(path),
                 dateCreated = getFileDate(path),
-                duration = 0.0,
-                thumbnail = ImageBitmap(1, 1)
+                duration = getVideoDuration(path),
+                thumbnail = getVideoThumbnail(path),
             )
         }
     }
 
-    private fun getVideoDuration(path: Path): String {
-        val command = arrayOf("/bin/sh", "-c", "ffmpeg -i \"${path.toAbsolutePath()}\" 2>&1 | grep Duration")
-        val process = Runtime.getRuntime().exec(command)
-        val reader = BufferedReader(InputStreamReader(process.inputStream))
-
-        val durationLine = reader.readLine() ?: return "Unknown duration"
-
-        return durationLine.substringAfter("Duration: ").substringBefore(",").trim()
-    }
-
-    private fun getVideoThumbnail(path: Path, timestamp: String = "00:00:02"): String {
-        val outputFilePath = "${FilePaths.VideosPath}/${path.fileName.toString().replace(".mp4", ".jpg")}"
-        val command = "ffmpeg -i \"${path.toAbsolutePath()}\" -ss $timestamp -vframes 1 \"$outputFilePath\""
-
+    private fun getVideoDuration(path: Path): Double {
         try {
-            val process = Runtime.getRuntime().exec(command)
-            process.waitFor()
+            val processBuilder = ProcessBuilder("ffprobe",
+                "-v", "error",
+                "-show_entries", "format=duration",
+                "-of", "default=noprint_wrappers=1:nokey=1",
+                path.toString())
+            processBuilder.redirectErrorStream(true)
+            val process = processBuilder.start()
+
+            BufferedReader(InputStreamReader(process.inputStream)).use { reader ->
+                val output = reader.readLine()
+                process.waitFor()
+                return output.toDoubleOrNull() ?: 0.0
+            }
         } catch (e: Exception) {
             e.printStackTrace()
-            return ""
         }
+        return 0.0
+    }
 
-        return if (File(outputFilePath).exists()) outputFilePath else ""
+    private fun getVideoThumbnail(path: Path, timestamp: String = "00:00:02"): ImageBitmap {
+        val thumbnailPath = Paths.get("thumbnail.png") // Temporary file for the thumbnail
+        try {
+            val processBuilder = ProcessBuilder("ffmpeg",
+                "-i", path.toString(),
+                "-ss", timestamp,
+                "-vframes", "1",
+                thumbnailPath.toString())
+            val process = processBuilder.start()
+            process.waitFor()
+
+            // Assuming you are using Skia for image handling in Compose Desktop
+            val image = Image.makeFromEncoded(Files.readAllBytes(thumbnailPath))
+            return image.toComposeImageBitmap().also {
+                Files.deleteIfExists(thumbnailPath) // Clean up the temporary file
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return ImageBitmap(0, 0) // Return an empty image in case of failure
     }
 
     private var recordingThread: Future<*>? = null
@@ -133,7 +153,6 @@ class VideoRepositoryImpl : VideoRepository {
 
         recordingThread?.cancel(true)
     }
-
 
     private fun createCropFilter(
         screen: Screen,
