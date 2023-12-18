@@ -1,11 +1,10 @@
 package record.video.presentation.component
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,43 +36,51 @@ fun VideosSection(
         mutableStateOf("")
     }
 
-    Row (
-        horizontalArrangement = Arrangement.SpaceBetween,
+    Column(
+        verticalArrangement = Arrangement.Top,
         modifier = Modifier
+            .fillMaxSize()
     ) {
-        KpSearchBar(
-            modifier = Modifier.width(200.dp),
-            searchQuery = searchQuery,
-            onSearchQueryChange = { query ->
-                searchQuery = query
-                searchedVideos = state.videos.filter { video ->
-                    video.name.contains(query, ignoreCase = true)
-                }
-            }
-        )
-        KpFilterDropdown(
-            modifier = Modifier.height(200.dp).width(200.dp),
-            filterOptions = filterOptions,
-            onFilter = {
-                searchedVideos =if (it == "All") state.videos else state.videos.filter { video ->
-                    video.name.contains(it, ignoreCase = true)
-                }
-            }
-        )
-    }
-    LazyColumn(
-        modifier = Modifier,
-        horizontalAlignment = Alignment.Start
-    ) {
-        searchedVideos.forEach { item ->
-            item {
-                KpVideoItem(
-                    modifier = Modifier,
-                    video = item,
-                    onClick = {
-//                        onEvent(VideoEvent.NavigateToVideoDetailsScreen(item))
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .padding(8.dp)
+        ) {
+            KpSearchBar(
+                modifier = Modifier.width(200.dp),
+                searchQuery = searchQuery,
+                onSearchQueryChange = { query ->
+                    searchQuery = query
+                    searchedVideos = state.videos.filter { video ->
+                        video.name.contains(query, ignoreCase = true)
                     }
-                )
+                }
+            )
+            KpFilterDropdown(
+                modifier = Modifier,
+                filterOptions = filterOptions,
+                onFilter = {
+                    searchedVideos = if (it == "All") state.videos else state.videos.filter { video ->
+                        video.name.contains(it, ignoreCase = true)
+                    }
+                }
+            )
+        }
+
+        LazyColumn(
+            modifier = Modifier,
+            horizontalAlignment = Alignment.Start
+        ) {
+            searchedVideos.forEach { item ->
+                item {
+                    KpVideoItem(
+                        modifier = Modifier,
+                        video = item,
+                        onClick = {
+//                        onEvent(VideoEvent.NavigateToVideoDetailsScreen(item))
+                        }
+                    )
+                }
             }
         }
     }
@@ -85,15 +92,41 @@ fun KpVideoItem(
     video: Video,
     onClick: () -> Unit = {},
 ) {
-    Image(
-        bitmap = video.thumbnail,
-        contentDescription = null,
-        contentScale = ContentScale.Crop,
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
-            .height(200.dp)
-            .width(200.dp)
             .noRippleClickable {
                 onClick()
             }
-    )
+    ) {
+        Image(
+            bitmap = video.thumbnail,
+            contentDescription = video.name,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .height(200.dp)
+                .width(200.dp)
+        )
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.Start,
+            modifier = Modifier
+                .padding(8.dp)
+        ) {
+            Text(
+                text = video.name,
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                modifier = Modifier,
+            )
+
+            Text(
+                text = video.getDescription(),
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                modifier = Modifier,
+            )
+        }
+
+    }
 }

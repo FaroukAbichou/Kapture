@@ -1,55 +1,72 @@
 package core.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.MenuDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import record.home.presentation.component.noRippleClickable
 
 @Composable
 fun KpFilterDropdown(
-    modifier : Modifier = Modifier,
+    modifier: Modifier = Modifier,
     filterOptions: List<String>,
     onFilter: (String) -> Unit = {},
 ) {
     var expanded by remember { mutableStateOf(false) }
     var selectedIndex by remember { mutableStateOf(0) }
-    val disabledValue = "Select Filter"
     Box(
         modifier = modifier
-            .fillMaxSize()
             .wrapContentSize(Alignment.TopStart)
     ) {
         Text(
             text = filterOptions[selectedIndex],
             modifier = Modifier
-                .fillMaxWidth()
+                .height(40.dp)
+                .width(200.dp)
+                .background(Color.White)
+                .padding(4.dp)
                 .noRippleClickable { expanded = true }
-                .background(Color.Gray)
         )
 
         DropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false },
             modifier = Modifier
-                .fillMaxWidth()
-                .background(Color.Red)
+                .width(200.dp)
+                .background(Color.White)
         ) {
             filterOptions.forEachIndexed { index, value ->
-                androidx.compose.material.DropdownMenuItem(
+                DropdownMenuItem(
+                    text = {
+                        Text(text = value)
+                    },
                     onClick = {
                         selectedIndex = index
                         expanded = false
                         onFilter(value)
-                    }
-                ) {
-                    val disabledText = if (value == disabledValue) " (Disabled)" else ""
-
-                    Text(text = value + disabledText)
-                }
+                    },
+                    leadingIcon = null,
+                    trailingIcon = null,
+                    enabled = true,
+                    colors = MenuDefaults.itemColors(
+                        textColor = Color.Black,
+                        disabledTextColor = Color.Gray,
+                    ),
+                    contentPadding = PaddingValues(4.dp),
+                    interactionSource = MutableInteractionSource(),
+                    modifier = Modifier
+                        .width(200.dp)
+                        .background(Color.White)
+                        .padding(4.dp),
+                )
             }
         }
     }

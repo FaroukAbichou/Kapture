@@ -20,7 +20,7 @@ data class Video(
         TODO()
     }
 
-    override fun getInfo(): String {
-        TODO()
+    override fun getDescription(): String {
+        return "path='$path', size=$size, duration=$duration, dateCreated='$dateCreated'"
     }
 }

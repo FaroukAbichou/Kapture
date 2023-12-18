@@ -12,5 +12,6 @@ interface MediaItem {
 
     fun play()
     fun stop()
-    fun getInfo(): String
+
+    fun getDescription(): String
 }
