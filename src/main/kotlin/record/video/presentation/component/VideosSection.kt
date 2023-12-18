@@ -42,9 +42,8 @@ fun VideosSection(
         modifier = Modifier
     ) {
         KpSearchBar(
-            modifier = Modifier.height(200.dp).width(200.dp),
+            modifier = Modifier.width(200.dp),
             searchQuery = searchQuery,
-            searchResults = searchedVideos,
             onSearchQueryChange = { query ->
                 searchQuery = query
                 searchedVideos = state.videos.filter { video ->

@@ -39,7 +39,6 @@ fun ImagesSection(
         KpSearchBar(
             modifier = Modifier,
             searchQuery = searchQuery,
-            searchResults = searchedImages,
             onSearchQueryChange = {
                 searchQuery = it
                 searchedImages = state.images.filter { video ->
