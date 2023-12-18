@@ -7,7 +7,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import core.components.KpFilterDropdown
-import core.util.FilePaths
 import record.home.presentation.component.KpSearchBar
 import record.video.presentation.event.VideoEvent
 import record.video.presentation.state.VideoState
@@ -17,9 +16,6 @@ fun VideosSection(
     state: VideoState,
     onEvent: (VideoEvent) -> Unit,
 ) {
-    LaunchedEffect(Unit) {
-        onEvent(VideoEvent.GetVideosByPath(FilePaths.VideosPath))
-    }
 
     var searchedVideos by remember {
         mutableStateOf(state.videos)

@@ -1,5 +1,6 @@
 package record.image.presentation
 
+import core.util.FilePaths
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,6 +18,9 @@ class ImageViewModel : KoinComponent {
     private val _state = MutableStateFlow(ImageState())
     val state: StateFlow<ImageState> = _state.asStateFlow()
 
+    init {
+        getImagesByPath(FilePaths.ImagesPath)
+    }
     fun onEvent(event: ImageEvent) {
         when (event) {
             is ImageEvent.GetImageByPath -> {
@@ -46,5 +50,11 @@ class ImageViewModel : KoinComponent {
 
             }
         }
+    }
+
+    private fun getImagesByPath(path: String) {
+        _state.value = _state.value.copy(
+            images = imageRepository.getImageByPath(path)
+        )
     }
 }

@@ -1,5 +1,6 @@
 package record.audio.presentation
 
+import core.util.FilePaths
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,12 +17,13 @@ class AudioViewModel : KoinComponent {
     private val _state = MutableStateFlow(AudioState())
     val state: StateFlow<AudioState> = _state.asStateFlow()
 
+    init {
+        getAudiosByPath(FilePaths.AudiosPath)
+    }
     fun onEvent(event: AudioEvent) {
         when (event) {
             is AudioEvent.GetAudiosByPath -> {
-                _state.value = _state.value.copy(
-                    audios = audioRepository.getAudioByPath(event.path)
-                )
+                getAudiosByPath(event.path)
             }
 
             is AudioEvent.DeleteAudio -> {
@@ -37,5 +39,11 @@ class AudioViewModel : KoinComponent {
 
             }
         }
+    }
+
+    private fun getAudiosByPath(path: String) {
+        _state.value = _state.value.copy(
+            audios = audioRepository.getAudioByPath(path)
+        )
     }
 }
