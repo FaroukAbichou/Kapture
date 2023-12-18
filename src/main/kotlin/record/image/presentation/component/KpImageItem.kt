@@ -28,7 +28,7 @@ fun KpImageItem(
         Image(
             bitmap = image.thumbnail,
             contentDescription = image.name,
-            contentScale = ContentScale.Crop,
+            contentScale = ContentScale.Fit,
             modifier = Modifier
                 .height(200.dp)
                 .width(200.dp)
