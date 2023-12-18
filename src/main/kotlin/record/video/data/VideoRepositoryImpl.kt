@@ -1,16 +1,13 @@
 package record.video.data
 
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.toComposeImageBitmap
 import core.util.FFmpegUtils.FFmpegPath
+import core.util.FileHelper.VideoExtensions
 import core.util.FileHelper.getFileDate
 import core.util.FileHelper.getFileSize
 import core.util.FileHelper.getFilesWithExtension
 import core.util.FilePaths
-import org.bytedeco.ffmpeg.ffmpeg
-import org.bytedeco.ffmpeg.ffprobe
-import org.bytedeco.javacpp.Loader
 import org.jetbrains.skia.Image
 import probe.domain.WindowPlacement
 import probe.domain.model.Screen
@@ -30,7 +27,7 @@ import java.util.concurrent.Future
 class VideoRepositoryImpl : VideoRepository {
 
     override fun getVideosByPath(filePath: String): List<Video> {
-        val videos = getFilesWithExtension(filePath, listOf("mp4", "mkv", "avi", "mov"))
+        val videos = getFilesWithExtension(filePath, VideoExtensions)
 
         return videos.map { path ->
             Video(
@@ -66,7 +63,7 @@ class VideoRepositoryImpl : VideoRepository {
     }
 
     private fun getVideoThumbnail(path: Path, timestamp: String = "00:00:02"): ImageBitmap {
-        val thumbnailPath = Paths.get("thumbnail.png") // Temporary file for the thumbnail
+        val thumbnailPath = Paths.get("thumbnail.png")
         try {
             val processBuilder = ProcessBuilder("ffmpeg",
                 "-i", path.toString(),
@@ -76,15 +73,15 @@ class VideoRepositoryImpl : VideoRepository {
             val process = processBuilder.start()
             process.waitFor()
 
-            // Assuming you are using Skia for image handling in Compose Desktop
             val image = Image.makeFromEncoded(Files.readAllBytes(thumbnailPath))
             return image.toComposeImageBitmap().also {
-                Files.deleteIfExists(thumbnailPath) // Clean up the temporary file
+                Files.deleteIfExists(thumbnailPath)
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        return ImageBitmap(0, 0) // Return an empty image in case of failure
+
+        return ImageBitmap(0, 0)// TODO ("Error getting video thumbnail")
     }
 
     private var recordingThread: Future<*>? = null

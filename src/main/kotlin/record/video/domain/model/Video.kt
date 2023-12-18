@@ -7,9 +7,9 @@ data class Video(
     override val name: String,
     override val path: String,
     override val size: Long,
-    override val duration: Double,
     override val dateCreated: String,
     override val thumbnail: ImageBitmap,
+    val duration: Double,
     val isSelected: Boolean = false
 ): MediaItem {
     override fun play() {

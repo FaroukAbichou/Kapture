@@ -6,7 +6,6 @@ interface MediaItem {
     val name: String
     val path: String
     val size: Long
-    val duration: Double
     val thumbnail: ImageBitmap
     val dateCreated: String
 
