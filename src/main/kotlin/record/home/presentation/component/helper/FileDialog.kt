@@ -5,6 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.awt.FileDialog
 import java.awt.Frame
+import java.io.FilenameFilter
 import javax.swing.SwingUtilities
 
 @Composable
@@ -17,14 +18,15 @@ fun FileDialog(
     var dialog by remember { mutableStateOf<FileDialog?>(null) }
 
     LaunchedEffect(isOpen) {
+        println( "FileDialog: $isOpen")
         if (isOpen) {
             withContext(Dispatchers.IO) {
                 dialog = FileDialog(null as Frame?, title).apply {
                     isMultipleMode = false
                     mode = FileDialog.LOAD
-//                    filenameFilter = FilenameFilter { _, name ->
-//                        fileExtensions.any { name.endsWith(it) }
-//                    }
+                    filenameFilter = FilenameFilter { _, name ->
+                        fileExtensions.any { name.endsWith(it) }
+                    }
                 }
 
                 SwingUtilities.invokeLater {

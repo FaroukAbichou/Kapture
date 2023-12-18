@@ -1,14 +1,18 @@
 package record.video.presentation.component
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import core.components.KpFilterBar
 import core.util.FilePaths
@@ -38,7 +42,7 @@ fun VideosSection(
         modifier = Modifier
     ) {
         KpSearchBar(
-            modifier = Modifier.height(200.dp),
+            modifier = Modifier.height(200.dp).width(200.dp),
             searchQuery = searchQuery,
             searchResults = searchedVideos,
             onSearchQueryChange = { query ->
@@ -49,7 +53,7 @@ fun VideosSection(
             }
         )
         KpFilterBar(
-            modifier = Modifier.height(200.dp),
+            modifier = Modifier.height(200.dp).width(200.dp),
             filterOptions = listOf("All", "Videos", "Audios", "Images"),
             filterResults = searchedVideos,
             onFilter = { },
@@ -63,13 +67,11 @@ fun VideosSection(
     ) {
         searchedVideos.forEach { item ->
             item{
-                Text(
-                    text = item.name,
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
-                    modifier = Modifier,
-                )
             }
         }
     }
 }
+
+
+@Composable
+fun Video

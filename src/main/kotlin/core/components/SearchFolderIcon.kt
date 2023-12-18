@@ -11,34 +11,17 @@ import core.ImageResource
 import record.home.presentation.component.noRippleClickable
 
 @Composable
-fun SearchFolderIcon() {
-    var showFileDialog by remember {
-        mutableStateOf(false)
-    }
-    var folderLocation by remember {
-        mutableStateOf("")
-    }
+fun SearchFolderIcon(
+    modifier: Modifier,
+    onClick: () -> Unit = {},
+) {
     Image(
         painter = painterResource(ImageResource.image.resourceId),
         contentDescription = "Search Folder Icon",
-        modifier = Modifier
+        modifier = modifier
             .size(24.dp)
             .noRippleClickable {
-                showFileDialog = true
-                println( "showFileDialog: $showFileDialog")
+                onClick()
             }
     )
-
-    FileDialog(
-        title = "Select output location",
-        isOpen = showFileDialog,
-        fileExtensions = setOf("mp4"),
-        onResult = {
-            if (it != null) {
-                folderLocation = it
-            }
-            showFileDialog = false
-        }
-    )
-
 }
