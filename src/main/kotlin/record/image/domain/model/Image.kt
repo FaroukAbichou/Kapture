@@ -7,7 +7,6 @@ data class Image(
     override val name: String,
     override val path: String,
     override val size: Long,
-    override val duration: Double,
     override val thumbnail: ImageBitmap,
     override val dateCreated: String,
 ) : MediaItem {
@@ -19,7 +18,7 @@ data class Image(
         TODO()
     }
 
-    override fun getInfo(): String {
-        TODO()
+    override fun getDescription(): String {
+        return "path='$path', size=$size, dateCreated='$dateCreated'"
     }
 }

@@ -1,5 +1,6 @@
 package record.home.presentation.component
 
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
@@ -18,7 +19,6 @@ fun KpSearchBar(
     modifier : Modifier = Modifier,
     searchQuery: String,
     onSearch : () -> Unit = {},
-    searchResults: List<MediaItem>,
     onSearchQueryChange: (String) -> Unit,
 ) {
     SearchBar(
@@ -30,13 +30,6 @@ fun KpSearchBar(
                 text = "Search...",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurface,
-            )
-        },
-        leadingIcon = {
-            Icon(
-                imageVector = Icons.Default.Search,
-                tint = MaterialTheme.colorScheme.onSurface,
-                contentDescription = null
             )
         },
         trailingIcon = {
@@ -52,29 +45,12 @@ fun KpSearchBar(
                 )
             }
         },
-        content = {
-            LazyColumn(
-                modifier = Modifier,
-                horizontalAlignment = Alignment.Start
-            ) {
-                searchResults.forEach { item ->
-                    item{
-                        Text(
-                            text = item.name,
-                            style = MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
-                            modifier = Modifier,
-                        )
-                    }
-                }
-            }
-
-        },
+        content = {  },
         active = true,
         onActiveChange = {
 
         },
         tonalElevation = 0.dp,
-        modifier = modifier
+        modifier = modifier.height(100.dp)
     )
 }

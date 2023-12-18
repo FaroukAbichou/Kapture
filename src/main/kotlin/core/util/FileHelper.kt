@@ -24,7 +24,7 @@ object FileHelper {
         ".mpc", ".ofr", ".oga", ".spx", ".vqf", ".w64", ".wma",
         ".wv", ".xm"
     )
-    fun getFilesWithExtension(directoryPath: String, fileExtension: List<String>): List<Path> {
+    fun getFilesWithExtension(directoryPath: String, fileExtension: Set<String>): List<Path> {
         return Files.walk(Paths.get(directoryPath))
             .filter { fileExtension.any { extension ->
                     it.fileName.toString().endsWith(extension)
@@ -50,5 +50,4 @@ object FileHelper {
     fun getFileSize(path: String): Long {
         return Files.size(Paths.get(path))
     }
-
 }

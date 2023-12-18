@@ -36,7 +36,6 @@ fun AudiosSection(
         KpSearchBar(
             modifier = Modifier,
             searchQuery = searchQuery,
-            searchResults = searchedAudios,
             onSearchQueryChange = { query ->
                 searchQuery = query
                 searchedAudios = state.audios.filter { video ->

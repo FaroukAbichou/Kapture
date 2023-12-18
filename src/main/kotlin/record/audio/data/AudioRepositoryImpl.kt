@@ -1,6 +1,7 @@
 package record.audio.data
 
 import androidx.compose.ui.graphics.ImageBitmap
+import core.util.FileHelper.AudioExtensions
 import core.util.FileHelper.getFileDate
 import core.util.FileHelper.getFileSize
 import core.util.FileHelper.getFilesWithExtension
@@ -14,7 +15,7 @@ import java.nio.file.Path
 
 class AudioRepositoryImpl : AudioRepository {
     override fun getAudioByPath(filePath: String): List<Audio> {
-        val audios = getFilesWithExtension(filePath, listOf(".mp3", ".wav"))
+        val audios = getFilesWithExtension(filePath, AudioExtensions)
 
         return audios.map { path ->
             Audio(
@@ -22,10 +23,38 @@ class AudioRepositoryImpl : AudioRepository {
                 path = path.toString(),
                 size = getFileSize(path),
                 dateCreated = getFileDate(path),
-                duration = 0.0,
-                thumbnail = ImageBitmap(1, 1)
+                duration = getAudioDuration(path),
+                thumbnail = getDefaultAudioThumbnail()
             )
         }
+    }
+
+    private fun getAudioDuration(path: Path): Double {
+        try {
+            val processBuilder = ProcessBuilder(
+                "ffprobe",
+                "-v", "error",
+                "-show_entries", "format=duration",
+                "-of", "default=noprint_wrappers=1:nokey=1",
+                path.toString()
+            )
+            processBuilder.redirectErrorStream(true)
+            val process = processBuilder.start()
+
+            BufferedReader(InputStreamReader(process.inputStream)).use { reader ->
+                val output = reader.readLine()
+                process.waitFor()
+                return output.toDoubleOrNull() ?: 0.0
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return 0.0
+
+    }
+
+    private fun getDefaultAudioThumbnail(): ImageBitmap {
+        return ImageBitmap(1 ,1)
     }
 
     override fun recordAudioWithTimeout(config: RecordSettings?) {
@@ -36,23 +65,13 @@ class AudioRepositoryImpl : AudioRepository {
 
     override fun startAudioRecording(
         config: RecordSettings,
-        selectedScreen: Screen
+        selectedScreen: Screen,
     ) {
 
     }
 
     override fun stopAudioRecording() {
 
-    }
-
-    private fun getAudioDuration(path: Path): String {
-        val command = arrayOf("/bin/sh", "-c", "ffmpeg -i \"${path.toAbsolutePath()}\" 2>&1 | grep Duration")
-        val process = Runtime.getRuntime().exec(command)
-        val reader = BufferedReader(InputStreamReader(process.inputStream))
-
-        val durationLine = reader.readLine() ?: return "Unknown duration"
-
-        return durationLine.substringAfter("Duration: ").substringBefore(",").trim()
     }
 
 }
