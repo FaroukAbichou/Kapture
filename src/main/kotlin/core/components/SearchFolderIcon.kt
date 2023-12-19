@@ -1,6 +1,5 @@
 package core.components
 
-import FileDialog
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.*
