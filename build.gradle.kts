@@ -32,6 +32,7 @@ dependencies {
     implementation(libs.voyager.navigator)
     implementation(libs.voyager.transition)
     implementation(libs.voyager.koin)
+    implementation(libs.voyager.tab.navigator)
     implementation(libs.kotlinx.coroutinesSwing)
 
     implementation(libs.kotlinx.dateTime)
