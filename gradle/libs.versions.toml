@@ -10,6 +10,8 @@ datetime = "0.4.0"
 detekt = "1.23.1"
 ksp = "1.9.21-1.0.15"
 multiplatformSettings = "1.1.1"
+voyager = "1.0.0-rc07"
+
 
 [libraries]
 
@@ -19,8 +21,17 @@ kotlinx-coroutinesCore = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-co
 kotlinx-coroutinesSwing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "coroutines" }
 kotlinx-dateTime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "datetime" }
 
+# Coroutines
+
+
 # FFmpeg
 ffmpeg = { module = "net.bramp.ffmpeg:ffmpeg", version.ref = "ffmpeg" }
+
+# Voyager
+voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
+voyager-transition = { module = "cafe.adriel.voyager:voyager-transitions", version.ref = "voyager" }
+voyager-koin = { module = "cafe.adriel.voyager:voyager-koin", version.ref = "voyager" }
+voyager-tab-navigator= { module = "cafe.adriel.voyager:voyager-tab-navigator", version.ref = "voyager" }
 
 # SQLDelight
 sqldelight-sqliteDriver = { module = "app.cash.sqldelight:sqlite-driver", version.ref = "sqldelight" }

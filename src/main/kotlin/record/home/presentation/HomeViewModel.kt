@@ -23,6 +23,8 @@ class HomeViewModel : KoinComponent {
             is HomeEvent.GetScreens -> {
 
             }
+
+            else -> {}
         }
     }
 

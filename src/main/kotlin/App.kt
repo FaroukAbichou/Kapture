@@ -1,53 +1,74 @@
-import androidx.compose.desktop.ui.tooling.preview.Preview
+
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.Icon
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.navigator.tab.CurrentTab
+import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
+import cafe.adriel.voyager.navigator.tab.Tab
+import cafe.adriel.voyager.navigator.tab.TabNavigator
+import cafe.adriel.voyager.transitions.FadeTransition
+import core.navigation.KpNavigationBar
+import core.navigation.wrappers.HomeScreenWrapper
+import core.navigation.wrappers.HomeTab
+import core.navigation.wrappers.SettingsTab
 import core.theme.KaptureTheme
-import record.audio.presentation.AudioViewModel
-import record.home.presentation.HomeScreen
-import record.home.presentation.component.RecordingFrame
-import record.home.presentation.event.RecordingFrameEvent
-import record.image.presentation.ImageViewModel
-import record.video.presentation.VideoViewModel
 
 @Composable
-@Preview
-fun App() {
-    val videoViewModel = rememberSaveable { VideoViewModel() }
-    val imageViewModel = rememberSaveable { ImageViewModel() }
-    val audioViewModel = rememberSaveable { AudioViewModel() }
+fun App() = KaptureTheme {
 
-    val videoState = videoViewModel.state.collectAsState()
-    val imageState = imageViewModel.state.collectAsState()
-    val audioState = audioViewModel.state.collectAsState()
+    Row(
+        modifier = Modifier,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
 
-    KaptureTheme {
-        if (
-            videoState.value.isRecordSection ||
-            imageState.value.isRecordSection
-        ) RecordingFrame(
+        KpNavigationBar(
             modifier = Modifier,
-        ) { x: Int, y: Int, height: Int, width: Int ->
-            videoViewModel.onRecordingFrameEvent(
-                RecordingFrameEvent.UpdateWindowPlacement(
-                    x = x, y = y, height = height, width = width,
-                )
-            )
-            imageViewModel.onRecordingFrameEvent(
-                RecordingFrameEvent.UpdateWindowPlacement(
-                    x = x, y = y, height = height, width = width,
-                )
-            )
-        }
-
-        HomeScreen(
-            videoState = videoState.value,
-            imageState = imageState.value,
-            audioState = audioState.value,
-            onVideoEvent = videoViewModel::onEvent,
-            onImageEvent = imageViewModel::onEvent,
-            onAudioEvent = audioViewModel::onEvent,
+            onHomeClick = {},
+            onVideoClick = {},
+            onImageClick = {},
+            onAudioClick = {},
+            onSettingsClick = {},
         )
+
+        TabNavigator(HomeTab) { navigator ->
+            Column {
+
+                BottomNavigation {
+                    TabNavigationItem(HomeTab)
+                    TabNavigationItem(SettingsTab)
+                }
+                CurrentTab()
+            }
+        }
+        Navigator(HomeScreenWrapper()) { navigator ->
+            FadeTransition(navigator)
+        }
     }
+}
+
+@Composable
+private fun ColumnScope.TabNavigationItem(tab: Tab) {
+    val tabNavigator: TabNavigator = LocalTabNavigator.current
+
+    NavigationBarItem(
+        selected = tabNavigator.current == tab,
+        onClick = { tabNavigator.current = tab },
+        icon = {
+            tab.options.icon?.let { icon ->
+                Icon(
+                    painter = icon,
+                    contentDescription =
+                    tab.options.title
+                )
+            }
+        }
+    )
 }

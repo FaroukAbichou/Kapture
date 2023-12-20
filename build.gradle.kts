@@ -29,6 +29,12 @@ dependencies {
     implementation("dev.chrisbanes.haze:haze:0.3.0")
     implementation("org.bytedeco:ffmpeg-platform:6.0-1.5.9")
 
+    implementation(libs.voyager.navigator)
+    implementation(libs.voyager.transition)
+    implementation(libs.voyager.koin)
+    implementation(libs.voyager.tab.navigator)
+    implementation(libs.kotlinx.coroutinesSwing)
+
     implementation(libs.kotlinx.dateTime)
 }
 

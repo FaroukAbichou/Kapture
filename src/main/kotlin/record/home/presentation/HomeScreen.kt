@@ -6,6 +6,8 @@ import androidx.compose.runtime.Composable
 import record.audio.presentation.event.AudioEvent
 import record.audio.presentation.state.AudioState
 import record.home.presentation.component.HomeContent
+import record.home.presentation.event.HomeEvent
+import record.home.presentation.state.HomeState
 import record.image.presentation.event.ImageEvent
 import record.image.presentation.state.ImageState
 import record.video.presentation.event.VideoEvent
@@ -13,12 +15,8 @@ import record.video.presentation.state.VideoState
 
 @Composable
 fun HomeScreen(
-    videoState: VideoState,
-    imageState: ImageState,
-    audioState: AudioState,
-    onVideoEvent: (VideoEvent) -> Unit,
-    onImageEvent: (ImageEvent) -> Unit,
-    onAudioEvent: (AudioEvent) -> Unit,
+    state: HomeState,
+    onEvent: (HomeEvent) -> Unit,
 ) {
     Scaffold(
         topBar = {},
@@ -26,12 +24,8 @@ fun HomeScreen(
         containerColor = MaterialTheme.colorScheme.background,
     ) {
         HomeContent(
-            videoState = videoState,
-            imageState = imageState,
-            audioState = audioState,
-            onVideoEvent = onVideoEvent,
-            onImageEvent = onImageEvent,
-            onAudioEvent = onAudioEvent,
+            state = state,
+            onEvent = onEvent,
         )
     }
 }

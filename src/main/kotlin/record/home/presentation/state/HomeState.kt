@@ -8,4 +8,5 @@ data class HomeState (
     val screens: List<Screen> = emptyList(),
     val selectedScreen: Screen = Screen.defaultScreen,
     val recordingArea : WindowPlacement = WindowPlacement.Default,
+    val outputLocation : String = "",
 )
