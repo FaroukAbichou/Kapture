@@ -3,6 +3,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import cafe.adriel.voyager.navigator.Navigator
 import core.theme.KaptureTheme
 import record.audio.presentation.AudioViewModel
 import record.home.presentation.HomeScreen
@@ -12,8 +13,10 @@ import record.image.presentation.ImageViewModel
 import record.video.presentation.VideoViewModel
 
 @Composable
-@Preview
-fun App() {
+fun App()=KaptureTheme {
+    Navigator(HomeScreenWrapper()) { navigator ->
+        FadeTransition(navigator)
+    }
     val videoViewModel = rememberSaveable { VideoViewModel() }
     val imageViewModel = rememberSaveable { ImageViewModel() }
     val audioViewModel = rememberSaveable { AudioViewModel() }
@@ -22,7 +25,6 @@ fun App() {
     val imageState = imageViewModel.state.collectAsState()
     val audioState = audioViewModel.state.collectAsState()
 
-    KaptureTheme {
         if (
             videoState.value.isRecordSection ||
             imageState.value.isRecordSection
