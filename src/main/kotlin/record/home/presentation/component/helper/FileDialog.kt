@@ -2,6 +2,8 @@
 import androidx.compose.runtime.*
 import java.awt.FileDialog
 import java.awt.Frame
+import java.awt.event.WindowAdapter
+import java.awt.event.WindowEvent
 import java.io.FilenameFilter
 import javax.swing.SwingUtilities
 
@@ -23,34 +25,29 @@ fun FileDialog(
                     fileExtensions.any { name.endsWith(it) }
                 }
                 isVisible = true
-                val file = dialog?.file
-                SwingUtilities.invokeLater {
-                    onResult(file)
-                }
-                isOpen.value = false
-                dialog = null
             }
+            dialog?.addWindowListener(object : WindowAdapter() {
+                override fun windowClosing(e: WindowEvent?) {
+                    println( "FileDialog file: ${dialog?.file}")
+                    val file = dialog?.file
+                    SwingUtilities.invokeLater {
+                        onResult(file)
+                    }
+                    isOpen.value = false // Reset the open state.
+                    dialog = null // Dispose of the dialog.
+                }
+            })
 
         }
-//        dialog?.addWindowListener(object : WindowAdapter() {
-//            override fun windowClosing(e: WindowEvent?) {
-//                // When the dialog is closing, retrieve the selected file and invoke onResult.
-//                println( "FileDialog file: ${dialog?.file}")
-//                val file = dialog?.file // Retrieve the selected file path.
-//                SwingUtilities.invokeLater {
-//                    onResult(file) // Provide the result to the callback.
-//                }
-//                isOpen.value = false // Reset the open state.
-//                dialog = null // Dispose of the dialog.
-//            }
-//        })
 
     }
 
+    // This effect ensures the dialog is disposed when isOpen is set to false.
+    // This might happen if the dialog is closed programmatically.
     if (!isOpen.value) {
         dialog?.let {
             SwingUtilities.invokeLater {
-                it.dispose()
+                it.dispose() // Dispose of the dialog on the EDT.
                 dialog = null // Reset the dialog reference.
             }
         }
