@@ -22,7 +22,6 @@ fun App() {
     val imageState = imageViewModel.state.collectAsState()
     val audioState = audioViewModel.state.collectAsState()
 
-    println("videoState: $videoState")
     KaptureTheme {
         if (
             videoState.value.isRecordSection ||

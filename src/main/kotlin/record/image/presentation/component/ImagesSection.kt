@@ -7,7 +7,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import core.components.KpFilterDropdown
-import core.util.FilePaths
 import record.home.presentation.component.KpSearchBar
 import record.image.presentation.event.ImageEvent
 import record.image.presentation.state.ImageState
@@ -15,11 +14,8 @@ import record.image.presentation.state.ImageState
 @Composable
 fun ImagesSection(
     state: ImageState,
-    onEvent: (ImageEvent) -> Unit
+    onEvent: (ImageEvent) -> Unit,
 ) {
-    LaunchedEffect(Unit) {
-        onEvent(ImageEvent.GetImageByPath(FilePaths.ImagesPath))
-    }
     var searchedImages by remember {
         mutableStateOf(state.images)
     }
