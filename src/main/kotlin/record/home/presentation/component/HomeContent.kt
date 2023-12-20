@@ -2,46 +2,49 @@ package record.home.presentation.component
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Button
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import core.components.SelectOutputLocationSection
-import record.audio.presentation.event.AudioEvent
-import record.audio.presentation.state.AudioState
-import record.image.presentation.event.ImageEvent
-import record.image.presentation.state.ImageState
-import record.video.presentation.event.VideoEvent
-import record.video.presentation.state.VideoState
+import record.home.presentation.event.HomeEvent
+import record.home.presentation.state.HomeState
 
 @Composable
 fun HomeContent(
-    videoState: VideoState,
-    imageState: ImageState,
-    audioState: AudioState,
-    onVideoEvent: (VideoEvent) -> Unit,
-    onImageEvent: (ImageEvent) -> Unit,
-    onAudioEvent: (AudioEvent) -> Unit,
+    state: HomeState,
+    onEvent: (HomeEvent) -> Unit,
 ) {
     Column(
         modifier = Modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         SelectOutputLocationSection(
-            folderLocation = { value -> onVideoEvent(VideoEvent.ChangeVideosLocation(value)) },
-            currentLocation = videoState.outputLocation,
+            folderLocation = {
+//                onEvent(HomeEvent.SelectOutputLocation)
+            },
+            currentLocation = state.outputLocation,
             modifier = Modifier
                 .padding(16.dp)
         )
 
-        RecordContent(
-            videoState = videoState,
-            imageState = imageState,
-            audioState = audioState,
-            onVideoEvent = onVideoEvent,
-            onImageEvent = onImageEvent,
-            onAudioEvent = onAudioEvent,
-        )
+        Button(
+            onClick = {
+                onEvent(HomeEvent.NavigateToSettings("hiii"))
+            }
+        ) {
+            Text("Settings")
+        }
+//        RecordContent(
+//            videoState = videoState,
+//            imageState = imageState,
+//            audioState = audioState,
+//            onVideoEvent = onVideoEvent,
+//            onImageEvent = onImageEvent,
+//            onAudioEvent = onAudioEvent,
+//        )
     }
 
 }

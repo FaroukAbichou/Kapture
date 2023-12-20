@@ -17,6 +17,15 @@ import record.settings.presentation.event.SettingsEvent
 internal class HomeScreenWrapper : Screen {
 
     private val viewModel : HomeViewModel = HomeViewModel()
+//    private val videoViewModel = remember { VideoViewModel() }
+//    private val imageViewModel = remember { ImageViewModel() }
+//    private val audioViewModel = remember { AudioViewModel() }
+
+//    private val videoState = videoViewModel.state.collectAsState()
+//    private val imageState = imageViewModel.state.collectAsState()
+//    private val audioState = audioViewModel.state.collectAsState()
+
+
     @Composable
     override fun Content() {
         val state by viewModel.state.collectAsState()
@@ -34,6 +43,24 @@ internal class HomeScreenWrapper : Screen {
                 }
             }
         )
+
+//        if (
+//            videoState.value.isRecordSection ||
+//            imageState.value.isRecordSection
+//        ) RecordingFrame(
+//            modifier = Modifier,
+//        ) { x: Int, y: Int, height: Int, width: Int ->
+//            videoViewModel.onRecordingFrameEvent(
+//                RecordingFrameEvent.UpdateWindowPlacement(
+//                    x = x, y = y, height = height, width = width,
+//                )
+//            )
+//            imageViewModel.onRecordingFrameEvent(
+//                RecordingFrameEvent.UpdateWindowPlacement(
+//                    x = x, y = y, height = height, width = width,
+//                )
+//            )
+//        }
     }
 }
 

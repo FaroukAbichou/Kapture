@@ -20,8 +20,9 @@ class SettingsViewModel : KoinComponent {
         when (event) {
             is SettingsEvent.GetScreens -> {
 
-
             }
+
+            else -> {}
         }
     }
 }
