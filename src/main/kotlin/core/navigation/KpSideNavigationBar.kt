@@ -1,20 +1,20 @@
 package core.navigation
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import core.ImageResource
-import record.home.presentation.component.noRippleClickable
 
 @Composable
-fun KpNavigationBar(
+fun KpSideNavigationBar(
     modifier: Modifier = Modifier,
     onHomeClick: () -> Unit,
     onVideoClick: () -> Unit,
@@ -30,23 +30,23 @@ fun KpNavigationBar(
     ) {
         KpIconButton(
             imageResource = ImageResource.home,
-            onClick = {}
+            onClick = onHomeClick
         )
         KpIconButton(
             imageResource = ImageResource.video,
-            onClick = {}
+            onClick = onVideoClick
         )
         KpIconButton(
             imageResource = ImageResource.image,
-            onClick = {}
+            onClick = onImageClick
         )
         KpIconButton(
             imageResource = ImageResource.waveformCircle,
-            onClick = {}
+            onClick = onAudioClick
         )
         KpIconButton(
             imageResource = ImageResource.setting,
-            onClick = {}
+            onClick = onSettingsClick
         )
 
     }
@@ -55,13 +55,29 @@ fun KpNavigationBar(
 @Composable
 fun KpIconButton(
     imageResource: ImageResource,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    enabled: Boolean = true,
 ) {
-    Image(
-        painter = painterResource(imageResource.resourceId),
-        contentDescription = imageResource.name,
+    Button(
+        onClick = {
+            onClick()
+        },
+        enabled = enabled,
+        colors = ButtonDefaults.buttonColors(
+            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        ),
+        elevation = null,
+        border = null,
+        contentPadding = PaddingValues(0.dp),
+        interactionSource = MutableInteractionSource(),
         modifier = Modifier
-            .size(32.dp)
-            .noRippleClickable { onClick() }
-    )
+    ){
+        Image(
+            painter = painterResource(imageResource.resourceId),
+            contentDescription = imageResource.name,
+            modifier = Modifier
+                .size(32.dp)
+                .padding(8.dp)
+        )
+    }
 }
