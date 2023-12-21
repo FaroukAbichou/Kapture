@@ -29,7 +29,7 @@ fun ImagesSection(
 
     Column(
         verticalArrangement = Arrangement.Top,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
     ) {
         Row(
@@ -56,6 +56,7 @@ fun ImagesSection(
                     }
                 }
             )
+
             KpSortDropdown(
                 modifier = Modifier,
                 sortOptions = sortOptions,

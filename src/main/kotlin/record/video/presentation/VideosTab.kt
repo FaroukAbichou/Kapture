@@ -11,7 +11,6 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
-import record.video.presentation.component.VideosSection
 
 object VideosTab : Tab {
     private fun readResolve(): Any = VideosTab
@@ -39,12 +38,7 @@ object VideosTab : Tab {
 
         VideoScreen(
             state = state,
-            onEvent = {
-                when (it) {
-
-                    else -> viewModel.onEvent(it)
-                }
-            }
+            onEvent = viewModel::onEvent
         )
     }
 }
