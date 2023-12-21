@@ -14,10 +14,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun KpFilterDropdown(
+fun KpSortDropdown(
     modifier: Modifier = Modifier,
-    filterOptions: List<String>,
-    onFilter: (String) -> Unit = {},
+    sortOptions: List<String>,
+    onSort: (String) -> Unit = {},
 ) {
     var expanded by remember { mutableStateOf(false) }
     var selectedIndex by remember { mutableStateOf(0) }
@@ -27,7 +27,7 @@ fun KpFilterDropdown(
             .wrapContentSize(Alignment.TopStart)
     ) {
         Text(
-            text = filterOptions[selectedIndex],
+            text = sortOptions[selectedIndex],
             modifier = Modifier
                 .height(40.dp)
                 .width(200.dp)
@@ -43,7 +43,7 @@ fun KpFilterDropdown(
                 .width(200.dp)
                 .background(Color.White)
         ) {
-            filterOptions.forEachIndexed { index, value ->
+            sortOptions.forEachIndexed { index, value ->
                 DropdownMenuItem(
                     text = {
                         Text(text = value)
@@ -51,7 +51,7 @@ fun KpFilterDropdown(
                     onClick = {
                         selectedIndex = index
                         expanded = false
-                        onFilter(value)
+                        onSort(value)
                     },
                     leadingIcon = null,
                     trailingIcon = null,

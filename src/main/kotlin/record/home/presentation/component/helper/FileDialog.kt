@@ -33,8 +33,8 @@ fun FileDialog(
                     SwingUtilities.invokeLater {
                         onResult(file)
                     }
-                    isOpen.value = false // Reset the open state.
-                    dialog = null // Dispose of the dialog.
+                    isOpen.value = false
+                    dialog = null
                 }
             })
 
@@ -42,25 +42,21 @@ fun FileDialog(
 
     }
 
-    // This effect ensures the dialog is disposed when isOpen is set to false.
-    // This might happen if the dialog is closed programmatically.
     if (!isOpen.value) {
         dialog?.let {
             SwingUtilities.invokeLater {
-                it.dispose() // Dispose of the dialog on the EDT.
-                dialog = null // Reset the dialog reference.
+                it.dispose()
+                dialog = null
             }
         }
     }
 
-    // This DisposableEffect ensures that the dialog is properly disposed of
-    // when this Composable is removed from the composition.
     DisposableEffect(Unit) {
         onDispose {
             dialog?.let {
                 SwingUtilities.invokeLater {
-                    it.dispose() // Dispose of the dialog on the EDT.
-                    dialog = null // Reset the dialog reference.
+                    it.dispose()
+                    dialog = null
                 }
             }
         }

@@ -1,8 +1,8 @@
 
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
 import core.di.initKoin
+import core.theme.KaptureTheme
 
 fun main() {
     initKoin().koin
@@ -16,7 +16,9 @@ fun main() {
             state = windowState,
             title = "Kapture"
         ) {
-            App()
+            KaptureTheme {
+                KpMainContent()
+            }
         }
     }
 }

@@ -7,6 +7,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import core.components.KpFilterDropdown
+import core.components.KpSortDropdown
 import record.home.presentation.component.KpSearchBar
 import record.video.presentation.event.VideoEvent
 import record.video.presentation.state.VideoState
@@ -22,6 +23,7 @@ fun VideosSection(
         mutableStateOf(state.videos)
     }
     val filterOptions = listOf("All", "Movies", "TV Shows")
+    val sortOptions = listOf("Name", "Date Added", "Size", "Duration")
 
     var searchQuery by remember {
         mutableStateOf("")
@@ -53,6 +55,20 @@ fun VideosSection(
                 onFilter = {
                     searchedVideos = if (it == "All") state.videos else state.videos.filter { video ->
                         video.name.contains(it, ignoreCase = true)
+                    }
+                }
+            )
+            KpSortDropdown(
+                modifier = Modifier,
+                sortOptions = sortOptions,
+                onSort = {
+                    searchedVideos = when (it) {
+                        "Name" -> searchedVideos.sortedBy { audio -> audio.name }
+                        "Date Added" -> searchedVideos.sortedBy { audio -> audio.dateCreated }
+                        "Size" -> searchedVideos.sortedBy { audio -> audio.size }
+                        "Duration" -> searchedVideos.sortedBy { audio -> audio.duration }
+
+                        else -> emptyList()
                     }
                 }
             )
