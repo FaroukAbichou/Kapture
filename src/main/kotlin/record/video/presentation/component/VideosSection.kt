@@ -13,6 +13,7 @@ import record.video.presentation.state.VideoState
 
 @Composable
 fun VideosSection(
+    modifier : Modifier = Modifier,
     state: VideoState,
     onEvent: (VideoEvent) -> Unit,
 ) {
@@ -28,7 +29,7 @@ fun VideosSection(
 
     Column(
         verticalArrangement = Arrangement.Top,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
     ) {
         Row(

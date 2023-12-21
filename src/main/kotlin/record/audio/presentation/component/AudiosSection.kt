@@ -13,6 +13,7 @@ import record.home.presentation.component.KpSearchBar
 
 @Composable
 fun AudiosSection(
+    modifier: Modifier,
     state: AudioState,
     onEvent: (AudioEvent) -> Unit
 ) {

@@ -8,7 +8,6 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
-import record.image.presentation.component.ImagesSection
 
 object ImagesTab : Tab {
     private fun readResolve(): Any = ImagesTab
@@ -32,14 +31,14 @@ object ImagesTab : Tab {
         val state by viewModel.state.collectAsState()
         val navigator = LocalNavigator.currentOrThrow
 
-        ImagesSection(
+        ImageScreen(
             state = state,
             onEvent = {
                 when (it) {
 
                     else -> viewModel.onEvent(it)
                 }
-            }
+            },
         )
     }
 }

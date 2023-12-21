@@ -13,6 +13,7 @@ import record.image.presentation.state.ImageState
 
 @Composable
 fun ImagesSection(
+    modifier: Modifier,
     state: ImageState,
     onEvent: (ImageEvent) -> Unit,
 ) {
