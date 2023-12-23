@@ -37,7 +37,7 @@ object VideosTab : Tab {
         val state by viewModel.state.collectAsState()
         val navigator = LocalNavigator.currentOrThrow
 
-        VideosSection(
+        VideoScreen(
             state = state,
             onEvent = {
                 when (it) {

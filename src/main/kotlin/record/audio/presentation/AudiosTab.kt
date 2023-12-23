@@ -8,7 +8,6 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
-import record.audio.presentation.component.AudiosSection
 
 object AudiosTab : Tab {
     private fun readResolve(): Any = AudiosTab
@@ -32,7 +31,7 @@ object AudiosTab : Tab {
         val state by viewModel.state.collectAsState()
         val navigator = LocalNavigator.currentOrThrow
 
-        AudiosSection(
+        AudioScreen(
             state = state,
             onEvent = {
                 when (it) {
