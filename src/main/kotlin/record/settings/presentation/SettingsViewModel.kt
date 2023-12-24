@@ -5,13 +5,17 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import probe.domain.ProbRepository
 import record.image.domain.ImageRepository
+import record.settings.domain.SettingsRepository
 import record.settings.presentation.event.SettingsEvent
 import record.settings.presentation.state.SettingsState
 
 class SettingsViewModel : KoinComponent {
 
     private val imageRepository: ImageRepository by inject()
+    private val probRepository: ProbRepository by inject()
+    private val settingsRepository: SettingsRepository by inject()
 
     private val _state = MutableStateFlow(SettingsState())
     val state: StateFlow<SettingsState> = _state.asStateFlow()
@@ -22,7 +26,16 @@ class SettingsViewModel : KoinComponent {
 
             }
 
+            is SettingsEvent.SelectOutputLocation -> changeOutputLocation(event.outputLocation)
+
+
             else -> {}
         }
+    }
+
+    private fun changeOutputLocation(outputLocation: String) {
+        _state.value = _state.value.copy(
+            outputLocation = outputLocation
+        )
     }
 }
