@@ -52,7 +52,7 @@ fun SelectRecordingDevice(
 ) {
 
     Column(
-        modifier = Modifier
+        modifier = Modifier.padding(24.dp)
     ) {
         Text(
             text = devices.first().javaClass.simpleName + "s",
