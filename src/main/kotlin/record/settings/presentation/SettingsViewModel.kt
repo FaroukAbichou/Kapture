@@ -6,7 +6,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import probe.domain.ProbRepository
-import record.image.domain.ImageRepository
 import record.settings.domain.SettingsRepository
 import record.settings.presentation.event.SettingsEvent
 import record.settings.presentation.state.SettingsState
@@ -14,20 +13,18 @@ import record.settings.presentation.state.SettingsState
 class SettingsViewModel : KoinComponent {
 
     private val settingsRepository: SettingsRepository by inject()
-    private val imageRepository: ImageRepository by inject()
     private val probRepository: ProbRepository by inject()
 
     private val _state = MutableStateFlow(SettingsState())
     val state: StateFlow<SettingsState> = _state.asStateFlow()
 
+    init {
+        getProb()
+    }
+
     fun onEvent(event: SettingsEvent) {
         when (event) {
-            is SettingsEvent.GetScreens -> {
-
-            }
-
             is SettingsEvent.SelectOutputLocation -> changeOutputLocation(event.outputLocation)
-
 
             else -> {}
         }
@@ -37,19 +34,25 @@ class SettingsViewModel : KoinComponent {
         settingsRepository.changeOutputLocation(outputLocation)
     }
 
-    private fun getScreens(){
+    private fun getProb() {
+        getScreens()
+        getAudioSources()
+        getCameras()
+    }
+
+    private fun getScreens() {
         _state.value = _state.value.copy(
             screens = probRepository.getScreens()
         )
     }
 
-    private fun getAudioSources(){
+    private fun getAudioSources() {
         _state.value = _state.value.copy(
             audioSources = probRepository.getAudioSources()
         )
     }
 
-    private fun getCameras(){
+    private fun getCameras() {
         _state.value = _state.value.copy(
             cameras = probRepository.getCameras()
         )
