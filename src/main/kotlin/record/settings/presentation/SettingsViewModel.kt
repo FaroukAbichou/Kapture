@@ -38,6 +38,9 @@ class SettingsViewModel : KoinComponent {
         getScreens()
         getAudioSources()
         getCameras()
+        println(_state.value.screens)
+        println(_state.value.cameras)
+        println(_state.value.audioSources)
     }
 
     private fun getScreens() {
