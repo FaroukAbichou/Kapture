@@ -1,8 +1,10 @@
 package record.settings.presentation
 
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import core.components.SelectOutputLocationSection
 import record.settings.presentation.event.SettingsEvent
 import record.settings.presentation.state.SettingsState
 
@@ -12,14 +14,13 @@ fun SettingsScreen(
     onEvent : (SettingsEvent) -> Unit,
 ){
 
-    Button(
-        onClick = {
-            onEvent(SettingsEvent.NavigateToHome)
-        }
-    ){
-        Text(
-            "Navigate To home"
-        )
-    }
+    SelectOutputLocationSection(
+        folderLocation = {
+//                onEvent(HomeEvent.SelectOutputLocation)
+        },
+        currentLocation = state.outputLocation,
+        modifier = Modifier
+            .padding(16.dp)
+    )
 
 }
