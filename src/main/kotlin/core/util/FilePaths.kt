@@ -2,7 +2,8 @@ package core.util
 
 
 object FilePaths {
-    val VideosPath = "${System.getProperty("user.home")}/Kapture/Videos"
-    val AudiosPath = "${System.getProperty("user.home")}/Kapture/Audios"
-    val ImagesPath = "${System.getProperty("user.home")}/Kapture/Pictures"
+    var KapturePath = "${System.getProperty("user.home")}/Kapture"
+    val VideosPath = "$KapturePath/Videos"
+    val AudiosPath = "$KapturePath/Audios"
+    val ImagesPath = "$KapturePath/Pictures"
 }

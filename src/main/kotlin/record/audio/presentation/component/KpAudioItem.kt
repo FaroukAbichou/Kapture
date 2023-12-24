@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import record.audio.domain.model.Audio
-import record.home.presentation.component.noRippleClickable
+import core.components.noRippleClickable
 
 @Composable
 fun KpAudioItem(

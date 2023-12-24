@@ -7,6 +7,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import core.components.KpFilterDropdown
+import core.components.KpSortDropdown
 import record.home.presentation.component.KpSearchBar
 import record.image.presentation.event.ImageEvent
 import record.image.presentation.state.ImageState
@@ -17,10 +18,10 @@ fun ImagesSection(
     state: ImageState,
     onEvent: (ImageEvent) -> Unit,
 ) {
-    var searchedImages by remember {
-        mutableStateOf(state.images)
-    }
+    var searchedImages by remember { mutableStateOf(state.images) }
+
     val filterOptions = listOf("All", "Movies", "TV Shows")
+    val sortOptions = listOf("Name", "Date Added", "Size")
 
     var searchQuery by remember {
         mutableStateOf("")
@@ -28,7 +29,7 @@ fun ImagesSection(
 
     Column(
         verticalArrangement = Arrangement.Top,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
     ) {
         Row(
@@ -55,6 +56,21 @@ fun ImagesSection(
                     }
                 }
             )
+
+            KpSortDropdown(
+                modifier = Modifier,
+                sortOptions = sortOptions,
+                onSort = {
+                    searchedImages = when (it) {
+                        "Name" -> searchedImages.sortedBy { audio -> audio.name }
+                        "Date Added" -> searchedImages.sortedBy { audio -> audio.dateCreated }
+                        "Size" -> searchedImages.sortedBy { audio -> audio.size }
+
+                        else -> emptyList()
+                    }
+                }
+            )
+
         }
 
         LazyColumn(

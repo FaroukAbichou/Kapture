@@ -15,8 +15,7 @@ fun VideoScreen(
     onEvent: (VideoEvent) -> Unit,
 ) {
     Scaffold(
-        topBar = {
-        },
+        topBar = {},
         containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
 

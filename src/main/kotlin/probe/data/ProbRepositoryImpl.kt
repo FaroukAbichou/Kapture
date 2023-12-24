@@ -2,6 +2,8 @@ package probe.data
 
 import core.util.FilePaths
 import probe.domain.ProbRepository
+import probe.domain.model.AudioSources
+import probe.domain.model.Camera
 import probe.domain.model.Screen
 import java.io.BufferedReader
 import java.io.File
@@ -61,6 +63,14 @@ class ProbRepositoryImpl : ProbRepository {
                 }
             }
         }
+    }
+
+    override fun getAudioSources(): List<AudioSources> {
+        return emptyList()
+    }
+
+    override fun getCameras(): List<Camera> {
+        return emptyList()
     }
 
 }
