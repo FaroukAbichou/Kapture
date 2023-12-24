@@ -1,11 +1,11 @@
 package probe.domain.model
 
 data class Screen(
-    val id: String,
-    val name: String,
+    override val id: String,
+    override val name: String,
     val width : Int,
     val height : Int,
-){
+) : Device{
     companion object {
         val defaultScreen = Screen(
             id = "0",

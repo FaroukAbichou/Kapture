@@ -1,64 +1,34 @@
 
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import java.awt.FileDialog
-import java.awt.Frame
-import java.awt.event.WindowAdapter
-import java.awt.event.WindowEvent
-import java.io.FilenameFilter
-import javax.swing.SwingUtilities
+import javax.swing.JFrame
 
 @Composable
 fun FileDialog(
     title: String,
     isOpen: MutableState<Boolean>,
     fileExtensions: Set<String>,
-    onResult: (String?) -> Unit
+    onResult: (String?) -> Unit,
 ) {
-    var dialog by remember { mutableStateOf<FileDialog?>(null) }
+    if (isOpen.value) {
+        val frame = JFrame().apply { isVisible = true }
+        val dialog = FileDialog(frame, title, FileDialog.LOAD)
 
-    if (isOpen.value && dialog == null) {
-        SwingUtilities.invokeLater {
-            dialog = FileDialog(null as Frame?, title).apply {
-                isMultipleMode = false
-                mode = FileDialog.LOAD
-                filenameFilter = FilenameFilter { _, name ->
-                    fileExtensions.any { name.endsWith(it) }
-                }
-                isVisible = true
-            }
-            dialog?.addWindowListener(object : WindowAdapter() {
-                override fun windowClosing(e: WindowEvent?) {
-                    println( "FileDialog file: ${dialog?.file}")
-                    val file = dialog?.file
-                    SwingUtilities.invokeLater {
-                        onResult(file)
-                    }
-                    isOpen.value = false
-                    dialog = null
-                }
-            })
-
+        // Set system property for file extension filter on macOS
+        // Note: This might not work on other operating systems
+        System.setProperty("apple.awt.fileDialogForDirectories", "false")
+        if (fileExtensions.isNotEmpty()) {
+            dialog.file = fileExtensions.joinToString(separator = ";") { "*$it" }
         }
+        dialog.isVisible = true
+        isOpen.value = false // Close the dialog after selection
 
-    }
+        val selectedFile = if (dialog.file != null) {
+            "${dialog.directory}${dialog.file}"
+        } else null
 
-    if (!isOpen.value) {
-        dialog?.let {
-            SwingUtilities.invokeLater {
-                it.dispose()
-                dialog = null
-            }
-        }
-    }
-
-    DisposableEffect(Unit) {
-        onDispose {
-            dialog?.let {
-                SwingUtilities.invokeLater {
-                    it.dispose()
-                    dialog = null
-                }
-            }
-        }
+        onResult(selectedFile)
+        frame.dispose() // Dispose the frame to avoid memory leaks
     }
 }
