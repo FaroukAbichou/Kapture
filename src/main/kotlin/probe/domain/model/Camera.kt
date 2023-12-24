@@ -1,6 +1,6 @@
 package probe.domain.model
 
 data class Camera(
-    val id: String,
-    val name: String,
-)
+    override val id: String,
+    override val name: String,
+) : Device

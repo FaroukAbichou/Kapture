@@ -1,82 +1,73 @@
 package record.settings.presentation
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import core.components.SelectOutputLocationSection
+import probe.domain.model.Device
 import record.settings.presentation.event.SettingsEvent
 import record.settings.presentation.state.SettingsState
 
 @Composable
 fun SettingsScreen(
-    state : SettingsState,
-    onEvent : (SettingsEvent) -> Unit,
-){
+    state: SettingsState,
+    onEvent: (SettingsEvent) -> Unit,
+) {
     Scaffold(
         topBar = {},
         bottomBar = {},
         containerColor = MaterialTheme.colorScheme.background,
     ) {
 
-        SelectOutputLocationSection(
-            folderLocation = {
-                onEvent(SettingsEvent.SelectOutputLocation(it))
-            },
-            currentLocation = state.outputLocation,
-            modifier = Modifier
-                .padding(16.dp)
-        )
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
+        Column(
+            modifier = Modifier.fillMaxSize()
         ) {
 
-            Column(
+            SelectOutputLocationSection(
+                folderLocation = {
+                    onEvent(SettingsEvent.SelectOutputLocation(it))
+                },
+                currentLocation = state.outputLocation,
                 modifier = Modifier
-            ){
-                state.screens.forEach {
-                    Text(
-                        text = it.name,
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        modifier = Modifier,
-                    )
-                }
-            }
+                    .padding(16.dp)
+            )
 
-            Column(
-                modifier = Modifier
-            ){
-                state.cameras.forEach {
-                    Text(
-                        text = it.name,
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        modifier = Modifier,
-                    )
-                }
-            }
+            SelectRecordingDevice(state.screens)
+            SelectRecordingDevice(state.cameras)
+            SelectRecordingDevice(state.audioSources)
+        }
 
-            Column(
-                modifier = Modifier
-            ){
-                state.audioSources.forEach {
-                    Text(
-                        text = it.name,
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        modifier = Modifier,
-                    )
-                }
-            }
+    }
+}
+
+@Composable
+fun SelectRecordingDevice(
+    devices : List<Device>
+) {
+
+    Column(
+        modifier = Modifier
+    ) {
+        Text(
+            text = devices.first().javaClass.simpleName + "s",
+            modifier = Modifier,
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.onPrimaryContainer
+        )
+        devices.forEach {
+            Text(
+                text = it.name,
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                modifier = Modifier,
+            )
         }
     }
+
 }
