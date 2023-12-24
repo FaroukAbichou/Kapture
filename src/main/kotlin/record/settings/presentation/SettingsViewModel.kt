@@ -36,4 +36,22 @@ class SettingsViewModel : KoinComponent {
     private fun changeOutputLocation(outputLocation: String) {
         settingsRepository.changeOutputLocation(outputLocation)
     }
+
+    private fun getScreens(){
+        _state.value = _state.value.copy(
+            screens = probRepository.getScreens()
+        )
+    }
+
+    private fun getAudioSources(){
+        _state.value = _state.value.copy(
+            audioSources = probRepository.getAudioSources()
+        )
+    }
+
+    private fun getCameras(){
+        _state.value = _state.value.copy(
+            cameras = probRepository.getCameras()
+        )
+    }
 }
