@@ -13,9 +13,9 @@ import record.settings.presentation.state.SettingsState
 
 class SettingsViewModel : KoinComponent {
 
+    private val settingsRepository: SettingsRepository by inject()
     private val imageRepository: ImageRepository by inject()
     private val probRepository: ProbRepository by inject()
-    private val settingsRepository: SettingsRepository by inject()
 
     private val _state = MutableStateFlow(SettingsState())
     val state: StateFlow<SettingsState> = _state.asStateFlow()
@@ -34,8 +34,6 @@ class SettingsViewModel : KoinComponent {
     }
 
     private fun changeOutputLocation(outputLocation: String) {
-        _state.value = _state.value.copy(
-            outputLocation = outputLocation
-        )
+        settingsRepository.changeOutputLocation(outputLocation)
     }
 }
