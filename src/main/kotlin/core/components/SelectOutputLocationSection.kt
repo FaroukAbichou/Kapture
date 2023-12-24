@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -20,11 +22,8 @@ fun SelectOutputLocationSection(
     currentLocation: String,
     folderLocation: (String) -> Unit
 ) {
-    var showFileDialog = remember {
+    val showFileDialog = remember {
         mutableStateOf(false)
-    }
-    var folderLocation by remember {
-        mutableStateOf("")
     }
 
     Column(
@@ -88,10 +87,8 @@ fun SelectOutputLocationSection(
         fileExtensions = VideoExtensions,
         onResult = {
             if (it != null) {
-                folderLocation = it
-                println( "Selected folder: $it")
+                folderLocation(it)
             }
-            showFileDialog.value = false
         }
     )
 }
