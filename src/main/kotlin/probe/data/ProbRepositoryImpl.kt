@@ -22,7 +22,6 @@ class ProbRepositoryImpl : ProbRepository {
         val output = reader.readText()
         reader.close()
 
-        // Regex pattern for screens
         val screenRegex = """\[(\d+)\] Capture screen (\d+)""".toRegex()
 
         return screenRegex.findAll(output).map { matchResult ->
@@ -75,13 +74,11 @@ class ProbRepositoryImpl : ProbRepository {
         val output = reader.readText()
         reader.close()
 
-        // Regex pattern for audio sources
         val audioSourceRegex = """\[(\d+)\] (.+)""".toRegex()
 
         return audioSourceRegex.findAll(output).mapNotNull { matchResult ->
             val deviceName = matchResult.groupValues[2]
 
-            // Filter based on names that indicate audio sources
             if (deviceName.contains("Microphone", ignoreCase = true) ||
                 deviceName.contains("Audio", ignoreCase = true)) {
                 AudioSource(
@@ -102,13 +99,11 @@ class ProbRepositoryImpl : ProbRepository {
         val output = reader.readText()
         reader.close()
 
-        // Updated regex pattern to match the camera names
         val cameraRegex = """\[(\d+)\] (.+)""".toRegex()
 
         return cameraRegex.findAll(output).mapNotNull { matchResult ->
             val deviceName = matchResult.groupValues[2]
 
-            // Use a heuristic based on device names to filter out non-camera devices
             if (deviceName.contains("Camera", ignoreCase = true) ||
                 deviceName.contains("Webcam", ignoreCase = true)) {
                 Camera(
