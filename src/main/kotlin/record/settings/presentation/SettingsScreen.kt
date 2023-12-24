@@ -7,7 +7,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import core.components.SelectOutputLocationSection
-import core.util.FilePaths
 import record.settings.presentation.event.SettingsEvent
 import record.settings.presentation.state.SettingsState
 
@@ -24,12 +23,11 @@ fun SettingsScreen(
 
         SelectOutputLocationSection(
             folderLocation = {
-                onEvent(SettingsEvent.SelectOutputLocation(FilePaths.KapturePath))
+                onEvent(SettingsEvent.SelectOutputLocation(it))
             },
             currentLocation = state.outputLocation,
             modifier = Modifier
                 .padding(16.dp)
         )
     }
-
 }
