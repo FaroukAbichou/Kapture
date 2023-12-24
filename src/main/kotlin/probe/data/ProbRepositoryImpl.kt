@@ -14,26 +14,26 @@ import java.util.*
 class ProbRepositoryImpl : ProbRepository {
 
     override fun getScreens(): List<Screen> {
-        val command = listOf("/usr/sbin/system_profiler", "SPDisplaysDataType")
+        val command = listOf("ffmpeg", "-f", "avfoundation", "-list_devices", "true", "-i", "")
         val process = ProcessBuilder(command).start()
+        process.waitFor()
 
-        val reader = BufferedReader(InputStreamReader(process.inputStream))
+        val reader = BufferedReader(InputStreamReader(process.errorStream))
         val output = reader.readText()
         reader.close()
 
-        var screenNumber = -1
+        // Regex pattern for screens
+        val screenRegex = """\[(\d+)\] Capture screen (\d+)""".toRegex()
 
-        val resolutionRegex = "Resolution: (\\d+) x (\\d+)".toRegex()
-        val screens = resolutionRegex.findAll(output).map { matchResult ->
-            screenNumber++
+        return screenRegex.findAll(output).map { matchResult ->
+            val screenNumber = matchResult.groupValues[2]
             Screen(
-                id =   screenNumber.toString(),
-                name = matchResult.groupValues[2],
-                width = matchResult.groupValues[1].toInt(),
-                height = matchResult.groupValues[2].toInt()
+                id = UUID.randomUUID().toString(),
+                name = "Capture screen $screenNumber",
+                height = 0,
+                width = 0
             )
         }.toList()
-        return screens
     }
 
     fun getSupportedPixelFormats(): List<String> {
@@ -75,12 +75,20 @@ class ProbRepositoryImpl : ProbRepository {
         val output = reader.readText()
         reader.close()
 
-        val audioSourceRegex = """\[AVFoundation input device @ 0x[a-f0-9]+\] \[1\] "(.+)" """.toRegex()
-        return audioSourceRegex.findAll(output).map { matchResult ->
-            AudioSource(
-                id= UUID.randomUUID().toString(),
-                name = matchResult.groupValues[1]
-            )
+        // Regex pattern for audio sources
+        val audioSourceRegex = """\[(\d+)\] (.+)""".toRegex()
+
+        return audioSourceRegex.findAll(output).mapNotNull { matchResult ->
+            val deviceName = matchResult.groupValues[2]
+
+            // Filter based on names that indicate audio sources
+            if (deviceName.contains("Microphone", ignoreCase = true) ||
+                deviceName.contains("Audio", ignoreCase = true)) {
+                AudioSource(
+                    id = UUID.randomUUID().toString(),
+                    name = deviceName
+                )
+            } else null
         }.toList()
     }
 
@@ -98,13 +106,11 @@ class ProbRepositoryImpl : ProbRepository {
         val cameraRegex = """\[(\d+)\] (.+)""".toRegex()
 
         return cameraRegex.findAll(output).mapNotNull { matchResult ->
-            // Check if the captured group is a camera (and not a screen or audio source)
-            val deviceIndex = matchResult.groupValues[1]
             val deviceName = matchResult.groupValues[2]
 
-            // Assuming camera indexes are less than a certain number (e.g., less than 10)
-            // Adjust this based on how your system differentiates between cameras and screens
-            if ((deviceIndex.toIntOrNull() ?: -1) < 10) {
+            // Use a heuristic based on device names to filter out non-camera devices
+            if (deviceName.contains("Camera", ignoreCase = true) ||
+                deviceName.contains("Webcam", ignoreCase = true)) {
                 Camera(
                     id = UUID.randomUUID().toString(),
                     name = deviceName
