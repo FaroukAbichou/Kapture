@@ -1,11 +1,11 @@
 package record.audio.presentation
 
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import core.components.KpProgressIndicator
 import record.audio.presentation.component.AudiosSection
 import record.audio.presentation.event.AudioEvent
 import record.audio.presentation.state.AudioState
@@ -37,7 +37,7 @@ fun AudiosScreenContent(
     onEvent: (AudioEvent) -> Unit
 ){
     if (state.isLoading){
-        CircularProgressIndicator()
+        KpProgressIndicator()
     }else {
         AudiosSection(
             modifier = modifier,

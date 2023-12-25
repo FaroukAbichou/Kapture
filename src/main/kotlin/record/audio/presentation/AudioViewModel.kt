@@ -59,7 +59,7 @@ class AudioViewModel : KoinComponent {
                 .onSuccess {
                     _state.value = _state.value.copy(
                         isLoading = false,
-                        audios = it
+                        audios = it,
                     )
                 }
                 .onFailure {

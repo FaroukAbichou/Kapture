@@ -8,6 +8,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import core.components.KpProgressIndicator
 import core.components.SelectOutputLocationSection
 import record.settings.presentation.component.SelectRecordingDevice
 import record.settings.presentation.event.SettingsEvent
@@ -23,11 +24,25 @@ fun SettingsScreen(
         bottomBar = {},
         containerColor = MaterialTheme.colorScheme.background,
     ) { paddingValues ->
-
+        SettingsScreenContent(
+            modifier = Modifier.padding(paddingValues),
+            state = state,
+            onEvent = onEvent
+        )
+    }
+}
+@Composable
+fun SettingsScreenContent(
+    modifier: Modifier,
+    state: SettingsState,
+    onEvent: (SettingsEvent) -> Unit
+){
+    if (state.isLoading){
+        KpProgressIndicator()
+    } else{
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
-                .padding(paddingValues)
         ) {
             SelectOutputLocationSection(
                 folderLocation = {
@@ -38,10 +53,18 @@ fun SettingsScreen(
                     .padding(16.dp)
             )
 
-            SelectRecordingDevice(state.screens)
-            SelectRecordingDevice(state.cameras)
-            SelectRecordingDevice(state.audioSources)
+            SelectRecordingDevice(
+                defaultDevice = state.selectedDevicesState.selectedScreen,
+                devices = state.screens
+            )
+            SelectRecordingDevice(
+                defaultDevice = state.selectedDevicesState.selectedCamera,
+                state.cameras
+            )
+            SelectRecordingDevice(
+                defaultDevice = state.selectedDevicesState.selectedAudioSource,
+                state.audioSources
+            )
         }
-
     }
 }

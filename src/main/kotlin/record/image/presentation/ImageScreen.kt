@@ -5,6 +5,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import core.components.KpProgressIndicator
 import record.image.presentation.component.ImagesSection
 import record.image.presentation.event.ImageEvent
 import record.image.presentation.state.ImageState
@@ -21,11 +22,15 @@ fun ImageScreen(
         containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
 
-        ImagesSection(
-            modifier = Modifier
-                .padding(paddingValues),
-            state = state,
-            onEvent = onEvent
-        )
+        if (state.isLoading) {
+            KpProgressIndicator()
+        } else {
+            ImagesSection(
+                modifier = Modifier
+                    .padding(paddingValues),
+                state = state,
+                onEvent = onEvent
+            )
+        }
     }
 }
