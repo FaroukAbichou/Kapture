@@ -6,11 +6,8 @@ import record.video.domain.model.RecordSettings
 
 
 interface AudioRepository {
-    fun getAudioByPath(filePath: String): List<Audio>
+    fun getAudioByPath(filePath: String): Result<List<Audio>>
     fun recordAudioWithTimeout(config: RecordSettings?)
-    fun startAudioRecording(
-        config: RecordSettings,
-        selectedScreen: Screen
-    )
+    fun startAudioRecording(config: RecordSettings, selectedScreen: Screen)
     fun stopAudioRecording()
 }

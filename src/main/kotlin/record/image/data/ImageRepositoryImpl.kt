@@ -14,17 +14,20 @@ import javax.imageio.ImageIO
 
 class ImageRepositoryImpl : ImageRepository {
 
-    override fun getImageByPath(filePath: String): List<Image> {
+    override fun getImageByPath(filePath: String): Result<List<Image>> {
         val images = getFilesWithExtension(filePath, ImageExtensions)
-
-        return images.map { path ->
-            Image(
-                name = path.fileName.toString(),
-                path = path.toString(),
-                size = getFileSize(path),
-                dateCreated = getFileDate(path),
-                thumbnail = getImageThumbnail(path)
-            )
+        return try {
+            Result.success(images.map { path ->
+                Image(
+                    name = path.fileName.toString(),
+                    path = path.toString(),
+                    size = getFileSize(path),
+                    dateCreated = getFileDate(path),
+                    thumbnail = getImageThumbnail(path)
+                )
+            })
+        } catch (e: Exception) {
+            Result.failure(e)
         }
     }
 

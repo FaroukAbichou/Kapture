@@ -5,12 +5,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import core.components.SelectOutputLocationSection
-import probe.domain.model.Device
+import record.settings.presentation.component.SelectRecordingDevice
 import record.settings.presentation.event.SettingsEvent
 import record.settings.presentation.state.SettingsState
 
@@ -23,12 +22,13 @@ fun SettingsScreen(
         topBar = {},
         bottomBar = {},
         containerColor = MaterialTheme.colorScheme.background,
-    ) {
+    ) { paddingValues ->
 
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
         ) {
-
             SelectOutputLocationSection(
                 folderLocation = {
                     onEvent(SettingsEvent.SelectOutputLocation(it))
@@ -44,30 +44,4 @@ fun SettingsScreen(
         }
 
     }
-}
-
-@Composable
-fun SelectRecordingDevice(
-    devices : List<Device>
-) {
-
-    Column(
-        modifier = Modifier.padding(24.dp)
-    ) {
-        Text(
-            text = devices.first().javaClass.simpleName + "s",
-            modifier = Modifier,
-            style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onPrimaryContainer
-        )
-        devices.forEach {
-            Text(
-                text = it.name,
-                style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.onPrimaryContainer,
-                modifier = Modifier,
-            )
-        }
-    }
-
 }

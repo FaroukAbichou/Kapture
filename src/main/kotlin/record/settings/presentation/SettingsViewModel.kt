@@ -1,5 +1,7 @@
 package record.settings.presentation
 
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,6 +20,7 @@ class SettingsViewModel : KoinComponent {
     private val _state = MutableStateFlow(SettingsState())
     val state: StateFlow<SettingsState> = _state.asStateFlow()
 
+    val coroutineScope = CoroutineScope(Dispatchers.IO)
     init {
         getProb()
     }

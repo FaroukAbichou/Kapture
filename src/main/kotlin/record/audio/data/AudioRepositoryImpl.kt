@@ -14,10 +14,9 @@ import java.io.InputStreamReader
 import java.nio.file.Path
 
 class AudioRepositoryImpl : AudioRepository {
-    override fun getAudioByPath(filePath: String): List<Audio> {
+    override fun getAudioByPath(filePath: String): Result<List<Audio>> {
         val audios = getFilesWithExtension(filePath, AudioExtensions)
-
-        return audios.map { path ->
+        val result = audios.map { path ->
             Audio(
                 name = path.fileName.toString(),
                 path = path.toString(),
@@ -26,6 +25,11 @@ class AudioRepositoryImpl : AudioRepository {
                 duration = getAudioDuration(path),
                 thumbnail = getDefaultAudioThumbnail()
             )
+        }
+        return try {
+            Result.success(result)
+        }catch (e:Exception){
+            Result.failure(e)
         }
     }
 

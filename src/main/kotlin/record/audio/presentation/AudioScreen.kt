@@ -1,6 +1,7 @@
 package record.audio.presentation
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -21,9 +22,25 @@ fun AudioScreen(
         containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
 
+        AudiosScreenContent(
+            modifier = Modifier.padding(paddingValues),
+            state = state,
+            onEvent = onEvent
+        )
+    }
+}
+
+@Composable
+fun AudiosScreenContent(
+    modifier :Modifier,
+    state: AudioState,
+    onEvent: (AudioEvent) -> Unit
+){
+    if (state.isLoading){
+        CircularProgressIndicator()
+    }else {
         AudiosSection(
-            modifier = Modifier
-                .padding(paddingValues),
+            modifier = modifier,
             state = state,
             onEvent = onEvent
         )

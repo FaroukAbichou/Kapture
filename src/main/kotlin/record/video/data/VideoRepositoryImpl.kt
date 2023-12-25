@@ -26,28 +26,36 @@ import java.util.concurrent.Future
 
 class VideoRepositoryImpl : VideoRepository {
 
-    override fun getVideosByPath(filePath: String): List<Video> {
+    override fun getVideosByPath(filePath: String): Result<List<Video>> {
         val videos = getFilesWithExtension(filePath, VideoExtensions)
 
-        return videos.map { path ->
-            Video(
-                name = path.fileName.toString(),
-                path = path.toString(),
-                size = getFileSize(path),
-                dateCreated = getFileDate(path),
-                duration = getVideoDuration(path),
-                thumbnail = getVideoThumbnail(path),
+        return try {
+            Result.success(
+                videos.map { path ->
+                    Video(
+                        name = path.fileName.toString(),
+                        path = path.toString(),
+                        size = getFileSize(path),
+                        dateCreated = getFileDate(path),
+                        duration = getVideoDuration(path),
+                        thumbnail = getVideoThumbnail(path),
+                    )
+                }
             )
+        } catch (e: Exception) {
+            Result.failure(e)
         }
     }
 
     private fun getVideoDuration(path: Path): Double {
         try {
-            val processBuilder = ProcessBuilder("ffprobe",
+            val processBuilder = ProcessBuilder(
+                "ffprobe",
                 "-v", "error",
                 "-show_entries", "format=duration",
                 "-of", "default=noprint_wrappers=1:nokey=1",
-                path.toString())
+                path.toString()
+            )
             processBuilder.redirectErrorStream(true)
             val process = processBuilder.start()
 
@@ -65,11 +73,13 @@ class VideoRepositoryImpl : VideoRepository {
     private fun getVideoThumbnail(path: Path, timestamp: String = "00:00:02"): ImageBitmap {
         val thumbnailPath = Paths.get("thumbnail.png")
         try {
-            val processBuilder = ProcessBuilder("ffmpeg",
+            val processBuilder = ProcessBuilder(
+                "ffmpeg",
                 "-i", path.toString(),
                 "-ss", timestamp,
                 "-vframes", "1",
-                thumbnailPath.toString())
+                thumbnailPath.toString()
+            )
             val process = processBuilder.start()
             process.waitFor()
 
@@ -92,7 +102,7 @@ class VideoRepositoryImpl : VideoRepository {
     override fun recordScreenWithTimeout(
         config: RecordSettings,
         windowPlacement: WindowPlacement?,
-        selectedScreen: Screen
+        selectedScreen: Screen,
     ) {
         val cropFilter = createCropFilter(selectedScreen, windowPlacement)
         val outputPath = File(FilePaths.VideosPath, config.outputFile + ".mp4").path
@@ -130,7 +140,7 @@ class VideoRepositoryImpl : VideoRepository {
     override fun startRecording(
         config: RecordSettings,
         windowPlacement: WindowPlacement,
-        selectedScreen: Screen
+        selectedScreen: Screen,
     ) {
     }
 
@@ -153,7 +163,7 @@ class VideoRepositoryImpl : VideoRepository {
 
     private fun createCropFilter(
         screen: Screen,
-        windowPlacement: WindowPlacement?
+        windowPlacement: WindowPlacement?,
     ) = windowPlacement?.let {
         "crop=${it.width}:${it.height}:${
             if (it.x < 0) {

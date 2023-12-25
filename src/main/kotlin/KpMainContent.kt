@@ -1,3 +1,4 @@
+
 import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -5,15 +6,11 @@ import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.navigator.tab.CurrentTab
 import cafe.adriel.voyager.navigator.tab.TabNavigator
 import core.components.KpSideNavigationBar
-import record.audio.presentation.AudiosTab
-import record.home.presentation.HomeTab
-import record.image.presentation.ImagesTab
-import record.settings.presentation.SettingsTab
-import record.video.presentation.VideosTab
+import core.navigation.NavGraph
 
 @Composable
 fun KpMainContent() {
-    TabNavigator(HomeTab) { navigator ->
+    TabNavigator(NavGraph.HomeTab) { navigator ->
         Row(
             modifier = Modifier,
             verticalAlignment = Alignment.CenterVertically
@@ -21,20 +18,20 @@ fun KpMainContent() {
             KpSideNavigationBar(
                 modifier = Modifier,
                 onHomeClick = {
-                    navigator.current = HomeTab
+                    navigator.current = NavGraph.HomeTab
                 },
                 onVideoClick = {
-                    navigator.current = VideosTab
+                    navigator.current = NavGraph.VideosTab
                 },
                 onImageClick = {
-                    navigator.current = ImagesTab
+                    navigator.current = NavGraph.ImagesTab
                 },
                 onAudioClick = {
-                    navigator.current = AudiosTab
+                    navigator.current = NavGraph.AudiosTab
 
                 },
                 onSettingsClick = {
-                    navigator.current = SettingsTab
+                    navigator.current = NavGraph.SettingsTab
                 },
             )
 
@@ -42,3 +39,4 @@ fun KpMainContent() {
         }
     }
 }
+

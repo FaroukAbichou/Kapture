@@ -6,7 +6,7 @@ import record.video.domain.model.RecordSettings
 import record.video.domain.model.Video
 
 interface VideoRepository  {
-    fun getVideosByPath(filePath: String): List<Video>
+    fun getVideosByPath(filePath: String): Result<List<Video>>
     fun recordScreenWithTimeout(
         config: RecordSettings,
         windowPlacement: WindowPlacement?,
