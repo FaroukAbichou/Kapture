@@ -1,11 +1,11 @@
 package record.video.presentation
 
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import core.components.KpProgressIndicator
 import record.video.presentation.component.VideosSection
 import record.video.presentation.event.VideoEvent
 import record.video.presentation.state.VideoState
@@ -34,7 +34,7 @@ fun VideoScreenContent(
     onEvent: (VideoEvent) -> Unit
 ){
     if (state.isLoading){
-        CircularProgressIndicator()
+        KpProgressIndicator()
     } else{
         VideosSection(
             modifier = modifier,

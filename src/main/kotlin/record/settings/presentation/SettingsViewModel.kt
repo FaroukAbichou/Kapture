@@ -5,6 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import probe.domain.ProbRepository
@@ -21,6 +22,7 @@ class SettingsViewModel : KoinComponent {
     val state: StateFlow<SettingsState> = _state.asStateFlow()
 
     val coroutineScope = CoroutineScope(Dispatchers.IO)
+
     init {
         getProb()
     }
@@ -38,26 +40,42 @@ class SettingsViewModel : KoinComponent {
     }
 
     private fun getProb() {
+        _state.value = _state.value.copy(
+            isLoading = true
+        )
         getScreens()
-        getAudioSources()
-        getCameras()
+//        getAudioSources()
+//        getCameras()
+
     }
 
     private fun getScreens() {
         _state.value = _state.value.copy(
-            screens = probRepository.getScreens()
+            isLoading = true
         )
+        coroutineScope.launch {
+            _state.value = _state.value.copy(
+                screens = probRepository.getScreens(),
+                audioSources = probRepository.getAudioSources(),
+                cameras = probRepository.getCameras(),
+                isLoading = false
+            )
+        }
     }
 
-    private fun getAudioSources() {
-        _state.value = _state.value.copy(
-            audioSources = probRepository.getAudioSources()
-        )
-    }
+//    private fun getAudioSources() {
+//        coroutineScope.launch {
+//            _state.value = _state.value.copy(
+//                audioSources = probRepository.getAudioSources(),
+//            )
+//        }
+//    }
 
-    private fun getCameras() {
-        _state.value = _state.value.copy(
-            cameras = probRepository.getCameras()
-        )
-    }
+//    private fun getCameras() {
+//        coroutineScope.launch {
+//            _state.value = _state.value.copy(
+//                cameras = probRepository.getCameras(),
+//            )
+//        }
+//    }
 }

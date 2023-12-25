@@ -25,11 +25,11 @@ class VideoViewModel : KoinComponent {
     private val _state = MutableStateFlow(VideoState())
     val state: StateFlow<VideoState> = _state.asStateFlow()
 
-    val coroutineScope = CoroutineScope(Dispatchers.IO)
+    private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
     init {
         createDirectory()
-        getScreens()
+//        getScreens()
         getVideosByPath()
     }
 
@@ -37,7 +37,7 @@ class VideoViewModel : KoinComponent {
         when (event) {
             is VideoEvent.Record -> {
                 videoRepository.recordScreenWithTimeout(
-                    event.config,
+                    config = event.config,
                     windowPlacement = event.windowPlacement,
                     selectedScreen = _state.value.selectedScreen,
                 )
@@ -122,10 +122,6 @@ class VideoViewModel : KoinComponent {
 
     }
 
-    private fun createDirectory() {
-        probRepository.createDirectoriesIfNotExist()
-    }
-
     fun onRecordingFrameEvent(event: RecordingFrameEvent) {
         when (event) {
             is RecordingFrameEvent.UpdateWindowPlacement -> {
@@ -147,6 +143,10 @@ class VideoViewModel : KoinComponent {
         }
     }
 
+    private fun createDirectory() {
+//        probRepository.createDirectoriesIfNotExist()
+    }
+
     private fun selectScreen(screenId: String) {
         val selectedScreen = probRepository.getScreens().find { it.id == screenId } ?: return
         _state.value = _state.value.copy(
@@ -157,7 +157,6 @@ class VideoViewModel : KoinComponent {
     private fun getScreens() {
         _state.value = _state.value.copy(
             screens = probRepository.getScreens(),
-            isLoading = false,
         )
     }
 
