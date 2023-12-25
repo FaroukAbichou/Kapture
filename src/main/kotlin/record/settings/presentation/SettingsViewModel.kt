@@ -46,23 +46,22 @@ class SettingsViewModel : KoinComponent {
         _state.value = _state.value.copy(
             isLoading = true
         )
-        val screens = probRepository.getScreens()
-        val cameras = probRepository.getCameras()
-        val audioSources = probRepository.getAudioSources()
-
         coroutineScope.launch {
+            val screens = probRepository.getScreens()
+            val cameras = probRepository.getCameras()
+            val audioSources = probRepository.getAudioSources()
             _state.value = _state.value.copy(
                 screens = screens,
                 cameras = cameras,
                 audioSources = audioSources,
                 isLoading = false
             )
+            selectDefaultDevices(
+                screen = screens.first(),
+                camera = cameras.first(),
+                audioSource = audioSources.first()
+            )
         }
-        selectDefaultDevices(
-            screen = screens.first(),
-            camera = cameras.first(),
-            audioSource = audioSources.first()
-        )
 //        selectDefaultDevices()
 //        getScreens()
 //        getAudioSources()
