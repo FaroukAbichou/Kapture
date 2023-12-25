@@ -1,9 +1,12 @@
 package record.video.presentation
 
 import core.util.FilePaths
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import probe.domain.ProbRepository
@@ -22,6 +25,8 @@ class VideoViewModel : KoinComponent {
     private val _state = MutableStateFlow(VideoState())
     val state: StateFlow<VideoState> = _state.asStateFlow()
 
+    val coroutineScope = CoroutineScope(Dispatchers.IO)
+
     init {
         createDirectory()
         getScreens()
@@ -33,7 +38,7 @@ class VideoViewModel : KoinComponent {
             is VideoEvent.Record -> {
                 videoRepository.recordScreenWithTimeout(
                     event.config,
-                    windowPlacement= event.windowPlacement,
+                    windowPlacement = event.windowPlacement,
                     selectedScreen = _state.value.selectedScreen,
                 )
             }
@@ -77,9 +82,7 @@ class VideoViewModel : KoinComponent {
             }
 
             is VideoEvent.GetVideosByPath -> {
-                _state.value = _state.value.copy(
-                    videos = videoRepository.getVideosByPath(event.path),
-                )
+                getVideosByPath(event.path)
             }
 
             is VideoEvent.ChangeVideosLocation -> {
@@ -91,18 +94,32 @@ class VideoViewModel : KoinComponent {
             is VideoEvent.DeleteVideo -> {
 
             }
+
             is VideoEvent.SelectVideo -> {
 
             }
         }
     }
 
-    private fun getVideosByPath() {
+    private fun getVideosByPath(path:String = FilePaths.VideosPath) {
         _state.value = _state.value.copy(
-            videos = videoRepository.getVideosByPath(
-                FilePaths.VideosPath
-            ),
+            isLoading = true
         )
+        coroutineScope.launch {
+            videoRepository.getVideosByPath(path)
+                .onSuccess {
+                    _state.value = _state.value.copy(
+                        videos = it,
+                        isLoading = false
+                    )
+                }
+                .onFailure {
+                    _state.value = _state.value.copy(
+                        isLoading = false
+                    )
+                }
+        }
+
     }
 
     private fun createDirectory() {
@@ -143,5 +160,5 @@ class VideoViewModel : KoinComponent {
             isLoading = false,
         )
     }
-    
+
 }
