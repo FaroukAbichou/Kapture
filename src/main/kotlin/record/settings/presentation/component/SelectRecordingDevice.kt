@@ -17,9 +17,10 @@ import probe.domain.model.Device
 
 @Composable
 fun SelectRecordingDevice(
+    defaultDevice: Device?,
     devices: List<Device>,
 ) {
-    var selectedDevice by remember { mutableStateOf(devices.first()) }
+    var selectedDevice by remember { mutableStateOf(defaultDevice) }
     val colors = MaterialTheme.colorScheme
     Column(
         modifier = Modifier.padding(8.dp),
@@ -42,8 +43,6 @@ fun SelectRecordingDevice(
                     colors = RadioButtonDefaults.colors(
                         selectedColor = colors.onPrimaryContainer,
                         unselectedColor = Color.Gray,
-//                        disabledSelectedColor = ,
-//                        disabledUnselectedColor =
                     ),
                     onClick = { selectedDevice = device }
                 )

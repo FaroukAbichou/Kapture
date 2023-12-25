@@ -53,9 +53,18 @@ fun SettingsScreenContent(
                     .padding(16.dp)
             )
 
-            SelectRecordingDevice(state.screens)
-            SelectRecordingDevice(state.cameras)
-            SelectRecordingDevice(state.audioSources)
+            SelectRecordingDevice(
+                defaultDevice = state.selectedDevicesState.selectedScreen,
+                devices = state.screens
+            )
+            SelectRecordingDevice(
+                defaultDevice = state.selectedDevicesState.selectedCamera,
+                state.cameras
+            )
+            SelectRecordingDevice(
+                defaultDevice = state.selectedDevicesState.selectedAudioSource,
+                state.audioSources
+            )
         }
     }
 }

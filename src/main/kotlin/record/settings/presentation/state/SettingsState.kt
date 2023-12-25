@@ -10,6 +10,13 @@ data class SettingsState(
     val screens: List<Screen> = emptyList(),
     val audioSources: List<AudioSource> = emptyList(),
     val cameras: List<Camera> = emptyList(),
-    val selectedScreen: Screen = Screen.defaultScreen,
-    val outputLocation : String = FilePaths.KapturePath
-)
+    val outputLocation : String = FilePaths.KapturePath,
+
+    val selectedDevicesState : SelectedDevicesState = SelectedDevicesState()
+){
+    data class SelectedDevicesState(
+        val selectedScreen: Screen? = null,
+        val selectedCamera: Camera? = null,
+        val selectedAudioSource: AudioSource? = null,
+    )
+}
