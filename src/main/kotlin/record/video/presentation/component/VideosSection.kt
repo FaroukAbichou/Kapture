@@ -19,7 +19,6 @@ fun VideosSection(
     state: VideoState,
     onEvent: (VideoEvent) -> Unit,
 ) {
-
     var searchedVideos by remember {
         mutableStateOf(state.videos)
     }
@@ -30,6 +29,13 @@ fun VideosSection(
         mutableStateOf("")
     }
 
+    LaunchedEffect(Unit){
+        onEvent(
+            VideoEvent.SelectScreen(
+                screenId = state.screens.first().id
+            )
+        )
+    }
     Column(
         verticalArrangement = Arrangement.Top,
         modifier = modifier

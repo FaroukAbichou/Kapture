@@ -55,7 +55,7 @@ class VideoViewModel : KoinComponent {
             is VideoEvent.StartRecording -> {
                 videoRepository.startRecording(
                     windowPlacement = event.bounds,
-                    selectedScreen = _state.value.screens.first(),
+                    selectedScreen = _state.value.selectedScreen,
                 )
             }
 
@@ -64,7 +64,9 @@ class VideoViewModel : KoinComponent {
             }
 
             is VideoEvent.SelectScreen -> {
-                selectScreen(event.screenId)
+                selectScreen(
+                    screenId = event.screenId
+                )
             }
 
             is VideoEvent.RecordAllWindows -> {
@@ -101,7 +103,7 @@ class VideoViewModel : KoinComponent {
         }
     }
 
-    private fun getVideosByPath(path:String = FilePaths.VideosPath) {
+    private fun getVideosByPath(path: String = FilePaths.VideosPath) {
         _state.value = _state.value.copy(
             isLoading = true
         )
@@ -148,10 +150,13 @@ class VideoViewModel : KoinComponent {
     }
 
     private fun selectScreen(screenId: String) {
-        val selectedScreen = probRepository.getScreens().find { it.id == screenId } ?: return
-        _state.value = _state.value.copy(
-            selectedScreen = selectedScreen,
-        )
+        _state.value.screens.find { screen ->
+            screen.id == screenId
+        }?.let {
+            _state.value = _state.value.copy(
+                selectedScreen = it,
+            )
+        }
     }
 
     private fun getScreens() {
