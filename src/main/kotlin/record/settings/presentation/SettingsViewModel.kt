@@ -32,7 +32,8 @@ class SettingsViewModel : KoinComponent {
 
     fun onEvent(event: SettingsEvent) {
         when (event) {
-            is SettingsEvent.SelectOutputLocation -> changeOutputLocation(event.outputLocation)
+            is SettingsEvent.SelectOutputLocation ->
+                changeOutputLocation(event.outputLocation)
 
             else -> {}
         }
