@@ -30,7 +30,7 @@ class VideoViewModel : KoinComponent {
 
     init {
         createDirectory()
-//        getScreens()
+        getScreens()
         getVideosByPath()
     }
 
@@ -38,7 +38,6 @@ class VideoViewModel : KoinComponent {
         when (event) {
             is VideoEvent.Record -> {
                 videoRepository.startRecording(
-                    null,
                     null,
                     selectedScreen = _state.value.selectedScreen,
                 )
@@ -55,9 +54,8 @@ class VideoViewModel : KoinComponent {
 
             is VideoEvent.StartRecording -> {
                 videoRepository.startRecording(
-                    config = event.config,
                     windowPlacement = event.bounds,
-                    selectedScreen = _state.value.selectedScreen,
+                    selectedScreen = _state.value.screens.first(),
                 )
             }
 

@@ -41,7 +41,6 @@ fun VideoScreenContent(
             state = state,
             onEvent = onEvent
         )
-
     }
 
 }

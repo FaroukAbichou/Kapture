@@ -102,7 +102,6 @@ class VideoRepositoryImpl : VideoRepository {
     private var ffmpegProcess: Process? = null
 
     override fun startRecording(
-        config: RecordSettings?,
         windowPlacement: WindowPlacement?,
         selectedScreen: Screen,
     ) {
@@ -112,8 +111,9 @@ class VideoRepositoryImpl : VideoRepository {
             /* child = */ TimeHelper.getRecordingOutputFileName() + ".mp4"
         ).path
 
-        val configuration = config ?: RecordSettings.default
+        val configuration = RecordSettings.default
 
+        println(outputPath)
         val pb = ProcessBuilder().apply {
             command(
                 FFmpegPath,

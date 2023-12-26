@@ -15,7 +15,6 @@ interface VideoRepository  {
         selectedScreen: Screen
     )
     fun startRecording(
-        config: RecordSettings?,
         windowPlacement: WindowPlacement?,
         selectedScreen: Screen
     )

@@ -13,7 +13,7 @@ sealed class VideoEvent {
     data class SelectScreen(val screenId: String) : VideoEvent()
     data class ChangeVideosLocation(val path: String) : VideoEvent()
     data class RecordAllWindows(val config: RecordSettings) : VideoEvent()
-    data class StartRecording(val config: RecordSettings,val bounds: WindowPlacement) : VideoEvent()
+    data class StartRecording(val bounds: WindowPlacement?) : VideoEvent()
     data object Record : VideoEvent()
     data class RecordSection(val config: RecordSettings, val windowPlacement: WindowPlacement?) : VideoEvent()
 }

@@ -47,7 +47,7 @@ fun RecordButtonsGrid(
 //            )
             RecordOptionButton(
                 text = "Record",
-                onClick = { onEvent(VideoEvent.Record) },
+                onClick = { onEvent(VideoEvent.StartRecording(null)) },
                 imageResource = ImageResource.lockDisplay,
                 modifier = Modifier
                     .padding(8.dp)
