@@ -1,14 +1,14 @@
 package probe.screen.data
 
-import core.util.FilePaths
 import probe.screen.domain.ScreenRepository
 import probe.screen.domain.model.Screen
 import java.io.BufferedReader
-import java.io.File
 import java.io.InputStreamReader
 
 
 class ScreenRepositoryImpl : ScreenRepository {
+
+    private fun getOperatingSystem(): String = System.getProperty("os.name").toLowerCase()
 
     override fun getScreens(): List<Screen> {
         val command = listOf("ffmpeg", "-f", "avfoundation", "-list_devices", "true", "-i", "")
@@ -24,66 +24,81 @@ class ScreenRepositoryImpl : ScreenRepository {
         return screenRegex.findAll(output).map {matchResult ->
             val screenNumber = matchResult.groupValues[2].toInt() + 1 //Todo fix this
             println(screenNumber)
-            println(getScreenResolution(screenNumber.toString()).first)
-            println(getScreenResolution(screenNumber.toString()).second)
+            getScreenResolution(screenNumber.toString())?.let { println(it.first) }
+            getScreenResolution(screenNumber.toString())?.let { println(it.second) }
             Screen(
                 id = screenNumber.toString(),
                 name = "Capture screen $screenNumber",
-                height =getScreenResolution(screenNumber.toString()).first ,
-                width = getScreenResolution(screenNumber.toString()).second
+                height = getScreenResolution(screenNumber.toString())?.first ?: 100,
+                width = getScreenResolution(screenNumber.toString())?.second ?: 100
             )
         }.toList()
     }
-    fun getScreenResolution(screenId: String): Pair<Int, Int> {
-        // Record a short clip to a temporary file
-        val recordCommand = listOf("ffmpeg", "-f", "avfoundation", "-i", screenId, "-t", "1", "temp.mp4")
-        ProcessBuilder(recordCommand).start().waitFor()
 
-        // Extract metadata
-        val probeCommand = listOf("ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=width,height", "-of", "csv=p=0:s=x", "temp.mp4")
-        val process = ProcessBuilder(probeCommand).start()
+    override fun createDirectoriesIfNotExist() {
+
+    }
+
+    private fun getScreenResolution(screenId :String): Pair<Int, Int>? {
+        println(getOperatingSystem())
+        return when (getOperatingSystem()) {
+            "mac os x" -> getMacOSScreenResolution(screenId)
+            "win" -> getWindowsScreenResolution(screenId)
+            "linux" -> getLinuxScreenResolution(screenId)
+            else -> {
+                println("Unsupported OS")
+                null
+            }
+        }
+    }
+
+    private fun getMacOSScreenResolution(screenId: String): Pair<Int, Int>? {
+        val process = ProcessBuilder("system_profiler", "SPDisplaysDataType").start()
         process.waitFor()
 
         val reader = BufferedReader(InputStreamReader(process.inputStream))
-        val resolution = reader.readLine()
-        println(resolution)
+        val displayData = reader.readText()
         reader.close()
 
-        // Clean up the temporary file
-        File("temp.mp4").delete()
+        val screenRegex = Regex("Resolution: (\\d+) x (\\d+)")
+        val matchResults = screenRegex.findAll(displayData).toList()
 
-        // Parse the resolution
-        return resolution.split('x').let {
-            Pair(it[0].toInt(), it[1].toInt())
-        }
+        val index = screenId.toIntOrNull() ?: return null
+        if (index >= matchResults.size) return null
+
+        val (width, height) = matchResults[index].destructured
+        println("aaaaa"+Pair(width.toInt(), height.toInt()))
+        return Pair(width.toInt(), height.toInt())
     }
-    fun getSupportedPixelFormats(): List<String> {
-        val command = listOf("/usr/sbin/system_profiler", "SPDisplaysDataType")
-        val process = ProcessBuilder(command).start()
+
+    private fun getWindowsScreenResolution(screenId: String): Pair<Int, Int>? {
+        val powershellCommand = """
+        Add-Type -AssemblyName System.Windows.Forms
+        [System.Windows.Forms.Screen]::AllScreens[$screenId].Bounds | 
+        Format-Table -Property Width, Height -HideTableHeaders
+    """.trimIndent()
+
+        val process = ProcessBuilder("powershell.exe", "-Command", powershellCommand).start()
+        process.waitFor()
 
         val reader = BufferedReader(InputStreamReader(process.inputStream))
-        val output = reader.readText()
+        val output = reader.readText().trim().split("\\s+".toRegex())
         reader.close()
 
-        val pixelFormatRegex = "Pixel Format: (\\w+)".toRegex()
-        val pixelFormats = pixelFormatRegex.findAll(output).map { matchResult ->
-            matchResult.groupValues[1]
-        }.toList()
-        return pixelFormats
+        return if (output.size >= 2) Pair(output[0].toInt(), output[1].toInt()) else null
     }
 
-    override fun createDirectoriesIfNotExist() {
-        val directories = listOf(FilePaths.VideosPath, FilePaths.AudiosPath, FilePaths.ImagesPath)
-        directories.forEach { path ->
-            val directory = File(path)
-            if (!directory.exists()) {
-                val created = directory.mkdirs()
-                if (created) {
-                    println("Directory created: $path")
-                } else {
-                    println("Failed to create directory: $path")
-                }
-            }
+    private fun getLinuxScreenResolution(screenId: String): Pair<Int, Int>? {
+        val process = ProcessBuilder("xrandr", "--query").start()
+        process.waitFor()
+
+        val reader = BufferedReader(InputStreamReader(process.inputStream))
+        val resolutionRegex = Regex("""$screenId connected primary (\d+)x(\d+)""")
+        val resolutionLine = reader.lineSequence().find { it.contains(screenId) }
+        reader.close()
+
+        return resolutionRegex.find(resolutionLine ?: "")?.destructured?.let { (width, height) ->
+            Pair(width.toInt(), height.toInt())
         }
     }
 }
