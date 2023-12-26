@@ -16,6 +16,7 @@ import record.home.presentation.event.RecordingFrameEvent
 import record.video.domain.VideoRepository
 import record.video.presentation.event.VideoEvent
 import record.video.presentation.state.VideoState
+import kotlin.time.Duration.Companion.minutes
 
 class VideoViewModel : KoinComponent {
 
@@ -36,15 +37,16 @@ class VideoViewModel : KoinComponent {
     fun onEvent(event: VideoEvent) {
         when (event) {
             is VideoEvent.Record -> {
-                videoRepository.recordScreenWithTimeout(
-                    config = event.config,
-                    windowPlacement = event.windowPlacement,
+                videoRepository.startRecording(
+                    null,
+                    null,
                     selectedScreen = _state.value.selectedScreen,
                 )
             }
 
             is VideoEvent.RecordSection -> {
                 videoRepository.recordScreenWithTimeout(
+                    duration = 5.minutes,
                     config = event.config,
                     windowPlacement = event.windowPlacement,
                     selectedScreen = _state.value.selectedScreen,
@@ -59,12 +61,12 @@ class VideoViewModel : KoinComponent {
                 )
             }
 
-            is VideoEvent.SelectScreen -> {
-                selectScreen(event.screenId)
-            }
-
             VideoEvent.StopRecording -> {
                 videoRepository.stopRecording()
+            }
+
+            is VideoEvent.SelectScreen -> {
+                selectScreen(event.screenId)
             }
 
             is VideoEvent.RecordAllWindows -> {

@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import core.components.KpFilterDropdown
 import core.components.KpSortDropdown
+import record.home.presentation.component.GetStartedSection
 import record.home.presentation.component.KpSearchBar
 import record.video.presentation.event.VideoEvent
 import record.video.presentation.state.VideoState
@@ -34,6 +35,10 @@ fun VideosSection(
         modifier = modifier
             .fillMaxSize()
     ) {
+        GetStartedSection(
+            state = state,
+            onEvent= onEvent
+        )
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier

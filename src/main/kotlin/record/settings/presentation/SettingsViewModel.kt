@@ -1,6 +1,5 @@
 package record.settings.presentation
 
-import core.util.FilePaths
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -45,7 +44,9 @@ class SettingsViewModel : KoinComponent {
 
     private fun changeOutputLocation(outputLocation: String) {
         settingsRepository.changeOutputLocation(outputLocation)
-        println(FilePaths.KapturePath)
+        _state.value = _state.value.copy(
+            outputLocation = outputLocation
+        )
     }
 
     private fun getProb() {

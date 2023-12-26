@@ -8,7 +8,7 @@ import javax.swing.JFrame
 fun FileDialog(
     title: String,
     isOpen: MutableState<Boolean>,
-    fileExtensions: Set<String>,
+    fileExtensions: Set<String>?,
     onResult: (String?) -> Unit,
 ) {
     if (isOpen.value) {
@@ -17,8 +17,8 @@ fun FileDialog(
 
         // Set system property for file extension filter on macOS
         // Note: This might not work on other operating systems
-        System.setProperty("apple.awt.fileDialogForDirectories", "false")
-        if (fileExtensions.isNotEmpty()) {
+        System.setProperty("apple.awt.fileDialogForDirectories", (fileExtensions == null).toString())
+        if (!fileExtensions.isNullOrEmpty()) {
             dialog.file = fileExtensions.joinToString(separator = ";") { "*$it" }
         }
         dialog.isVisible = true

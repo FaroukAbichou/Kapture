@@ -14,13 +14,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import core.util.FileHelper.VideoExtensions
 
 @Composable
 fun SelectOutputFolderSection(
     modifier: Modifier,
     currentLocation: String,
-    onSelectLocation: (String) -> Unit
+    onSelectLocation: (String) -> Unit,
 ) {
     val showFileDialog = remember {
         mutableStateOf(false)
@@ -84,8 +83,8 @@ fun SelectOutputFolderSection(
     FileDialog(
         title = "Select output location",
         isOpen = showFileDialog,
-        fileExtensions = VideoExtensions,
-        onResult = {location ->
+        fileExtensions = null,
+        onResult = { location ->
             if (location != null) {
                 onSelectLocation(location)
             }
