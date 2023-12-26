@@ -1,6 +1,6 @@
 package core.components
 
-import FileDialog
+import record.home.presentation.component.helper.FileDialog
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

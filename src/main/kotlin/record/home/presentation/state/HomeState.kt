@@ -1,7 +1,7 @@
 package record.home.presentation.state
 
-import probe.domain.WindowPlacement
-import probe.domain.model.Screen
+import probe.core.WindowPlacement
+import probe.screen.domain.model.Screen
 
 data class HomeState (
     val isLoading: Boolean = false,

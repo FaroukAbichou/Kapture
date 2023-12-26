@@ -8,11 +8,13 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import probe.domain.ProbRepository
-import probe.domain.model.AudioSource
-import probe.domain.model.Camera
-import probe.domain.model.Device
-import probe.domain.model.Screen
+import probe.audiosource.domain.AudioSourceRepository
+import probe.audiosource.domain.model.AudioSource
+import probe.camera.domain.CameraRepository
+import probe.camera.domain.model.Camera
+import probe.core.Device
+import probe.screen.domain.ScreenRepository
+import probe.screen.domain.model.Screen
 import record.settings.domain.SettingsRepository
 import record.settings.presentation.event.SettingsEvent
 import record.settings.presentation.state.SettingsState
@@ -20,7 +22,9 @@ import record.settings.presentation.state.SettingsState
 class SettingsViewModel : KoinComponent {
 
     private val settingsRepository: SettingsRepository by inject()
-    private val probRepository: ProbRepository by inject()
+    private val cameraRepository: CameraRepository by inject()
+    private val screenRepository : ScreenRepository by inject()
+    private val audioSourceRepository : AudioSourceRepository by inject()
 
     private val _state = MutableStateFlow(SettingsState())
     val state: StateFlow<SettingsState> = _state.asStateFlow()
@@ -54,9 +58,9 @@ class SettingsViewModel : KoinComponent {
             isLoading = true
         )
         coroutineScope.launch {
-            val screens = probRepository.getScreens()
-            val cameras = probRepository.getCameras()
-            val audioSources = probRepository.getAudioSources()
+            val screens = screenRepository.getScreens()
+            val cameras = cameraRepository.getCameras()
+            val audioSources = audioSourceRepository.getAudioSources()
             _state.value = _state.value.copy(
                 screens = screens,
                 cameras = cameras,
@@ -104,7 +108,7 @@ class SettingsViewModel : KoinComponent {
     private fun getScreens() {
         coroutineScope.launch {
             _state.value = _state.value.copy(
-                screens = probRepository.getScreens()
+                screens = screenRepository.getScreens()
             )
         }
     }
@@ -112,7 +116,7 @@ class SettingsViewModel : KoinComponent {
     private fun getAudioSources() {
         coroutineScope.launch {
             _state.value = _state.value.copy(
-                audioSources = probRepository.getAudioSources(),
+                audioSources = audioSourceRepository.getAudioSources(),
             )
         }
     }
@@ -120,7 +124,7 @@ class SettingsViewModel : KoinComponent {
     private fun getCameras() {
         coroutineScope.launch {
             _state.value = _state.value.copy(
-                cameras = probRepository.getCameras(),
+                cameras = cameraRepository.getCameras(),
             )
         }
     }

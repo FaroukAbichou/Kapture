@@ -1,4 +1,6 @@
-package probe.domain.model
+package probe.audiosource.domain.model
+
+import probe.core.Device
 
 data class AudioSource(
     override val id: String,

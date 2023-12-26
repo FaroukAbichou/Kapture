@@ -9,9 +9,11 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import probe.domain.ProbRepository
-import probe.domain.WindowPlacement
-import probe.domain.model.Screen
+import probe.audiosource.domain.AudioSourceRepository
+import probe.camera.domain.CameraRepository
+import probe.core.WindowPlacement
+import probe.screen.domain.ScreenRepository
+import probe.screen.domain.model.Screen
 import record.home.presentation.event.RecordingFrameEvent
 import record.video.domain.VideoRepository
 import record.video.presentation.event.VideoEvent
@@ -21,7 +23,9 @@ import kotlin.time.Duration.Companion.minutes
 class VideoViewModel : KoinComponent {
 
     private val videoRepository: VideoRepository by inject()
-    private val probRepository: ProbRepository by inject()
+    private val cameraRepository: CameraRepository by inject()
+    private val screenRepository : ScreenRepository by inject()
+    private val audioSourceRepository : AudioSourceRepository by inject()
 
     private val _state = MutableStateFlow(VideoState())
     val state: StateFlow<VideoState> = _state.asStateFlow()
@@ -38,7 +42,7 @@ class VideoViewModel : KoinComponent {
         when (event) {
             is VideoEvent.Record -> {
                 videoRepository.startRecording(
-                    null,
+                    windowPlacement = null,
                     selectedScreen = _state.value.selectedScreen,
                 )
             }
@@ -161,7 +165,7 @@ class VideoViewModel : KoinComponent {
 
     private fun getScreens() {
         _state.value = _state.value.copy(
-            screens = probRepository.getScreens(),
+            screens = screenRepository.getScreens(),
         )
     }
 

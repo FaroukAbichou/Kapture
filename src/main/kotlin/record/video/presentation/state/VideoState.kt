@@ -1,7 +1,7 @@
 package record.video.presentation.state
 
-import probe.domain.WindowPlacement
-import probe.domain.model.Screen
+import probe.core.WindowPlacement
+import probe.screen.domain.model.Screen
 import record.video.domain.model.Video
 
 data class VideoState(

@@ -8,6 +8,6 @@ fun initKoin(
 ) = run {
     startKoin {
         appDeclaration()
-        modules(recordModules + editModules)
+        modules(recordModules + probModules)
     }
 }

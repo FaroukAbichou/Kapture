@@ -11,8 +11,8 @@ import record.settings.presentation.state.SettingsState
 @Composable
 fun SelectRecordingDevicesSection(
     state: SettingsState,
-    onEvent: (SettingsEvent) -> Unit
-){
+    onEvent: (SettingsEvent) -> Unit,
+) {
     SelectOutputFolderSection(
         onSelectLocation = {
             onEvent(SettingsEvent.SelectOutputLocation(it))
@@ -23,23 +23,23 @@ fun SelectRecordingDevicesSection(
     )
 
     SelectRecordingDevice(
-        selectedDevice = state.selectedDevicesState.selectedScreen ?: state.screens.first() ,
+        selectedDevice = state.selectedDevicesState.selectedScreen ?: state.screens.first(),
         devices = state.screens,
-        onSelectDevice = {device ->
+        onSelectDevice = { device ->
             onEvent(SettingsEvent.SelectDevice(device))
         }
     )
     SelectRecordingDevice(
-        selectedDevice = state.selectedDevicesState.selectedCamera ?: state.cameras.first() ,
+        selectedDevice = state.selectedDevicesState.selectedCamera ?: state.cameras.first(),
         devices = state.cameras,
-        onSelectDevice = {device ->
+        onSelectDevice = { device ->
             onEvent(SettingsEvent.SelectDevice(device))
         },
     )
     SelectRecordingDevice(
-        selectedDevice = state.selectedDevicesState.selectedAudioSource ?: state.audioSources.first() ,
-        devices =  state.audioSources,
-        onSelectDevice = {device ->
+        selectedDevice = state.selectedDevicesState.selectedAudioSource ?: state.audioSources.first(),
+        devices = state.audioSources,
+        onSelectDevice = { device ->
             onEvent(SettingsEvent.SelectDevice(device))
         },
     )

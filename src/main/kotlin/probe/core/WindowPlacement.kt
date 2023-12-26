@@ -1,4 +1,4 @@
-package probe.domain
+package probe.core
 
 data class WindowPlacement(
     val width: Int,

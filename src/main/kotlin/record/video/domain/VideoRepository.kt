@@ -1,7 +1,7 @@
 package record.video.domain
 
-import probe.domain.WindowPlacement
-import probe.domain.model.Screen
+import probe.core.WindowPlacement
+import probe.screen.domain.model.Screen
 import record.video.domain.model.RecordSettings
 import record.video.domain.model.Video
 import kotlin.time.Duration

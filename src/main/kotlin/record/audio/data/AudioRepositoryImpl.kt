@@ -5,7 +5,7 @@ import core.util.FileHelper.AudioExtensions
 import core.util.FileHelper.getFileDate
 import core.util.FileHelper.getFileSize
 import core.util.FileHelper.getFilesWithExtension
-import probe.domain.model.Screen
+import probe.screen.domain.model.Screen
 import record.audio.domain.AudioRepository
 import record.audio.domain.model.Audio
 import record.video.domain.model.RecordSettings

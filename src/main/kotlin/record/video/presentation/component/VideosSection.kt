@@ -36,6 +36,7 @@ fun VideosSection(
             )
         )
     }
+
     Column(
         verticalArrangement = Arrangement.Top,
         modifier = modifier
