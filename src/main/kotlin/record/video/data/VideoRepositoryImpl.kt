@@ -10,8 +10,8 @@ import core.util.FileHelper.getFilesWithExtension
 import core.util.FilePaths
 import core.util.TimeHelper
 import org.jetbrains.skia.Image
-import probe.domain.WindowPlacement
-import probe.domain.model.Screen
+import probe.core.WindowPlacement
+import probe.screen.domain.model.Screen
 import record.video.domain.VideoRepository
 import record.video.domain.model.RecordSettings
 import record.video.domain.model.Video
@@ -113,7 +113,6 @@ class VideoRepositoryImpl : VideoRepository {
 
         val configuration = RecordSettings.default
 
-        println(outputPath)
         val pb = ProcessBuilder().apply {
             command(
                 FFmpegPath,

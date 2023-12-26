@@ -1,9 +1,9 @@
 package record.settings.presentation.state
 
 import core.util.FilePaths
-import probe.domain.model.AudioSource
-import probe.domain.model.Camera
-import probe.domain.model.Screen
+import probe.audiosource.domain.model.AudioSource
+import probe.camera.domain.model.Camera
+import probe.screen.domain.model.Screen
 
 data class SettingsState(
     val isLoading :Boolean = false,

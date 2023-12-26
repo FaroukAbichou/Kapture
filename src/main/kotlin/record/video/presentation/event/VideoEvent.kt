@@ -1,6 +1,6 @@
 package record.video.presentation.event
 
-import probe.domain.WindowPlacement
+import probe.core.WindowPlacement
 import record.video.domain.model.RecordSettings
 
 sealed class VideoEvent {

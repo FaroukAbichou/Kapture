@@ -1,4 +1,4 @@
-package probe.domain.model
+package probe.core
 
 interface Device{
     val id :String

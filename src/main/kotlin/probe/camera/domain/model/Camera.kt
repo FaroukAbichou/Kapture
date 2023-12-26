@@ -1,4 +1,6 @@
-package probe.domain.model
+package probe.camera.domain.model
+
+import probe.core.Device
 
 data class Camera(
     override val id: String,

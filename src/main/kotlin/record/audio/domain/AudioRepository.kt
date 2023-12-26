@@ -1,6 +1,6 @@
 package record.audio.domain
 
-import probe.domain.model.Screen
+import probe.screen.domain.model.Screen
 import record.audio.domain.model.Audio
 import record.video.domain.model.RecordSettings
 

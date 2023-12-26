@@ -19,7 +19,6 @@ fun VideosSection(
     state: VideoState,
     onEvent: (VideoEvent) -> Unit,
 ) {
-
     var searchedVideos by remember {
         mutableStateOf(state.videos)
     }
@@ -28,6 +27,14 @@ fun VideosSection(
 
     var searchQuery by remember {
         mutableStateOf("")
+    }
+
+    LaunchedEffect(Unit){
+        onEvent(
+            VideoEvent.SelectScreen(
+                screenId = state.screens.first().id
+            )
+        )
     }
 
     Column(

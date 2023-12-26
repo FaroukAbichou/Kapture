@@ -1,7 +1,7 @@
 package core.di
 
-import probe.di.probModule
+import record.video.di.videoModule
 
 val editModules = listOf(
-    probModule
+    videoModule
 )

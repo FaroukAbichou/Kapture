@@ -1,6 +1,6 @@
 package record.settings.presentation.event
 
-import probe.domain.model.Device
+import probe.core.Device
 
 sealed class SettingsEvent {
     data object NavigateToHome : SettingsEvent()
