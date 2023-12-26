@@ -120,15 +120,17 @@ class VideoRepositoryImpl : VideoRepository {
                 "-f", configuration.format,
                 "-pix_fmt", configuration.videoCodecName,
                 "-i", selectedScreen.id,
-                "-r", configuration.frameRate.toString(),
                 "-vcodec", configuration.vcodec,
-                "-vf", cropFilter ?: "",
                 outputPath
             )
-//            if (windowPlacement != null) {
-//                command().add("-s")
-//                command().add("${windowPlacement.width}x${windowPlacement.height}")
-//            }
+            if (cropFilter !=null){
+                command().add("-vf")
+                command().add(cropFilter)
+            }
+            if (windowPlacement != null) {
+                command().add("-s")
+                command().add("${windowPlacement.width}x${windowPlacement.height}")
+            }
         }
 
         // Start the recording in a new thread
@@ -179,7 +181,6 @@ class VideoRepositoryImpl : VideoRepository {
                 "-pix_fmt", "uyvy422",
                 "-i", "0",
                 "-t", duration.inWholeSeconds.toString(),
-                "-r", config.frameRate.toString(),
                 "-vcodec", "mpeg4",
                 "-vf", cropFilter ?: "",
                 outputPath
