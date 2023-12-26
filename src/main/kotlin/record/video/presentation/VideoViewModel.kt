@@ -16,6 +16,7 @@ import record.home.presentation.event.RecordingFrameEvent
 import record.video.domain.VideoRepository
 import record.video.presentation.event.VideoEvent
 import record.video.presentation.state.VideoState
+import kotlin.time.Duration.Companion.minutes
 
 class VideoViewModel : KoinComponent {
 
@@ -29,22 +30,22 @@ class VideoViewModel : KoinComponent {
 
     init {
         createDirectory()
-//        getScreens()
+        getScreens()
         getVideosByPath()
     }
 
     fun onEvent(event: VideoEvent) {
         when (event) {
             is VideoEvent.Record -> {
-                videoRepository.recordScreenWithTimeout(
-                    config = event.config,
-                    windowPlacement = event.windowPlacement,
+                videoRepository.startRecording(
+                    null,
                     selectedScreen = _state.value.selectedScreen,
                 )
             }
 
             is VideoEvent.RecordSection -> {
                 videoRepository.recordScreenWithTimeout(
+                    duration = 5.minutes,
                     config = event.config,
                     windowPlacement = event.windowPlacement,
                     selectedScreen = _state.value.selectedScreen,
@@ -53,18 +54,17 @@ class VideoViewModel : KoinComponent {
 
             is VideoEvent.StartRecording -> {
                 videoRepository.startRecording(
-                    config = event.config,
                     windowPlacement = event.bounds,
-                    selectedScreen = _state.value.selectedScreen,
+                    selectedScreen = _state.value.screens.first(),
                 )
-            }
-
-            is VideoEvent.SelectScreen -> {
-                selectScreen(event.screenId)
             }
 
             VideoEvent.StopRecording -> {
                 videoRepository.stopRecording()
+            }
+
+            is VideoEvent.SelectScreen -> {
+                selectScreen(event.screenId)
             }
 
             is VideoEvent.RecordAllWindows -> {

@@ -20,7 +20,7 @@ object TimeHelper {
                 localDateTime.second.toString().padStart(2, '0') +
                 " $amPm"
 
-        return "ScreenRecording $formattedDate at $formattedTime"
+        return "Screen Recording $formattedDate at $formattedTime"
     }
 
     fun getRecordingOutputFileName(): String {

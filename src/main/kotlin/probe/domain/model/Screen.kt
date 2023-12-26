@@ -8,7 +8,7 @@ data class Screen(
 ) : Device{
     companion object {
         val defaultScreen = Screen(
-            id = "0",
+            id = "1",
             name = "Screen 0",
             width = 640,
             height = 480
