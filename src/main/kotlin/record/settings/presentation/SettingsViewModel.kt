@@ -11,6 +11,7 @@ import org.koin.core.component.inject
 import probe.domain.ProbRepository
 import probe.domain.model.AudioSource
 import probe.domain.model.Camera
+import probe.domain.model.Device
 import probe.domain.model.Screen
 import record.settings.domain.SettingsRepository
 import record.settings.presentation.event.SettingsEvent
@@ -34,6 +35,8 @@ class SettingsViewModel : KoinComponent {
         when (event) {
             is SettingsEvent.SelectOutputLocation ->
                 changeOutputLocation(event.outputLocation)
+
+            is SettingsEvent.SelectDevice -> selectDevice(event.device)
 
             else -> {}
         }
@@ -69,19 +72,32 @@ class SettingsViewModel : KoinComponent {
 //        getCameras()
     }
 
-    private fun selectDefaultDevices(
-        screen : Screen,
-        camera: Camera,
-        audioSource: AudioSource
-    ){
-        _state.value = _state.value.copy(
-            selectedDevicesState = SettingsState.SelectedDevicesState(
-                selectedScreen = screen,
-                selectedCamera = camera,
-                selectedAudioSource = audioSource,
-            )
-        )
+    private fun selectDevice(device: Device){
+        when(device){
+            is Screen -> {
+                _state.value = _state.value.copy(
+                    selectedDevicesState = SettingsState.SelectedDevicesState(
+                        selectedScreen = device
+                    )
+                )
+            }
+            is Camera -> {
+                _state.value = _state.value.copy(
+                    selectedDevicesState = SettingsState.SelectedDevicesState(
+                        selectedCamera = device
+                    )
+                )
+            }
+            is AudioSource -> {
+                _state.value = _state.value.copy(
+                    selectedDevicesState = SettingsState.SelectedDevicesState(
+                        selectedAudioSource = device
+                    )
+                )
+            }
+        }
     }
+
     private fun getScreens() {
         coroutineScope.launch {
             _state.value = _state.value.copy(
@@ -104,5 +120,19 @@ class SettingsViewModel : KoinComponent {
                 cameras = probRepository.getCameras(),
             )
         }
+    }
+
+    private fun selectDefaultDevices(
+        screen : Screen,
+        camera: Camera,
+        audioSource: AudioSource
+    ){
+        _state.value = _state.value.copy(
+            selectedDevicesState = SettingsState.SelectedDevicesState(
+                selectedScreen = screen,
+                selectedCamera = camera,
+                selectedAudioSource = audioSource,
+            )
+        )
     }
 }

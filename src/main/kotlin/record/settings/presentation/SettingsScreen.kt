@@ -54,16 +54,22 @@ fun SettingsScreenContent(
             )
 
             SelectRecordingDevice(
-                defaultDevice = state.selectedDevicesState.selectedScreen,
-                devices = state.screens
+                devices = state.screens,
+                onSelectDevice = {device ->
+                    onEvent(SettingsEvent.SelectDevice(device))
+                }
             )
             SelectRecordingDevice(
-                defaultDevice = state.selectedDevicesState.selectedCamera,
-                state.cameras
+                onSelectDevice = {device ->
+                    onEvent(SettingsEvent.SelectDevice(device))
+                },
+                devices = state.cameras
             )
             SelectRecordingDevice(
-                defaultDevice = state.selectedDevicesState.selectedAudioSource,
-                state.audioSources
+                onSelectDevice = {device ->
+                    onEvent(SettingsEvent.SelectDevice(device))
+                },
+                devices =  state.audioSources
             )
         }
     }
