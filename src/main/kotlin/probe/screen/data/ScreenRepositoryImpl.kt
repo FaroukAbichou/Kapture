@@ -23,9 +23,6 @@ class ScreenRepositoryImpl : ScreenRepository {
 
         return screenRegex.findAll(output).map {matchResult ->
             val screenNumber = matchResult.groupValues[2].toInt() + 1 //Todo fix this
-            println(screenNumber)
-            getScreenResolution(screenNumber.toString())?.let { println(it.first) }
-            getScreenResolution(screenNumber.toString())?.let { println(it.second) }
             Screen(
                 id = screenNumber.toString(),
                 name = "Capture screen $screenNumber",
@@ -40,15 +37,11 @@ class ScreenRepositoryImpl : ScreenRepository {
     }
 
     private fun getScreenResolution(screenId :String): Pair<Int, Int>? {
-        println(getOperatingSystem())
         return when (getOperatingSystem()) {
             "mac os x" -> getMacOSScreenResolution(screenId)
             "win" -> getWindowsScreenResolution(screenId)
             "linux" -> getLinuxScreenResolution(screenId)
-            else -> {
-                println("Unsupported OS")
-                null
-            }
+            else -> null
         }
     }
 
@@ -63,11 +56,20 @@ class ScreenRepositoryImpl : ScreenRepository {
         val screenRegex = Regex("Resolution: (\\d+) x (\\d+)")
         val matchResults = screenRegex.findAll(displayData).toList()
 
-        val index = screenId.toIntOrNull() ?: return null
-        if (index >= matchResults.size) return null
+        // Debugging: Print the number of matches found
+        println("Number of matches found: ${matchResults.size}")
+
+        println(screenId)
+        println(matchResults.size)
+
+        val index = screenId.toIntOrNull() ?: return null.also { println("Invalid screenId: $screenId") }
+        if (index >= matchResults.size) return null.also { println("screenId out of range: $screenId") }
+
+        matchResults.forEach { match ->
+            println("Found resolution: ${match.groupValues[1]} x ${match.groupValues[2]}")
+        }
 
         val (width, height) = matchResults[index].destructured
-        println("aaaaa"+Pair(width.toInt(), height.toInt()))
         return Pair(width.toInt(), height.toInt())
     }
 
