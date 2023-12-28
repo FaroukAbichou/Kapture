@@ -28,6 +28,110 @@ import kotlin.time.Duration
 
 class VideoRepositoryImpl : VideoRepository {
 
+    private var ffmpegProcess: Process? = null
+    private var recordingThread: Future<*>? = null
+    private val executorService = Executors.newSingleThreadExecutor()
+
+    override fun startRecording(
+        windowPlacement: WindowPlacement?,
+        selectedScreen: Screen,
+    ) {
+        println("Starting recording for screen: ${selectedScreen.name}")
+        recordScreenInternal(
+            windowPlacement,
+            selectedScreen,
+            RecordSettings.default,
+            duration = null
+        )
+    }
+
+    override fun stopRecording() {
+        try {
+            println("Stopping recording.")
+            ffmpegProcess?.outputStream?.let {
+                it.write("q\n".toByteArray())
+                it.flush()
+            }
+            ffmpegProcess?.waitFor(10, TimeUnit.SECONDS)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            println("Error stopping FFmpeg process")
+        } finally {
+            ffmpegProcess?.destroy()
+            ffmpegProcess = null
+        }
+    }
+
+    override fun recordScreenWithTimeout(
+        duration: Duration,
+        config: RecordSettings,
+        windowPlacement: WindowPlacement?,
+        selectedScreen: Screen,
+    ) {
+        println("Starting timed recording for screen: ${selectedScreen.name}, Duration: ${duration.inWholeSeconds} seconds")
+        recordScreenInternal(windowPlacement, selectedScreen, config, duration.inWholeSeconds.toString())
+    }
+
+    private fun recordScreenInternal(
+        windowPlacement: WindowPlacement?,
+        selectedScreen: Screen,
+        config: RecordSettings,
+        duration: String?,
+    ) {
+
+        val outputPath = File(FilePaths.VideosPath, TimeHelper.getRecordingOutputFileName() + ".mp4").path
+        val cropFilter = createCropFilter(selectedScreen, windowPlacement)
+        println("Recording to file: $outputPath")
+
+        val pb = ProcessBuilder().apply {
+            command(buildFFmpegCommand(config, selectedScreen, cropFilter, outputPath, duration, windowPlacement))
+        }
+
+        recordingThread = executorService.submit {
+            try {
+                ffmpegProcess = pb.inheritIO().start().also { it.waitFor() }
+                println("Recording completed. File saved at: $outputPath")
+            } catch (e: Exception) {
+                e.printStackTrace()
+                println("Error starting FFmpeg process")
+            }
+        }
+    }
+
+    private fun buildFFmpegCommand(
+        config: RecordSettings,
+        screen: Screen,
+        cropFilter: String?,
+        outputPath: String,
+        duration: String?,
+        windowPlacement: WindowPlacement?,
+    ): List<String> {
+        return mutableListOf(
+            FFmpegPath,
+            "-f", config.format,
+            "-pix_fmt", config.videoCodecName,
+            "-i", screen.id
+        ).apply {
+            duration?.let { addAll(listOf("-t", it)) }
+            add("-vcodec")
+            add(config.vcodec)
+            cropFilter?.let { addAll(listOf("-vf", it)) }
+            windowPlacement?.let { addAll(listOf("-s", "${it.width}x${it.height}")) }
+            add(outputPath)
+        }
+    }
+
+    private fun createCropFilter(
+        screen: Screen,
+        windowPlacement: WindowPlacement?,
+    ): String? = windowPlacement?.let {
+        "crop=${it.width}:${it.height}:${maxOf(screen.width + it.x, it.x)}:${it.y}"
+    }
+
+
+    /**
+     * Videos recoded listing
+     * */
     override fun getVideosByPath(filePath: String): Result<List<Video>> {
         val videos = getFilesWithExtension(filePath, VideoExtensions)
 
@@ -94,125 +198,6 @@ class VideoRepositoryImpl : VideoRepository {
         }
 
         return ImageBitmap(0, 0)// TODO ("Error getting video thumbnail")
-    }
-
-    private var recordingThread: Future<*>? = null
-
-    private val executorService = Executors.newSingleThreadExecutor()
-    private var ffmpegProcess: Process? = null
-
-    override fun startRecording(
-        windowPlacement: WindowPlacement?,
-        selectedScreen: Screen,
-    ) {
-        val cropFilter = createCropFilter(selectedScreen, windowPlacement)
-        val outputPath = File(
-            /* parent = */ FilePaths.VideosPath,
-            /* child = */ TimeHelper.getRecordingOutputFileName() + ".mp4"
-        ).path
-
-        val configuration = RecordSettings.default
-
-        val pb = ProcessBuilder().apply {
-            command(
-                FFmpegPath,
-                "-f", configuration.format,
-                "-pix_fmt", configuration.videoCodecName,
-                "-i", selectedScreen.id,
-                "-vcodec", configuration.vcodec,
-                outputPath
-            )
-            if (cropFilter !=null){
-                command().add("-vf")
-                command().add(cropFilter)
-            }
-            if (windowPlacement != null) {
-                command().add("-s")
-                command().add("${windowPlacement.width}x${windowPlacement.height}")
-            }
-        }
-
-        // Start the recording in a new thread
-        recordingThread = executorService.submit {
-            try {
-                val process = pb.inheritIO().start()
-                process.waitFor()
-            } catch (e: Exception) {
-                e.printStackTrace()
-                println("Error starting FFmpeg process")
-            }
-        }
-
-    }
-
-    override fun stopRecording() {
-        try {
-            ffmpegProcess?.outputStream?.let {
-                it.write("q\n".toByteArray())
-                it.flush()
-            }
-            ffmpegProcess?.waitFor(10, TimeUnit.SECONDS)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            println("Error stopping FFmpeg process")
-        } finally {
-            ffmpegProcess?.destroy()
-            ffmpegProcess = null
-        }
-    }
-
-    override fun recordScreenWithTimeout(
-        duration: Duration,
-        config: RecordSettings,
-        windowPlacement: WindowPlacement?,
-        selectedScreen: Screen,
-    ) {
-        val cropFilter = createCropFilter(selectedScreen, windowPlacement)
-        val outputPath = File(
-            /* parent = */ FilePaths.VideosPath,
-            /* child = */ TimeHelper.getRecordingOutputFileName() + ".mp4"
-        ).path
-
-        val pb = ProcessBuilder().apply {
-            command(
-                FFmpegPath,
-                "-f", "avfoundation",
-                "-pix_fmt", "uyvy422",
-                "-i", "0",
-                "-t", duration.inWholeSeconds.toString(),
-                "-vcodec", "mpeg4",
-                "-vf", cropFilter ?: "",
-                outputPath
-            )
-            if (windowPlacement != null) {
-                command().add("-s")
-                command().add("${windowPlacement.width}x${windowPlacement.height}")
-            }
-        }
-
-        // Start the recording in a new thread
-        recordingThread = executorService.submit {
-            try {
-                val process = pb.inheritIO().start()
-                process.waitFor()
-            } catch (e: Exception) {
-                e.printStackTrace()
-                println("Error starting FFmpeg process")
-            }
-        }
-    }
-
-    private fun createCropFilter(
-        screen: Screen,
-        windowPlacement: WindowPlacement?,
-    ) = windowPlacement?.let {
-        "crop=${it.width}:${it.height}:${
-            if (it.x < 0) {
-                screen.width + it.x
-            } else {
-                it.x
-            }
-        }:${it.y}"
     }
 
 }
