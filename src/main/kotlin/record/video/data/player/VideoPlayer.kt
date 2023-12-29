@@ -1,8 +1,10 @@
+package record.video.data.player
+
 import com.sun.jna.Native
 import com.sun.jna.NativeLibrary
 import uk.co.caprica.vlcj.binding.lib.LibVlc
+import uk.co.caprica.vlcj.binding.support.runtime.RuntimeUtil
 import uk.co.caprica.vlcj.player.component.EmbeddedMediaPlayerComponent
-import uk.co.caprica.vlcj.runtime.RuntimeUtil
 import java.awt.Toolkit
 import javax.swing.JFrame
 import javax.swing.SwingUtilities
@@ -12,7 +14,7 @@ class VLCPlayer private constructor() {
 
     init {
 
-//MAXIMIZE TO SCREEN
+    //MAXIMIZE TO SCREEN
         val screenSize = Toolkit.getDefaultToolkit().screenSize
         val frame = JFrame()
         mediaPlayerComponent = EmbeddedMediaPlayerComponent()
