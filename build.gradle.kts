@@ -36,6 +36,9 @@ dependencies {
     implementation(libs.kotlinx.coroutinesSwing)
 
     implementation(libs.kotlinx.dateTime)
+
+    implementation("uk.co.caprica:vlcj:4.8.2")
+
 }
 
 val os: OperatingSystem = OperatingSystem.current()

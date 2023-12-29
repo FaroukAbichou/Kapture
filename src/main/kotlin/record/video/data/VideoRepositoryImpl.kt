@@ -130,7 +130,7 @@ class VideoRepositoryImpl : VideoRepository {
 
 
     /**
-     * Videos recoded listing
+     * Recoded Videos listing
      * */
     override fun getVideosByPath(filePath: String): Result<List<Video>> {
         val videos = getFilesWithExtension(filePath, VideoExtensions)
