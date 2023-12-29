@@ -9,21 +9,21 @@ import java.awt.Toolkit
 import javax.swing.JFrame
 import javax.swing.SwingUtilities
 
-class VLCPlayer private constructor() {
+class VLCPlayer(
+    private val videoPath: String
+) {
     private val mediaPlayerComponent: EmbeddedMediaPlayerComponent
 
     init {
-
-    //MAXIMIZE TO SCREEN
         val screenSize = Toolkit.getDefaultToolkit().screenSize
         val frame = JFrame()
         mediaPlayerComponent = EmbeddedMediaPlayerComponent()
         frame.contentPane = mediaPlayerComponent
         frame.setLocation(0, 0)
-        frame.setSize(300, 400)
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
+        frame.setSize(screenSize.width, screenSize.height) // Maximize frame
+        frame.defaultCloseOperation = JFrame.EXIT_ON_CLOSE
         frame.isVisible = true
-        mediaPlayerComponent.mediaPlayer()
+        mediaPlayerComponent.mediaPlayer().media().play("path/to/your/video") // Replace with actual video path
     }
 
     companion object {
