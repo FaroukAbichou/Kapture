@@ -5,11 +5,17 @@ plugins {
     kotlin("jvm")
     alias(libs.plugins.compose)
     alias(libs.plugins.kotlinx.serialization)
+    id("org.openjfx.javafxplugin") version "0.0.10"
 }
 
 group = "com.farouk-abichou"
 version = "1.0-SNAPSHOT"
 
+
+javafx {
+    version = "13"
+    modules = listOf("javafx.controls", "javafx.media")
+}
 repositories {
     mavenCentral()
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
@@ -37,14 +43,15 @@ dependencies {
 
     implementation(libs.kotlinx.dateTime)
 
-    implementation("uk.co.caprica:vlcj:4.8.2")
+    implementation("org.openjfx:javafx-controls:16")
+    implementation("org.openjfx:javafx-media:16")
 
 }
 
 val os: OperatingSystem = OperatingSystem.current()
 
 compose.desktop {
-    
+
     application {
         mainClass = "MainKt"
 

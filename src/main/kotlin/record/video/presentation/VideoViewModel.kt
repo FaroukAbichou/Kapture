@@ -57,9 +57,12 @@ class VideoViewModel : KoinComponent {
             }
 
             is VideoEvent.StartRecording -> {
-                videoRepository.startRecording(
-                    windowPlacement = event.bounds,
-                    selectedScreen = _state.value.selectedScreen,
+//                videoRepository.startRecording(
+//                    windowPlacement = event.bounds,
+//                    selectedScreen = _state.value.selectedScreen,
+//                )
+                videoRepository.playVideo(
+                    videoPath = "${FilePaths.VideosPath}/ooutput.mp4"
                 )
             }
 

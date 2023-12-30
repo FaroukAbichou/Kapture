@@ -1,38 +1,24 @@
-package record.video.data.player
 
-import com.sun.jna.Native
-import com.sun.jna.NativeLibrary
-import uk.co.caprica.vlcj.binding.lib.LibVlc
-import uk.co.caprica.vlcj.binding.support.runtime.RuntimeUtil
-import uk.co.caprica.vlcj.player.component.EmbeddedMediaPlayerComponent
-import java.awt.Toolkit
-import javax.swing.JFrame
-import javax.swing.SwingUtilities
+import javafx.application.Platform
+import javafx.scene.media.Media
+import javafx.scene.media.MediaPlayer
 
-class VLCPlayer(
-    private val videoPath: String
-) {
-    private val mediaPlayerComponent: EmbeddedMediaPlayerComponent
+class VideoPlayer {
 
-    init {
-        val screenSize = Toolkit.getDefaultToolkit().screenSize
-        val frame = JFrame()
-        mediaPlayerComponent = EmbeddedMediaPlayerComponent()
-        frame.contentPane = mediaPlayerComponent
-        frame.setLocation(0, 0)
-        frame.setSize(screenSize.width, screenSize.height) // Maximize frame
-        frame.defaultCloseOperation = JFrame.EXIT_ON_CLOSE
-        frame.isVisible = true
-        mediaPlayerComponent.mediaPlayer().media().play("path/to/your/video") // Replace with actual video path
-    }
+    private lateinit var mediaPlayer: MediaPlayer
 
-    companion object {
-        //This is the path for libvlc.dll
-        @JvmStatic
-        fun main(args: Array<String>) {
-            NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(), "C:\\Program Files\\VideoLAN\\VLC")
-            Native.loadLibrary(RuntimeUtil.getLibVlcLibraryName(), LibVlc::class.java)
-            SwingUtilities.invokeLater { val vlcPlayer = VLCPlayer() }
+    fun playVideo(videoPath: String) {
+        if (!this::mediaPlayer.isInitialized) {
+            Platform.startup {
+                val media = Media(videoPath)
+                mediaPlayer = MediaPlayer(media)
+                mediaPlayer.play()
+            }
+        } else {
+            mediaPlayer.stop()
+            mediaPlayer = MediaPlayer(Media(videoPath))
+            mediaPlayer.play()
         }
     }
+
 }

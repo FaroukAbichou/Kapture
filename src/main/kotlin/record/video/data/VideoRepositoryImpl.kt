@@ -1,5 +1,6 @@
 package record.video.data
 
+import VideoPlayer
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toComposeImageBitmap
 import core.util.FFmpegUtils.FFmpegPath
@@ -28,9 +29,15 @@ import kotlin.time.Duration
 
 class VideoRepositoryImpl : VideoRepository {
 
+    private val videoPlayer = VideoPlayer()
+
     private var ffmpegProcess: Process? = null
     private var recordingThread: Future<*>? = null
     private val executorService = Executors.newSingleThreadExecutor()
+
+    override fun playVideo(videoPath: String) {
+        videoPlayer.playVideo(videoPath)
+    }
 
     override fun startRecording(
         windowPlacement: WindowPlacement?,
