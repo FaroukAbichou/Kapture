@@ -1,6 +1,6 @@
 package record.video.data
 
-import VideoPlayer
+import record.video.data.player.VideoPlayer
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toComposeImageBitmap
 import core.util.FFmpegUtils.FFmpegPath

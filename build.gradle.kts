@@ -14,7 +14,7 @@ version = "1.0-SNAPSHOT"
 
 javafx {
     version = "13"
-    modules = listOf("javafx.controls", "javafx.media")
+    modules = listOf("javafx.controls", "javafx.media", "javafx.swing")
 }
 repositories {
     mavenCentral()
@@ -45,6 +45,7 @@ dependencies {
 
     implementation("org.openjfx:javafx-controls:16")
     implementation("org.openjfx:javafx-media:16")
+
 }
 
 val os: OperatingSystem = OperatingSystem.current()
