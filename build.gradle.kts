@@ -13,9 +13,7 @@ version = "1.0-SNAPSHOT"
 
 
 javafx {
-    version = "13"
-    modules = listOf("javafx.controls", "javafx.media", "javafx.swing", "javafx.fxml")
-}
+    version
 repositories {
     mavenCentral()
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
