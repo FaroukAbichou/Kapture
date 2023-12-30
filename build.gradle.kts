@@ -14,7 +14,7 @@ version = "1.0-SNAPSHOT"
 
 javafx {
     version = "13"
-    modules = listOf("javafx.controls", "javafx.media", "javafx.swing")
+    modules = listOf("javafx.controls", "javafx.media", "javafx.swing", "javafx.fxml")
 }
 repositories {
     mavenCentral()
@@ -43,8 +43,12 @@ dependencies {
 
     implementation(libs.kotlinx.dateTime)
 
+    implementation(kotlin("stdlib-jdk8"))
     implementation("org.openjfx:javafx-controls:16")
     implementation("org.openjfx:javafx-media:16")
+    implementation("org.openjfx:javafx-swing:16")
+    implementation("org.openjfx:javafx-fxml:16")
+
 
 }
 

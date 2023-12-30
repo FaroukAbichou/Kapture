@@ -1,6 +1,5 @@
 package record.video.data
 
-import record.video.data.player.VideoPlayer
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toComposeImageBitmap
 import core.util.FFmpegUtils.FFmpegPath
@@ -13,6 +12,7 @@ import core.util.TimeHelper
 import org.jetbrains.skia.Image
 import probe.core.WindowPlacement
 import probe.screen.domain.model.Screen
+import record.video.data.player.VideoPlayer
 import record.video.domain.VideoRepository
 import record.video.domain.model.RecordSettings
 import record.video.domain.model.Video
