@@ -1,38 +1,38 @@
 package record.video.data.player
 
-import com.sun.jna.Native
-import com.sun.jna.NativeLibrary
-import uk.co.caprica.vlcj.binding.lib.LibVlc
-import uk.co.caprica.vlcj.binding.support.runtime.RuntimeUtil
-import uk.co.caprica.vlcj.player.component.EmbeddedMediaPlayerComponent
-import java.awt.Toolkit
-import javax.swing.JFrame
+import javafx.embed.swing.JFXPanel
+import javafx.scene.media.Media
+import javafx.scene.media.MediaPlayer
+import java.io.File
 import javax.swing.SwingUtilities
 
-class VLCPlayer private constructor() {
-    private val mediaPlayerComponent: EmbeddedMediaPlayerComponent
+class VideoPlayer {
 
     init {
-
-    //MAXIMIZE TO SCREEN
-        val screenSize = Toolkit.getDefaultToolkit().screenSize
-        val frame = JFrame()
-        mediaPlayerComponent = EmbeddedMediaPlayerComponent()
-        frame.contentPane = mediaPlayerComponent
-        frame.setLocation(0, 0)
-        frame.setSize(300, 400)
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
-        frame.isVisible = true
-        mediaPlayerComponent.mediaPlayer()
+        // Ensure JavaFX is initialized
+        JFXPanel()
     }
 
-    companion object {
-        //This is the path for libvlc.dll
-        @JvmStatic
-        fun main(args: Array<String>) {
-            NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(), "C:\\Program Files\\VideoLAN\\VLC")
-            Native.loadLibrary(RuntimeUtil.getLibVlcLibraryName(), LibVlc::class.java)
-            SwingUtilities.invokeLater { val vlcPlayer = VLCPlayer() }
+    private var mediaPlayer: MediaPlayer? = null
+
+    fun playVideo(videoPath: String) {
+        SwingUtilities.invokeLater {
+            mediaPlayer?.stop()
+
+            // Convert the file path to a URI
+            val mediaFile = File(videoPath)
+            val mediaUri = mediaFile.toURI().toString()
+
+            val media = Media(mediaUri)
+            mediaPlayer = MediaPlayer(media).apply {
+                play()
+            }
+        }
+    }
+
+    fun stopVideo() {
+        SwingUtilities.invokeLater {
+            mediaPlayer?.stop()
         }
     }
 }

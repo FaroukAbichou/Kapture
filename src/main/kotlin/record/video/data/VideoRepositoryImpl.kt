@@ -12,6 +12,7 @@ import core.util.TimeHelper
 import org.jetbrains.skia.Image
 import probe.core.WindowPlacement
 import probe.screen.domain.model.Screen
+import record.video.data.player.VideoPlayer
 import record.video.domain.VideoRepository
 import record.video.domain.model.RecordSettings
 import record.video.domain.model.Video
@@ -28,9 +29,15 @@ import kotlin.time.Duration
 
 class VideoRepositoryImpl : VideoRepository {
 
+    private val videoPlayer = VideoPlayer()
+
     private var ffmpegProcess: Process? = null
     private var recordingThread: Future<*>? = null
     private val executorService = Executors.newSingleThreadExecutor()
+
+    override fun playVideo(videoPath: String) {
+        videoPlayer.playVideo(videoPath)
+    }
 
     override fun startRecording(
         windowPlacement: WindowPlacement?,
