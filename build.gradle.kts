@@ -45,7 +45,6 @@ dependencies {
 
     implementation("org.openjfx:javafx-controls:16")
     implementation("org.openjfx:javafx-media:16")
-
 }
 
 val os: OperatingSystem = OperatingSystem.current()

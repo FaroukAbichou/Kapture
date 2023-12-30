@@ -1,24 +1,27 @@
 
-import javafx.application.Platform
 import javafx.scene.media.Media
 import javafx.scene.media.MediaPlayer
+import javax.swing.SwingUtilities
 
 class VideoPlayer {
 
-    private lateinit var mediaPlayer: MediaPlayer
+    private var mediaPlayer: MediaPlayer? = null
 
     fun playVideo(videoPath: String) {
-        if (!this::mediaPlayer.isInitialized) {
-            Platform.startup {
-                val media = Media(videoPath)
-                mediaPlayer = MediaPlayer(media)
-                mediaPlayer.play()
+        SwingUtilities.invokeLater {
+            if (mediaPlayer != null) {
+                mediaPlayer?.stop()
             }
-        } else {
-            mediaPlayer.stop()
-            mediaPlayer = MediaPlayer(Media(videoPath))
-            mediaPlayer.play()
+            val media = Media(videoPath)
+            mediaPlayer = MediaPlayer(media).apply {
+                play()
+            }
         }
     }
 
+    fun stopVideo() {
+        SwingUtilities.invokeLater {
+            mediaPlayer?.stop()
+        }
+    }
 }
