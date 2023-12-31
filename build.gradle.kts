@@ -13,7 +13,10 @@ version = "1.0-SNAPSHOT"
 
 
 javafx {
-    version
+    version = "13"
+    modules = listOf("javafx.controls", "javafx.media", "javafx.swing", "javafx.fxml")
+}
+
 repositories {
     mavenCentral()
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
@@ -41,13 +44,10 @@ dependencies {
 
     implementation(libs.kotlinx.dateTime)
 
-    implementation(kotlin("stdlib-jdk8"))
-    implementation("org.openjfx:javafx-controls:16")
-    implementation("org.openjfx:javafx-media:16")
-    implementation("org.openjfx:javafx-swing:16")
-    implementation("org.openjfx:javafx-fxml:16")
-
-
+    implementation("org.openjfx:javafx-controls:21.0.1")
+    implementation("org.openjfx:javafx-media:21.0.1")
+    implementation("org.openjfx:javafx-swing:21.0.1")
+    implementation("org.openjfx:javafx-fxml:21.0.1")
 }
 
 val os: OperatingSystem = OperatingSystem.current()
