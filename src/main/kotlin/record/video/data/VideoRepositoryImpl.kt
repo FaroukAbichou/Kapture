@@ -27,6 +27,11 @@ import java.util.concurrent.Future
 import java.util.concurrent.TimeUnit
 import kotlin.time.Duration
 
+import javafx.application.Application
+import javafx.scene.Scene
+import javafx.scene.control.Button
+import javafx.scene.layout.StackPane
+import javafx.stage.Stage
 class VideoRepositoryImpl : VideoRepository {
 
     private val videoPlayer = VideoPlayer()
@@ -207,4 +212,22 @@ class VideoRepositoryImpl : VideoRepository {
         return ImageBitmap(0, 0)// TODO ("Error getting video thumbnail")
     }
 
+}
+
+class YourApp : Application() {
+    override fun start(primaryStage: Stage) {
+        val button = Button("Click Me")
+        button.setOnAction {
+            println("Button Clicked!")
+        }
+
+        val root = StackPane()
+        root.children.add(button)
+
+        val scene = Scene(root, 300.0, 250.0)
+
+        primaryStage.title = "JavaFX App"
+        primaryStage.scene = scene
+        primaryStage.show()
+    }
 }
