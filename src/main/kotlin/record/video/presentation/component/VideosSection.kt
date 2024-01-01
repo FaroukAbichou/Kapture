@@ -29,13 +29,13 @@ fun VideosSection(
         mutableStateOf("")
     }
 
-    LaunchedEffect(Unit){
-        onEvent(
-            VideoEvent.SelectScreen(
-                screenId = state.screens.first().id
-            )
-        )
-    }
+//    LaunchedEffect(Unit){
+//        onEvent(
+//            VideoEvent.SelectScreen(
+//                screenId = state.screens.first().id
+//            )
+//        )
+//    }
 
     Column(
         verticalArrangement = Arrangement.Top,
