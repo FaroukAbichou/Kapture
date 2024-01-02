@@ -3,8 +3,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.window.*
 import core.di.initKoin
 import core.theme.KaptureTheme
-import javafx.stage.Stage
-import record.video.data.player.Main
 
 fun main() {
     initKoin().koin
