@@ -8,7 +8,6 @@ import record.video.data.player.Main
 
 fun main() {
     initKoin().koin
-    Main().start(Stage())
     application {
         val windowState = rememberWindowState(
             placement = WindowPlacement.Maximized,
