@@ -29,13 +29,15 @@ fun SelectRecordingDevicesSection(
             onEvent(SettingsEvent.SelectDevice(device))
         }
     )
-    SelectRecordingDevice(
-        selectedDevice = state.selectedDevicesState.selectedCamera ?: state.cameras.first(),
-        devices = state.cameras,
-        onSelectDevice = { device ->
-            onEvent(SettingsEvent.SelectDevice(device))
-        },
-    )
+    if (state.cameras.isNotEmpty()){
+        SelectRecordingDevice(
+            selectedDevice = state.selectedDevicesState.selectedCamera ?: state.cameras.first(),
+            devices = state.cameras,
+            onSelectDevice = { device ->
+                onEvent(SettingsEvent.SelectDevice(device))
+            },
+        )
+    }
     SelectRecordingDevice(
         selectedDevice = state.selectedDevicesState.selectedAudioSource ?: state.audioSources.first(),
         devices = state.audioSources,

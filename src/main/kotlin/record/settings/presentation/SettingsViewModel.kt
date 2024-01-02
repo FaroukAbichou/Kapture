@@ -69,7 +69,7 @@ class SettingsViewModel : KoinComponent {
             )
             selectDefaultDevices(
                 screen = screens.first(),
-                camera = cameras.first(),
+                camera = cameras.firstOrNull(),
                 audioSource = audioSources.first()
             )
         }
@@ -131,7 +131,7 @@ class SettingsViewModel : KoinComponent {
 
     private fun selectDefaultDevices(
         screen : Screen,
-        camera: Camera,
+        camera: Camera?,
         audioSource: AudioSource
     ){
         _state.value = _state.value.copy(

@@ -5,18 +5,16 @@ plugins {
     kotlin("jvm")
     alias(libs.plugins.compose)
     alias(libs.plugins.kotlinx.serialization)
-    id("org.openjfx.javafxplugin") version "0.0.10"
+    id ("org.openjfx.javafxplugin") version "0.1.0"
 }
 
 group = "com.farouk-abichou"
 version = "1.0-SNAPSHOT"
 
-
 javafx {
-    version = "13"
-    modules = listOf("javafx.controls", "javafx.media", "javafx.swing", "javafx.fxml")
+    version = "17"
+    modules("javafx.controls", "javafx.fxml")
 }
-
 repositories {
     mavenCentral()
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
@@ -43,11 +41,14 @@ dependencies {
     implementation(libs.kotlinx.coroutinesSwing)
 
     implementation(libs.kotlinx.dateTime)
-
-    implementation("org.openjfx:javafx-controls:21.0.1")
-    implementation("org.openjfx:javafx-media:21.0.1")
-    implementation("org.openjfx:javafx-swing:21.0.1")
-    implementation("org.openjfx:javafx-fxml:21.0.1")
+//    implementation("org.openjfx:javafx-plugin:0.0.10")
+    implementation("org.openjfx:javafx-graphics:19.0.2.1")
+    implementation("org.openjfx:javafx-base:19.0.2.1")
+    implementation("org.openjfx:javafx-controls:19.0.2.1")
+    implementation("org.openjfx:javafx-fxml:19.0.2.1")
+    implementation("org.openjfx:javafx-media:19.0.2.1")
+    implementation("org.openjfx:javafx-swing:19.0.2.1")
+    implementation("org.openjfx:javafx-web:19.0.2.1")
 }
 
 val os: OperatingSystem = OperatingSystem.current()
