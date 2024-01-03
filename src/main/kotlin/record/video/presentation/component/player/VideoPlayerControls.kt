@@ -18,7 +18,7 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun VideoPlayerControls(player: Player) {
-    val videoPlayerState = remember { mutableStateOf(VideoPlayerState.default) } // default state
+    val videoPlayerState = remember { mutableStateOf(VideoPlayerState.default) }
 
     LaunchedEffect(Unit) {
         while (true) {
@@ -28,8 +28,6 @@ fun VideoPlayerControls(player: Player) {
             delay(10) // Update every 100ms, adjust as needed
         }
     }
-
-    val isPlaying = remember { mutableStateOf(player.playerState.isPlaying) }
 
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -48,8 +46,10 @@ fun VideoPlayerControls(player: Player) {
         ) {
             Button(
                 onClick = {
-                    isPlaying.value = !isPlaying.value
-                    if (isPlaying.value) {
+                    videoPlayerState.value = videoPlayerState.value.copy(
+                        isPlaying = !videoPlayerState.value.isPlaying
+                    )
+                    if (videoPlayerState.value.isPlaying) {
                         player.play()
                     } else {
                         player.pause()
@@ -57,8 +57,8 @@ fun VideoPlayerControls(player: Player) {
                 }
             ) {
                 Icon(
-                    imageVector = if (isPlaying.value) Icons.Default.Pause else Icons.Default.PlayArrow,
-                    contentDescription = if (isPlaying.value) "Pause" else "Play"
+                    imageVector = if (videoPlayerState.value.isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
+                    contentDescription = if (videoPlayerState.value.isPlaying) "Pause" else "Play"
                 )
             }
 
@@ -104,7 +104,7 @@ fun rememberMediaPlayer(mediaPath: String): Player {
 
     DisposableEffect(player) {
         onDispose {
-            player.dispose() // Implement a dispose method in your Player class
+            player.dispose()
         }
     }
 

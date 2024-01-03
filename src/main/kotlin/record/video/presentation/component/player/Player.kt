@@ -55,6 +55,7 @@ class Player(file: String?) : BorderPane() {
 
     fun play() {
         player.play()
+
     }
 
     fun pause() {
