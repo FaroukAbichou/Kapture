@@ -48,7 +48,6 @@ fun VideoPlayer(composeWindow: ComposeWindow) {
                 Platform.runLater(
                     VideoPlayerInitializer(jfxPanel, videoPath)
                 )
-
             }
         )
     }
