@@ -12,9 +12,8 @@ import androidx.compose.ui.graphics.Color
 import com.sun.javafx.application.PlatformImpl
 import core.components.ComposeJFXPanel
 import core.util.FilePaths
-import javafx.application.Platform
 import javafx.embed.swing.JFXPanel
-import record.video.presentation.component.player.VideoPlayerInitializer
+import record.video.presentation.component.player.VideoPlayer
 
 @Composable
 fun VideoPlayer(composeWindow: ComposeWindow) {
@@ -45,8 +44,9 @@ fun VideoPlayer(composeWindow: ComposeWindow) {
             jfxPanel = jfxPanel,
             composeWindow = composeWindow,
             onCreate = {
-                Platform.runLater(
-                    VideoPlayerInitializer(jfxPanel, videoPath)
+                VideoPlayer(
+                    jfxPanel = jfxPanel,
+                    videoPath = videoPath
                 )
             }
         )
