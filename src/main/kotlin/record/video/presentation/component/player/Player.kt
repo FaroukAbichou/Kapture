@@ -11,6 +11,9 @@ class Player(file: String?) : BorderPane() {
     var player = MediaPlayer(media)
     var view = MediaView(player)
     var mpane = Pane()
+
+    val isPlaying: Boolean
+        get() = player.status == MediaPlayer.Status.PLAYING
     init {
         player.isAutoPlay = false
         mpane.children.add(view)

@@ -36,7 +36,6 @@ fun VideoPlayer(composeWindow: ComposeWindow) {
 
     val mediaPath = File(FilePaths.VideosPath + "/Screen.mp4").toURI().toString()
     val player =  rememberMediaPlayer(mediaPath)
-
     Column(
         modifier = Modifier
             .fillMaxSize(),
@@ -57,7 +56,11 @@ fun VideoPlayer(composeWindow: ComposeWindow) {
 
         KpIconButton(
             onClick = {
-                player.play()
+                if (player.isPlaying) {
+                    player.pause()
+                } else {
+                    player.play()
+                }
             },
             imageResource = ImageResource.image,
             enabled = true,
