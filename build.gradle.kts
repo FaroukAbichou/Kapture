@@ -15,6 +15,7 @@ javafx {
     version = "17"
     modules("javafx.controls", "javafx.fxml")
 }
+
 repositories {
     mavenCentral()
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")

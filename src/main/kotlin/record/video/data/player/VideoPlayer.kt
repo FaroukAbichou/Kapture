@@ -1,5 +1,6 @@
 package record.video.data.player
 
+import javafx.embed.swing.JFXPanel
 import javafx.scene.media.Media
 import javafx.scene.media.MediaPlayer
 import java.io.File
@@ -9,7 +10,7 @@ class VideoPlayer {
 
     init {
         // Ensure JavaFX is initialized
-//        JFXPanel()
+        JFXPanel()
     }
 
     private var mediaPlayer: MediaPlayer? = null

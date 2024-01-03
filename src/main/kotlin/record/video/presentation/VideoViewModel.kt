@@ -62,7 +62,7 @@ class VideoViewModel : KoinComponent {
 //                    selectedScreen = _state.value.selectedScreen,
 //                )
                 videoRepository.playVideo(
-                    videoPath = "${FilePaths.VideosPath}/ScreenRecording 2023-12-18 at 07.27.54 AM.mp4"
+                    videoPath = "${FilePaths.VideosPath}/ScreenRec.mp4"
                 )
             }
 

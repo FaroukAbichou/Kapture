@@ -9,10 +9,14 @@ import core.util.FileHelper.getFileSize
 import core.util.FileHelper.getFilesWithExtension
 import core.util.FilePaths
 import core.util.TimeHelper
+import javafx.application.Application
+import javafx.scene.Scene
+import javafx.scene.control.Button
+import javafx.scene.layout.StackPane
+import javafx.stage.Stage
 import org.jetbrains.skia.Image
 import probe.core.WindowPlacement
 import probe.screen.domain.model.Screen
-import record.video.data.player.VideoPlayer
 import record.video.domain.VideoRepository
 import record.video.domain.model.RecordSettings
 import record.video.domain.model.Video
@@ -27,21 +31,16 @@ import java.util.concurrent.Future
 import java.util.concurrent.TimeUnit
 import kotlin.time.Duration
 
-import javafx.application.Application
-import javafx.scene.Scene
-import javafx.scene.control.Button
-import javafx.scene.layout.StackPane
-import javafx.stage.Stage
 class VideoRepositoryImpl : VideoRepository {
 
-    private val videoPlayer = VideoPlayer()
+//    private val videoPlayer = VideoPlayer()
 
     private var ffmpegProcess: Process? = null
     private var recordingThread: Future<*>? = null
     private val executorService = Executors.newSingleThreadExecutor()
 
     override fun playVideo(videoPath: String) {
-        videoPlayer.playVideo(videoPath)
+//        videoPlayer.playVideo(videoPath)
     }
 
     override fun startRecording(
