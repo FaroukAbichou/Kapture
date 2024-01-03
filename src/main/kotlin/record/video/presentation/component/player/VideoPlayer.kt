@@ -26,12 +26,52 @@ class VideoPlayer (
         }
     }
 
-    fun play() {
+    val isPlaying: Boolean get() = mediaPlayer.status == MediaPlayer.Status.PLAYING
+    fun play(){
         if (Platform.isFxApplicationThread()) {
             mediaPlayer.play()
         } else {
             Platform.runLater { mediaPlayer.play() }
         }
+    }
+    fun setRate(rate: Float){
+        if (Platform.isFxApplicationThread()) {
+            mediaPlayer.rate = rate.toDouble()
+        } else {
+            Platform.runLater { mediaPlayer.rate = rate.toDouble() }
+        }
+    }
+    fun setTime(millis: Long){
+//        if (Platform.isFxApplicationThread()) {
+//            mediaPlayer.seek(millis.toDuration())
+//        } else {
+//            Platform.runLater { mediaPlayer.seek(millis.toDouble()) }
+//        }
+    }
+    fun setTimeAccurate(millis: Long){
+
+    }
+
+    fun getTimeMillis(): Long {
+        return if (Platform.isFxApplicationThread()) {
+            mediaPlayer.currentTime.toMillis().toLong()
+        } else {
+            var timeMillis = 0L
+            Platform.runLater { timeMillis = mediaPlayer.currentTime.toMillis().toLong() }
+            timeMillis
+        }
+    }
+    fun getLengthMillis(): Long {
+        return if (Platform.isFxApplicationThread()) {
+            mediaPlayer.totalDuration.toMillis().toLong()
+        } else {
+            var lengthMillis = 0L
+            Platform.runLater { lengthMillis = mediaPlayer.totalDuration.toMillis().toLong() }
+            lengthMillis
+        }
+    }
+    fun addOnTimeChangedListener( ) {
+
     }
 
     fun pause() {
