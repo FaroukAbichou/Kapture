@@ -13,7 +13,7 @@ version = "1.0-SNAPSHOT"
 
 javafx {
     version = "17"
-    modules("javafx.controls", "javafx.fxml")
+    modules("javafx.controls", "javafx.fxml" , "javafx.media" , "javafx.swing" , "javafx.web")
 }
 
 repositories {
@@ -42,14 +42,6 @@ dependencies {
     implementation(libs.kotlinx.coroutinesSwing)
 
     implementation(libs.kotlinx.dateTime)
-//    implementation("org.openjfx:javafx-plugin:0.0.10")
-    implementation("org.openjfx:javafx-graphics:19.0.2.1")
-    implementation("org.openjfx:javafx-base:19.0.2.1")
-    implementation("org.openjfx:javafx-controls:19.0.2.1")
-    implementation("org.openjfx:javafx-fxml:19.0.2.1")
-    implementation("org.openjfx:javafx-media:19.0.2.1")
-    implementation("org.openjfx:javafx-swing:19.0.2.1")
-    implementation("org.openjfx:javafx-web:19.0.2.1")
 }
 
 val os: OperatingSystem = OperatingSystem.current()
@@ -83,6 +75,8 @@ compose.desktop {
                 jvmArgs(
                     "-Xdock:name=Kapture",
                     "-Dapple.awt.application.appearance=system",
+//                    "--module-path", "<path_to_javafx_libs>", // Replace with the actual path
+//                    "--add-modules", "javafx.controls,javafx.fxml,javafx.media,javafx.swing,javafx.web"
                 )
             }
             linux {
