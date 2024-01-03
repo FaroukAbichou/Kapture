@@ -21,57 +21,73 @@ import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
 import com.sun.javafx.application.PlatformImpl
 import core.di.initKoin
+import core.util.FilePaths
 import javafx.application.Platform
 import javafx.embed.swing.JFXPanel
+import javafx.scene.Group
 import javafx.scene.Scene
-import javafx.scene.control.Label
-import javafx.scene.layout.StackPane
-import netscape.javascript.JSObject
+import javafx.scene.media.Media
+import javafx.scene.media.MediaPlayer
+import javafx.scene.media.MediaView
 import java.awt.BorderLayout
+import java.io.File
 import javax.swing.JPanel
 
 fun main() {
     initKoin().koin
     application(exitProcessOnExit = true) {
-
-        // Required to make sure the JavaFx event loop doesn't finish (can happen when java fx panels in app are shown/hidden)
-        val finishListener = object : PlatformImpl.FinishListener {
-            override fun idle(implicitExit: Boolean) {}
-            override fun exitCalled() {}
-        }
-
-        PlatformImpl.addListener(finishListener)
-
-        Window(
-            title = "WebView Test",
-            resizable = false,
-            state = WindowState(
-                placement = WindowPlacement.Floating,
-                size = DpSize(800.dp, 600.dp)
-            ),
-            onCloseRequest = {
-                PlatformImpl.removeListener(finishListener)
-            },
-            content = {
-                val jfxPanel = remember { JFXPanel() }
-                var jsObject = remember<JSObject?> { null }
-
-                Box(modifier = Modifier.fillMaxSize().background(Color.White)) {
-                    ComposeJFXPanel(
-                        jfxPanel = jfxPanel,
-                        composeWindow = window,
-                        onCreate = {
-                            Platform.runLater {
-                                val label = Label("Hello, JavaFX!")
-                                val stackPane = StackPane(label) // Using StackPane for center alignment
-                                val scene = Scene(stackPane, 800.0, 600.0)
-                                jfxPanel.scene = scene
-                            }
-                        }
-                    )
-                }            }
-        )
+        VideoPlayerWindow()
     }
+}
+
+@Composable
+fun VideoPlayerWindow() {
+    val finishListener = object : PlatformImpl.FinishListener {
+        override fun idle(implicitExit: Boolean) {}
+        override fun exitCalled() {}
+    }
+
+    PlatformImpl.addListener(finishListener)
+
+    Window(
+        title = "Video Player",
+        resizable = true,
+        state = WindowState(
+            placement = WindowPlacement.Floating,
+            size = DpSize(800.dp, 600.dp)
+        ),
+        onCloseRequest = {
+            PlatformImpl.removeListener(finishListener)
+        },
+        content = {
+            val jfxPanel = remember { JFXPanel() }
+
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.White)
+            ) {
+                ComposeJFXPanel(
+                    jfxPanel = jfxPanel,
+                    composeWindow = window,
+                    onCreate = {
+                        Platform.runLater {
+                            // Convert the file path to a URI string
+                            val mediaPath = File(FilePaths.VideosPath + "/ScreenRec.mp4").toURI().toString()
+                            val media = Media(mediaPath)
+                            val mediaPlayer = MediaPlayer(media)
+                            mediaPlayer.isAutoPlay = true
+                            val mediaView = MediaView(mediaPlayer)
+                            val root = Group()
+                            root.children.add(mediaView)
+                            val scene = Scene(root, 600.0, 400.0)
+                            jfxPanel.scene = scene
+                        }
+                    }
+                )
+            }
+        }
+    )
 }
 @Composable
 fun ComposeJFXPanel(
