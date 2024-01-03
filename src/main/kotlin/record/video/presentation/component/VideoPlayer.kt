@@ -9,13 +9,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.awt.ComposeWindow
 import androidx.compose.ui.unit.dp
 import com.sun.javafx.application.PlatformImpl
-import core.ImageResource
 import core.components.ComposeJFXPanel
-import core.components.KpIconButton
 import core.components.helper.rememberMediaPlayer
 import core.util.FilePaths
 import javafx.embed.swing.JFXPanel
 import javafx.scene.Scene
+import record.video.presentation.component.player.VideoPlayerControls
 import java.io.File
 
 @Composable
@@ -47,6 +46,7 @@ fun VideoPlayer(composeWindow: ComposeWindow) {
             contentAlignment = Alignment.Center,
         ){
             ComposeJFXPanel(
+                modifier = Modifier,
                 composeWindow = composeWindow,
                 jfxPanel = jfxPanel,
                 onCreate = { jfxPanel.scene = Scene(player) },
@@ -54,17 +54,6 @@ fun VideoPlayer(composeWindow: ComposeWindow) {
             )
         }
 
-        KpIconButton(
-            onClick = {
-                if (player.isPlaying) {
-                    player.pause()
-                } else {
-                    player.play()
-                }
-            },
-            imageResource = ImageResource.image,
-            enabled = true,
-        )
-
+        VideoPlayerControls(player = player)
     }
 }

@@ -5,23 +5,52 @@ import javafx.scene.layout.Pane
 import javafx.scene.media.Media
 import javafx.scene.media.MediaPlayer
 import javafx.scene.media.MediaView
+import javafx.util.Duration
 
 class Player(file: String?) : BorderPane() {
-    var media = Media(file)
+    private var media = Media(file)
     var player = MediaPlayer(media)
-    var view = MediaView(player)
-    var mpane = Pane()
+    private var view = MediaView(player)
+    private var mpane = Pane()
 
-    val isPlaying: Boolean
-        get() = player.status == MediaPlayer.Status.PLAYING
     init {
         player.isAutoPlay = false
         mpane.children.add(view)
         center = mpane
+
+        // Handle media errors
+        player.setOnError {
+            println("Media error occurred: ${player.error}")
+        }
+    }
+
+    val playerState: VideoPlayerState
+        get() = VideoPlayerState(
+            isPlaying = player.status == MediaPlayer.Status.PLAYING,
+            rate = player.rate,
+            timeMillis = player.currentTime.toMillis(),
+            lengthMillis = player.totalDuration.toMillis(),
+            isMuted = player.isMute,
+            volume = player.volume,
+            isFullScreen = false,
+            isLooping = player.cycleCount == MediaPlayer.INDEFINITE,
+            isAutoPlay = player.isAutoPlay,
+            isSeeking = false,
+            isShowingControls = false,
+    )
+
+    fun onTimeUpdate(action: (Double) -> Unit) {
+        player.currentTimeProperty().addListener { _, _, newValue ->
+            action(newValue.toMillis())
+        }
+    }
+    fun seek(time: Double) {
+        player.seek(Duration.millis(time))
     }
 
     fun play() {
         player.play()
+
     }
 
     fun pause() {
@@ -32,7 +61,14 @@ class Player(file: String?) : BorderPane() {
         player.stop()
     }
 
-    fun setRate(rate: Double) {
-        player.rate = rate
+    fun skip(seconds: Int) {
+        player.seek(player.currentTime.add(Duration.seconds(seconds.toDouble())))
+    }
+
+    fun setVolume(volume: Double) {
+        player.volume = volume
+    }
+    fun dispose() {
+        player.dispose()
     }
 }

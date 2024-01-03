@@ -17,6 +17,7 @@ import javax.swing.JPanel
 
 @Composable
 fun ComposeJFXPanel(
+    modifier: Modifier,
     composeWindow: ComposeWindow,
     jfxPanel: JFXPanel,
     onCreate: () -> Unit,
@@ -26,16 +27,17 @@ fun ComposeJFXPanel(
     val density = LocalDensity.current.density
 
     Box(
-        modifier = Modifier.onGloballyPositioned { childCoordinates ->
-            val coordinates = childCoordinates.parentCoordinates!!
-            val location = coordinates.localToWindow(Offset.Zero).round()
-            jPanel.setBounds(
-                (location.x / density).toInt(),
-                (location.y / density).toInt(),
-                (coordinates.size.width / density).toInt(),
-                (coordinates.size.height / density).toInt()
-            )
-        }
+        modifier = modifier
+            .onGloballyPositioned { childCoordinates ->
+                val coordinates = childCoordinates.parentCoordinates!!
+                val location = coordinates.localToWindow(Offset.Zero).round()
+                jPanel.setBounds(
+                    (location.x / density).toInt(),
+                    (location.y / density).toInt(),
+                    (coordinates.size.width / density).toInt(),
+                    (coordinates.size.height / density).toInt()
+                )
+            }
     )
 
     DisposableEffect(jPanel) {
