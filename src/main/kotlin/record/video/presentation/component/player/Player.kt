@@ -39,15 +39,10 @@ class Player(file: String?) : BorderPane() {
             isShowingControls = false,
     )
 
-    fun updateState(state: (VideoPlayerState) -> Unit) {
-        val currentState = VideoPlayerState(
-            isPlaying = player.status == MediaPlayer.Status.PLAYING,
-            rate = player.rate,
-            timeMillis = player.currentTime.toMillis(),
-            lengthMillis = player.totalDuration.toMillis(),
-            // ... other properties
-        )
-        state(currentState)
+    fun onTimeUpdate(action: (Double) -> Unit) {
+        player.currentTimeProperty().addListener { _, _, newValue ->
+            action(newValue.toMillis())
+        }
     }
     fun seek(time: Double) {
         player.seek(Duration.millis(time))

@@ -11,23 +11,16 @@ import androidx.compose.material.icons.filled.Forward10
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Replay10
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import kotlinx.coroutines.delay
 
 @Composable
 fun VideoPlayerControls(player: Player) {
     val videoPlayerState = remember { mutableStateOf(VideoPlayerState.default) }
-
-    LaunchedEffect(Unit) {
-        while (true) {
-            player.updateState { newState ->
-                videoPlayerState.value = newState
-            }
-            delay(10) // Update every 100ms, adjust as needed
-        }
-    }
 
     Column(
         modifier = Modifier.fillMaxWidth(),
