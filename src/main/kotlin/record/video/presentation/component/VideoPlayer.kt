@@ -16,6 +16,7 @@ import core.components.helper.rememberMediaPlayer
 import core.util.FilePaths
 import javafx.embed.swing.JFXPanel
 import javafx.scene.Scene
+import record.video.presentation.component.player.VideoPlayerControls
 import java.io.File
 
 @Composable
@@ -65,6 +66,6 @@ fun VideoPlayer(composeWindow: ComposeWindow) {
             imageResource = ImageResource.image,
             enabled = true,
         )
-
+        VideoPlayerControls(player = player)
     }
 }
