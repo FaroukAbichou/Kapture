@@ -59,9 +59,7 @@ fun KpIconButton(
     enabled: Boolean = true,
 ) {
     Button(
-        onClick = {
-            onClick()
-        },
+        onClick = onClick,
         enabled = enabled,
         colors = ButtonDefaults.buttonColors(
             contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
