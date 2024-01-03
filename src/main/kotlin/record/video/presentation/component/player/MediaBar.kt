@@ -12,7 +12,9 @@ import javafx.scene.layout.Priority
 import javafx.scene.media.MediaPlayer
 import javafx.scene.media.MediaPlayer.Status
 
-
+/**
+ * This class is not used for now, but it may be useful in the future
+*/
 class MediaBar(private val player: MediaPlayer) : HBox() {
 
     private val timeSlider = Slider().apply {

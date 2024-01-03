@@ -19,9 +19,8 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun VideoPlayerControls(player: Player) {
-    // Assuming 'player' is your JavaFX player class with appropriate methods
-    val isPlaying = remember { mutableStateOf(player.isPlaying) }
-
+    val videoPlayerState = rememberVideoPlayerState()
+    val isPlaying = remember { mutableStateOf(videoPlayerState.isPlaying) }
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
@@ -45,7 +44,7 @@ fun VideoPlayerControls(player: Player) {
         // Skip Backward Button
         Button(
             onClick = {
-                player.skip(-10) // Implement a skip method in your Player class
+                player.skip(-10)
             }
         ) {
             Icon(
@@ -67,9 +66,9 @@ fun VideoPlayerControls(player: Player) {
 
         // Volume Slider
         Slider(
-            value = player.volume.toFloat(),
+            value = videoPlayerState.volume.toFloat(),
             onValueChange = { newVolume ->
-                player.volume = newVolume.toDouble()
+                player.setVolume(newVolume.toDouble())
             },
             valueRange = 0f..1f
         )

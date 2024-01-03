@@ -19,25 +19,25 @@ class Player(file: String?) : BorderPane() {
         center = mpane
 
         // Handle media errors
-//        player.onError = Runnable {
-//            println("Error occurred in MediaPlayer: ${player.error}")
-//        }
+        player.setOnError {
+            println("Media error occurred: ${player.error}")
+        }
     }
 
-    val isPlaying: Boolean
-        get() = player.status == MediaPlayer.Status.PLAYING
-
-    val currentTime: Double
-        get() = player.currentTime.toMillis()
-
-    val totalDuration: Double
-        get() = media.duration.toMillis()
-
-    var volume: Double
-        get() = player.volume
-        set(value) {
-            player.volume = value.coerceIn(0.0, 1.0) // Ensure volume is within [0, 1]
-        }
+    val playerState: VideoPlayerState
+        get() = VideoPlayerState(
+            isPlaying = player.status == MediaPlayer.Status.PLAYING,
+            rate = player.rate,
+            timeMillis = player.currentTime.toMillis(),
+            lengthMillis = player.totalDuration.toMillis(),
+            isMuted = player.isMute,
+            volume = player.volume,
+            isFullScreen = false,
+            isLooping = player.cycleCount == MediaPlayer.INDEFINITE,
+            isAutoPlay = player.isAutoPlay,
+            isSeeking = false,
+            isShowingControls = false,
+    )
 
     fun play() {
         player.play()
@@ -55,11 +55,9 @@ class Player(file: String?) : BorderPane() {
         player.seek(player.currentTime.add(Duration.seconds(seconds.toDouble())))
     }
 
-    fun setRate(rate: Double) {
-        player.rate = rate
+    fun setVolume(volume: Double) {
+        player.volume = volume
     }
-
-
     fun dispose() {
         player.dispose()
     }

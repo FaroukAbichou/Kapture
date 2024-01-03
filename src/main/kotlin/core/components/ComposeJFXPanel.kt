@@ -17,6 +17,7 @@ import javax.swing.JPanel
 
 @Composable
 fun ComposeJFXPanel(
+    modifier: Modifier,
     composeWindow: ComposeWindow,
     jfxPanel: JFXPanel,
     onCreate: () -> Unit,
