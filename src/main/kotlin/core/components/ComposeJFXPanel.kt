@@ -18,8 +18,8 @@ import javax.swing.JPanel
 @Composable
 fun ComposeJFXPanel(
     modifier: Modifier,
-    composeWindow: ComposeWindow,
     jfxPanel: JFXPanel,
+    composeWindow: ComposeWindow,
     onCreate: () -> Unit,
     onDestroy: () -> Unit = {}
 ) {
@@ -31,26 +31,32 @@ fun ComposeJFXPanel(
             .onGloballyPositioned { childCoordinates ->
                 val coordinates = childCoordinates.parentCoordinates!!
                 val location = coordinates.localToWindow(Offset.Zero).round()
-                jPanel.setBounds(
-                    (location.x / density).toInt(),
-                    (location.y / density).toInt(),
-                    (coordinates.size.width / density).toInt(),
-                    (coordinates.size.height / density).toInt()
-                )
+                platformRunLater {
+                    jPanel.setBounds(
+                        (location.x / density).toInt(),
+                        (location.y / density).toInt(),
+                        (coordinates.size.width / density).toInt(),
+                        (coordinates.size.height / density).toInt()
+                    )
+                }
             }
     )
 
     DisposableEffect(jPanel) {
-        composeWindow.add(jPanel)
-        jPanel.layout = BorderLayout()
-        jPanel.add(jfxPanel,BorderLayout.CENTER)
-
-        Platform.runLater {
+        platformRunLater {
+            composeWindow.add(jPanel)
+            jPanel.layout = BorderLayout()
+            jPanel.add(jfxPanel, BorderLayout.CENTER)
             onCreate()
         }
+
         onDispose {
             onDestroy()
             composeWindow.remove(jPanel)
         }
     }
+}
+
+fun platformRunLater(action: () -> Unit) {
+    Platform.runLater(action)
 }

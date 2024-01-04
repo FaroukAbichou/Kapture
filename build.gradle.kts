@@ -34,6 +34,9 @@ dependencies {
     implementation(libs.kotlinx.coroutinesCore)
     implementation("dev.chrisbanes.haze:haze:0.3.0")
     implementation("org.bytedeco:ffmpeg-platform:6.0-1.5.9")
+    implementation("org.bytedeco:javacv-platform:1.5.9")
+    implementation("org.bytedeco:opencv:4.5.3-1.5.9")
+    implementation("org.bytedeco:javacpp:1.5.9")
 
     implementation(libs.voyager.navigator)
     implementation(libs.voyager.transition)
@@ -63,10 +66,8 @@ compose.desktop {
 
             windows {
                 iconFile.set(project.file("logo.ico"))
-//                upgradeUuid = "f0b0f2a0-0f0f-0f0f-0f0f-f0b0f2a0f0f0"
                 shortcut = true
                 dirChooser = true
-//                menuGroup = "start-menu-group"
                 menu = true
             }
             macOS {
@@ -75,8 +76,6 @@ compose.desktop {
                 jvmArgs(
                     "-Xdock:name=Kapture",
                     "-Dapple.awt.application.appearance=system",
-//                    "--module-path", "<path_to_javafx_libs>", // Replace with the actual path
-//                    "--add-modules", "javafx.controls,javafx.fxml,javafx.media,javafx.swing,javafx.web"
                 )
             }
             linux {
