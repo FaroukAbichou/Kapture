@@ -20,6 +20,4 @@ interface VideoRepository  {
     )
     fun stopRecording()
 
-//    fun saveRecording(outputFilePath: String)
-    fun playVideo(videoPath: String)
 }

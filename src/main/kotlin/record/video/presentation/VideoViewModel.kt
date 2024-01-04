@@ -61,9 +61,6 @@ class VideoViewModel : KoinComponent {
 //                    windowPlacement = event.bounds,
 //                    selectedScreen = _state.value.selectedScreen,
 //                )
-                videoRepository.playVideo(
-                    videoPath = "${FilePaths.VideosPath}/ScreenRec.mp4"
-                )
             }
 
             VideoEvent.StopRecording -> {

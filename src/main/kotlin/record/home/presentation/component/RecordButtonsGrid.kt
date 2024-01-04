@@ -22,33 +22,10 @@ fun RecordButtonsGrid(
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-//            RecordOptionButton(
-//                text = "Select Recording Area",
-//                onClick = {
-//                    onEvent(
-//                        VideoEvent.RecordSection(
-//                            config = RecordSettings(),
-//                            windowPlacement = WindowPlacement.Default
-//                        )
-//                    )
-//                    onEvent(VideoEvent.SelectScreenSection)
-//                },
-//                imageResource = ImageResource.crop,
-//                modifier = Modifier
-//                    .padding(8.dp)
-//            )
-//            RecordOptionButton(
-//                text = "Full Screen",
-//                onClick = {},
-//                imageResource = ImageResource.display,
-//                enabled = false,
-//                modifier = Modifier
-//                    .padding(8.dp)
-//            )
             RecordOptionButton(
                 text = "Record",
                 onClick = {
-                    onEvent(VideoEvent.StartRecording(null))
+                    onEvent(VideoEvent.Record)
                           },
                 imageResource = ImageResource.lockDisplay,
                 modifier = Modifier
@@ -62,52 +39,5 @@ fun RecordButtonsGrid(
                     .padding(8.dp)
             )
         }
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-//            RecordOptionButton(
-//                text = "Device Recording",
-//                onClick = {
-//                    onEvent(VideoEvent.RecordDevice)
-//                },
-//                imageResource = ImageResource.cameraLens,
-//                enabled = false,
-//                modifier = Modifier
-//                    .padding(8.dp)
-//            )
-//            RecordOptionButton(
-//                text = "Audio only",
-//                onClick = {
-////                    onEvent(
-////                        VideoEvent.RecordAudio(
-////                            config = RecordSettings(),
-////                        )
-////                    )
-//                },
-//                imageResource = ImageResource.waveformCircle,
-//                modifier = Modifier
-//                    .padding(8.dp)
-//            )
-//            RecordOptionButton(
-//                text = "All Windows",
-//                onClick = {
-//                    onEvent(
-//                        VideoEvent.RecordAllWindows(
-//                            config = RecordSettings(
-//                                audioSource = "default"
-//                            )
-//                        )
-//                    )
-//                },
-//                imageResource = ImageResource.multipleDisplay,
-//                enabled = false,
-//                modifier = Modifier
-//                    .padding(8.dp)
-//            )
-        }
-
     }
 }
