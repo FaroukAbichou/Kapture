@@ -14,11 +14,7 @@ data class VideoPlayerState(
     val isLooping: Boolean = false,
     val isAutoPlay: Boolean = false,
     val isSeeking: Boolean = false,
-    val isShowingControls: Boolean = false,
-){
-    companion object {
-        val default = VideoPlayerState()
-    }
-}
+    val isShowingControls: Boolean = false
+)
 @Composable
 fun rememberVideoPlayerState() = remember { VideoPlayerState() }

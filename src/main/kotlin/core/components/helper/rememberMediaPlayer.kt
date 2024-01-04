@@ -11,8 +11,8 @@ fun rememberMediaPlayer(file: String): Player {
 
     DisposableEffect(mediaPlayer) {
         onDispose {
-            mediaPlayer.stop() // Stop the player to release resources
-            mediaPlayer.player.dispose() // Dispose the underlying MediaPlayer object
+//            mediaPlayer.stop() // Stop the player to release resources
+            mediaPlayer.dispose() // Dispose the player to release resources
         }
     }
 

@@ -11,95 +11,67 @@ import androidx.compose.material.icons.filled.Forward10
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Replay10
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 
 @Composable
 fun VideoPlayerControls(player: Player) {
-    val videoPlayerState = remember { mutableStateOf(VideoPlayerState.default) }
+    var timeInMillis by remember { mutableStateOf(0f) }
+
+    LaunchedEffect(timeInMillis) {
+        player.seek(timeInMillis.toLong())
+    }
 
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Slider(
-            value = videoPlayerState.value.timeMillis.toFloat(),
-            onValueChange = { newTime ->
-                player.seek(newTime.toDouble())
-            },
-            valueRange = 0f..videoPlayerState.value.lengthMillis.toFloat()
+            value = timeInMillis,
+            onValueChange = { timeInMillis = it },
+            valueRange = 0f..player.playerState.lengthMillis.toFloat()
         )
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Button(
-                onClick = {
-                    videoPlayerState.value = videoPlayerState.value.copy(
-                        isPlaying = !videoPlayerState.value.isPlaying
-                    )
-                    if (videoPlayerState.value.isPlaying) {
-                        player.play()
-                    } else {
-                        player.pause()
-                    }
-                }
-            ) {
-                Icon(
-                    imageVector = if (videoPlayerState.value.isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
-                    contentDescription = if (videoPlayerState.value.isPlaying) "Pause" else "Play"
-                )
-            }
 
-            // Skip Backward Button
-            Button(
-                onClick = {
-                    player.skip(-10)
-                }
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Replay10,
-                    contentDescription = "Rewind 10 seconds"
-                )
-            }
-
-            Button(
-                onClick = {
-                    player.skip(10) // Implement a skip method in your Player class
-                }
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Forward10,
-                    contentDescription = "Forward 10 seconds"
-                )
-            }
-
-            // Volume Slider
-            Slider(
-                value = videoPlayerState.value.volume.toFloat(),
-                onValueChange = { newVolume ->
-                    player.setVolume(newVolume.toDouble())
-                },
-                valueRange = 0f..1f
-            )
-        }
+        PlayerControlButtons(player)
     }
-
 }
 
 @Composable
-fun rememberMediaPlayer(mediaPath: String): Player {
-    val player = remember { Player(mediaPath) }
-
-    DisposableEffect(player) {
-        onDispose {
-            player.dispose()
+fun PlayerControlButtons(player: Player) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Button(
+            onClick = { player.playOrPause() }
+        ) {
+            Icon(
+                imageVector = if (player.playerState.isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
+                contentDescription = if (player.playerState.isPlaying) "Pause" else "Play"
+            )
         }
-    }
 
-    return player
+        // Skip Backward Button
+        SkipButton(player, -10, Icons.Default.Replay10, "Rewind 10 seconds")
+
+        // Skip Forward Button
+        SkipButton(player, 10, Icons.Default.Forward10, "Forward 10 seconds")
+    }
+}
+
+@Composable
+fun SkipButton(
+    player: Player,
+    skipSeconds: Int,
+    icon: ImageVector,
+    contentDesc: String
+) {
+    Button(
+        onClick = { player.skip(skipSeconds) }
+    ) {
+        Icon(imageVector = icon, contentDescription = contentDesc)
+    }
 }
