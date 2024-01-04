@@ -26,9 +26,6 @@ fun ComposeJFXPanel(
     val jPanel = remember { JPanel(BorderLayout()) }
     val density = LocalDensity.current.density
 
-        //intialize the paltformRunLater
-
-
     Box(
         modifier = modifier
             .onGloballyPositioned { childCoordinates ->
@@ -47,9 +44,9 @@ fun ComposeJFXPanel(
 
     DisposableEffect(jPanel) {
         platformRunLater {
-        composeWindow.add(jPanel)
-        jPanel.layout = BorderLayout()
-        jPanel.add(jfxPanel,BorderLayout.CENTER)
+            composeWindow.add(jPanel)
+            jPanel.layout = BorderLayout()
+            jPanel.add(jfxPanel, BorderLayout.CENTER)
             onCreate()
         }
 

@@ -9,23 +9,16 @@ import core.util.FileHelper.getFileSize
 import core.util.FileHelper.getFilesWithExtension
 import core.util.FilePaths
 import core.util.TimeHelper
-import javafx.application.Application
-import javafx.scene.Scene
-import javafx.scene.control.Button
-import javafx.scene.layout.StackPane
-import javafx.stage.Stage
-import org.jetbrains.skia.Image
+import org.bytedeco.javacv.FFmpegFrameGrabber
+import org.bytedeco.javacv.Java2DFrameConverter
 import probe.core.WindowPlacement
 import probe.screen.domain.model.Screen
 import record.video.domain.VideoRepository
 import record.video.domain.model.RecordSettings
 import record.video.domain.model.Video
-import java.io.BufferedReader
+import java.awt.image.BufferedImage
 import java.io.File
-import java.io.InputStreamReader
-import java.nio.file.Files
 import java.nio.file.Path
-import java.nio.file.Paths
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
 import java.util.concurrent.TimeUnit
@@ -165,68 +158,47 @@ class VideoRepositoryImpl : VideoRepository {
     }
 
     private fun getVideoDuration(path: Path): Double {
-        try {
-            val processBuilder = ProcessBuilder(
-                "ffprobe",
-                "-v", "error",
-                "-show_entries", "format=duration",
-                "-of", "default=noprint_wrappers=1:nokey=1",
-                path.toString()
-            )
-            processBuilder.redirectErrorStream(true)
-            val process = processBuilder.start()
-
-            BufferedReader(InputStreamReader(process.inputStream)).use { reader ->
-                val output = reader.readLine()
-                process.waitFor()
-                return output.toDoubleOrNull() ?: 0.0
-            }
+        val grabber = FFmpegFrameGrabber(path.toFile())
+        return try {
+            grabber.start()
+            val duration = grabber.lengthInTime.toDouble() / 1_000_000 // Convert duration from microseconds to seconds
+            grabber.stop()
+            duration
         } catch (e: Exception) {
             e.printStackTrace()
+            0.0
         }
-        return 0.0
     }
 
     private fun getVideoThumbnail(path: Path, timestamp: String = "00:00:02"): ImageBitmap {
-        val thumbnailPath = Paths.get("thumbnail.png")
-        try {
-            val processBuilder = ProcessBuilder(
-                "ffmpeg",
-                "-i", path.toString(),
-                "-ss", timestamp,
-                "-vframes", "1",
-                thumbnailPath.toString()
-            )
-            val process = processBuilder.start()
-            process.waitFor()
+        val grabber = FFmpegFrameGrabber(path.toFile())
 
-            val image = Image.makeFromEncoded(Files.readAllBytes(thumbnailPath))
-            return image.toComposeImageBitmap().also {
-                Files.deleteIfExists(thumbnailPath)
-            }
+        return try {
+            grabber.start()
+
+            // Convert timestamp to microseconds
+            val timestampMicroseconds = timestampToMicroseconds(timestamp)
+            grabber.timestamp = timestampMicroseconds
+
+            val frame = grabber.grabImage()
+            val converter = Java2DFrameConverter()
+            val bufferedImage: BufferedImage = converter.convert(frame)
+
+            grabber.stop()
+
+            bufferedImage.toComposeImageBitmap() // Convert BufferedImage to ImageBitmap
         } catch (e: Exception) {
             e.printStackTrace()
+            ImageBitmap(0, 0) // Return an empty ImageBitmap in case of error
         }
-
-        return ImageBitmap(0, 0)// TODO ("Error getting video thumbnail")
     }
+    private fun timestampToMicroseconds(timestamp: String): Long {
+        // Assuming the timestamp is in the format "HH:mm:ss"
+        val parts = timestamp.split(":").map { it.toInt() }
+        val hours = parts[0]
+        val minutes = parts[1]
+        val seconds = parts[2]
 
-}
-
-class YourApp : Application() {
-    override fun start(primaryStage: Stage) {
-        val button = Button("Click Me")
-        button.setOnAction {
-            println("Button Clicked!")
-        }
-
-        val root = StackPane()
-        root.children.add(button)
-
-        val scene = Scene(root, 300.0, 250.0)
-
-        primaryStage.title = "JavaFX App"
-        primaryStage.scene = scene
-        primaryStage.show()
+        return ((hours * 3600 + minutes * 60 + seconds) * 1_000_000).toLong()
     }
 }
