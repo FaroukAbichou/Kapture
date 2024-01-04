@@ -20,12 +20,13 @@ class Player(file: String?) : BorderPane() {
 
     init { center = mpane }
 
+    val timeMillis: Long
+        get() = player.currentTime.toMillis().toLong()
     // Simplified player state
     val playerState: VideoPlayerState
         get() = VideoPlayerState(
             isPlaying = player.status == MediaPlayer.Status.PLAYING,
             rate = player.rate,
-            timeMillis = player.currentTime.toMillis(),
             lengthMillis = player.totalDuration.toMillis(),
             isMuted = player.isMute,
             volume = player.volume,

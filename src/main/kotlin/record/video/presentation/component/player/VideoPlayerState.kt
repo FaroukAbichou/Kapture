@@ -6,7 +6,6 @@ import androidx.compose.runtime.remember
 data class VideoPlayerState(
     val isPlaying: Boolean = false,
     val rate: Double = 1.0,
-    val timeMillis: Double = 0.0,
     val lengthMillis: Double = 0.0,
     val isMuted: Boolean = false,
     val volume: Double = 1.0,

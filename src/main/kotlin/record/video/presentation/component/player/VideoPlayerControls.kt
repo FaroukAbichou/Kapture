@@ -19,7 +19,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 @Composable
 fun VideoPlayerControls(player: Player) {
     var timeInMillis by remember { mutableStateOf(0f) }
-    val playerTime by remember { mutableStateOf(player.playerState.timeMillis.toFloat()) }
+    val playerTime by remember { mutableStateOf(player.timeMillis.toFloat()) }
 
     LaunchedEffect(player) {
         player.onTimeUpdate { newTime ->
@@ -32,6 +32,7 @@ fun VideoPlayerControls(player: Player) {
             player.seek(timeInMillis.toLong())
         }
     }
+
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
