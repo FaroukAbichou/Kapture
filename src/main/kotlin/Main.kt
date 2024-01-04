@@ -1,9 +1,8 @@
-
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.awt.ComposeWindow
 import androidx.compose.ui.window.*
 import core.di.initKoin
 import core.theme.KaptureTheme
-import record.video.presentation.component.VideoPlayer
 
 fun main() {
     initKoin().koin
@@ -17,10 +16,10 @@ fun main() {
             state = windowState,
             title = "Kapture"
         ) {
+            val composeWindow : ComposeWindow = window
             KaptureTheme {
-//                KpMainContent()
-                VideoPlayer(
-                    composeWindow = window
+                KpMainContent(
+                    composeWindow = composeWindow
                 )
             }
         }

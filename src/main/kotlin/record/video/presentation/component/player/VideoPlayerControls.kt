@@ -2,7 +2,6 @@ package record.video.presentation.component.player
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.Slider
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,11 +27,11 @@ fun VideoPlayerControls(player: Player) {
         modifier = Modifier.fillMaxWidth(.6f),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Slider(
-            value = timeInMillis,
-            onValueChange = { timeInMillis = it },
-            valueRange = 0f..player.playerState.lengthMillis.toFloat()
-        )
+//        Slider(
+//            value = timeInMillis,
+//            onValueChange = { timeInMillis = it },
+//            valueRange = 0f..player.playerState.lengthMillis.toFloat()
+//        )
 
         PlayerControlButtons(player)
     }

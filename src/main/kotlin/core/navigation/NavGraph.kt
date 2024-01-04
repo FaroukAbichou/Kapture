@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.awt.ComposeWindow
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
@@ -103,8 +104,9 @@ class NavGraph {
             )
         }
     }
-    object VideosTab : Tab {
-        private fun readResolve(): Any = VideosTab
+    class VideosTab(
+        val composeWindow: ComposeWindow
+    ) : Tab {
         private val viewModel: VideoViewModel = VideoViewModel()
 
         override val options: TabOptions
@@ -128,6 +130,7 @@ class NavGraph {
             val navigator = LocalNavigator.currentOrThrow
 
             VideoScreen(
+                composeWindow = composeWindow,
                 state = state,
                 onEvent = viewModel::onEvent
             )

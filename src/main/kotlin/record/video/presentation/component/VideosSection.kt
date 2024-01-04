@@ -5,6 +5,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.awt.ComposeWindow
 import androidx.compose.ui.unit.dp
 import core.components.KpFilterDropdown
 import core.components.KpSortDropdown
@@ -15,9 +16,10 @@ import record.video.presentation.state.VideoState
 
 @Composable
 fun VideosSection(
-    modifier : Modifier = Modifier,
+    modifier: Modifier = Modifier,
     state: VideoState,
     onEvent: (VideoEvent) -> Unit,
+    composeWindow: ComposeWindow,
 ) {
     var searchedVideos by remember {
         mutableStateOf(state.videos)
@@ -94,6 +96,7 @@ fun VideosSection(
                 item {
                     KpVideoItem(
                         modifier = Modifier,
+                        composeWindow = composeWindow,
                         video = item,
                         onClick = {}
                     )

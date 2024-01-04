@@ -5,6 +5,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.awt.ComposeWindow
 import core.components.KpProgressIndicator
 import record.video.presentation.component.VideosSection
 import record.video.presentation.event.VideoEvent
@@ -14,6 +15,7 @@ import record.video.presentation.state.VideoState
 fun VideoScreen(
     state: VideoState,
     onEvent: (VideoEvent) -> Unit,
+    composeWindow: ComposeWindow,
 ) {
     Scaffold(
         topBar = {},
@@ -21,6 +23,7 @@ fun VideoScreen(
     ) { paddingValues ->
         VideoScreenContent(
             modifier = Modifier.padding(paddingValues),
+            composeWindow = composeWindow,
             state = state,
             onEvent = onEvent
         )
@@ -31,13 +34,15 @@ fun VideoScreen(
 fun VideoScreenContent(
     modifier: Modifier,
     state: VideoState,
-    onEvent: (VideoEvent) -> Unit
+    onEvent: (VideoEvent) -> Unit,
+    composeWindow: ComposeWindow
 ){
     if (state.isLoading){
         KpProgressIndicator()
     } else{
         VideosSection(
             modifier = modifier,
+            composeWindow = composeWindow,
             state = state,
             onEvent = onEvent
         )
