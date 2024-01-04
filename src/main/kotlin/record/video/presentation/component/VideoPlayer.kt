@@ -35,10 +35,12 @@ fun VideoPlayer(composeWindow: ComposeWindow) {
 
     val mediaPath = File(FilePaths.VideosPath + "/Screen.mp4").toURI().toString()
     val player =  rememberMediaPlayer(mediaPath)
+
     Column(
         modifier = Modifier
             .fillMaxSize(),
         verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box(
             modifier = Modifier
@@ -46,7 +48,7 @@ fun VideoPlayer(composeWindow: ComposeWindow) {
             contentAlignment = Alignment.Center,
         ){
             ComposeJFXPanel(
-                modifier = Modifier,
+                modifier  = Modifier.matchParentSize(),
                 composeWindow = composeWindow,
                 jfxPanel = jfxPanel,
                 onCreate = { jfxPanel.scene = Scene(player) },

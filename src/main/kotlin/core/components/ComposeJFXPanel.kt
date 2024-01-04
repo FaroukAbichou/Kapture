@@ -23,7 +23,7 @@ fun ComposeJFXPanel(
     onCreate: () -> Unit,
     onDestroy: () -> Unit = {}
 ) {
-    val jPanel = remember { JPanel() }
+    val jPanel = remember { JPanel(BorderLayout()) }
     val density = LocalDensity.current.density
 
     Box(
@@ -43,7 +43,7 @@ fun ComposeJFXPanel(
     DisposableEffect(jPanel) {
         composeWindow.add(jPanel)
         jPanel.layout = BorderLayout()
-        jPanel.add(jfxPanel)
+        jPanel.add(jfxPanel,BorderLayout.CENTER)
 
         Platform.runLater {
             onCreate()
