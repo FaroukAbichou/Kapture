@@ -9,19 +9,47 @@ import javafx.util.Duration
 
 class Player(file: String?) : BorderPane() {
     private var media = Media(file)
+
     private var player = MediaPlayer(media).apply {
         isAutoPlay = false
         setOnError {
             println("Media error occurred: $error")
         }
     }
-    private var view = MediaView(player)
-    private var mpane = Pane().apply { children.add(view) }
 
-    init { center = mpane }
+    private var view: MediaView = MediaView(player).apply {
+        isPreserveRatio = true
+    }
 
+    private var mpane: Pane = Pane().apply {
+        children.add(view)
+        style = "-fx-background-color: black;"
+    }
+
+    init {
+        view.fitWidthProperty().bind(mpane.widthProperty())
+        view.fitHeightProperty().bind(mpane.heightProperty())
+
+        // Set the layout logic for mpane
+        mpane.layoutBoundsProperty().addListener { _, _, _ ->
+                val width = mpane.width
+                val height = mpane.height
+
+                val viewWidth = view.prefWidth(-1.0)
+                val viewHeight = view.prefHeight(-1.0)
+
+                val x = (width - viewWidth) / 2
+                val y = (height - viewHeight) / 2
+
+                view.relocate(x, y)
+                view.resizeRelocate(x, y, viewWidth, viewHeight)
+            }
+
+        center = mpane
+    }
     val timeMillis: Long
         get() = player.currentTime.toMillis().toLong()
+
     // Simplified player state
     val playerState: VideoPlayerState
         get() = VideoPlayerState(
