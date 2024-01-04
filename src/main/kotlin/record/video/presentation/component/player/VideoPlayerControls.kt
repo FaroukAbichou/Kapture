@@ -19,11 +19,19 @@ import androidx.compose.ui.graphics.vector.ImageVector
 @Composable
 fun VideoPlayerControls(player: Player) {
     var timeInMillis by remember { mutableStateOf(0f) }
+    val playerTime by remember { mutableStateOf(player.playerState.timeMillis.toFloat()) }
 
-    LaunchedEffect(timeInMillis) {
-        player.seek(timeInMillis.toLong())
+    LaunchedEffect(player) {
+        player.onTimeUpdate { newTime ->
+            timeInMillis = newTime.toFloat()
+        }
     }
 
+    LaunchedEffect(timeInMillis) {
+        if (timeInMillis != playerTime) {
+            player.seek(timeInMillis.toLong())
+        }
+    }
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally

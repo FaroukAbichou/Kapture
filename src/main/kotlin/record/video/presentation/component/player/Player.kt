@@ -44,6 +44,12 @@ class Player(file: String?) : BorderPane() {
         }
     }
 
+    fun onTimeUpdate(callback: (Double) -> Unit) {
+        player.currentTimeProperty().addListener { _, _, newValue ->
+            callback(newValue.toMillis())
+        }
+    }
+
 
     fun seek(time: Long) {
         player.seek(Duration.millis(time.toDouble()))
