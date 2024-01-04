@@ -1,13 +1,17 @@
 package record.video.presentation.component
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.awt.ComposeWindow
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.graphics.Color
 import com.sun.javafx.application.PlatformImpl
 import core.components.ComposeJFXPanel
 import core.components.helper.rememberMediaPlayer
@@ -35,18 +39,22 @@ fun VideoPlayer(composeWindow: ComposeWindow) {
 
     val mediaPath = File(FilePaths.VideosPath + "/Screen.mp4").toURI().toString()
     val player =  rememberMediaPlayer(mediaPath)
+
     Column(
         modifier = Modifier
             .fillMaxSize(),
         verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box(
             modifier = Modifier
-                .size(500.dp, 500.dp),
+                .fillMaxSize(.8f)
+                .background(Color.Black)
+            ,
             contentAlignment = Alignment.Center,
         ){
             ComposeJFXPanel(
-                modifier = Modifier,
+                modifier  = Modifier.matchParentSize(),
                 composeWindow = composeWindow,
                 jfxPanel = jfxPanel,
                 onCreate = { jfxPanel.scene = Scene(player) },

@@ -9,26 +9,52 @@ import javafx.util.Duration
 
 class Player(file: String?) : BorderPane() {
     private var media = Media(file)
-    var player = MediaPlayer(media)
-    private var view = MediaView(player)
-    private var mpane = Pane()
 
-    init {
-        player.isAutoPlay = false
-        mpane.children.add(view)
-        center = mpane
-
-        // Handle media errors
-        player.setOnError {
-            println("Media error occurred: ${player.error}")
+    private var player = MediaPlayer(media).apply {
+        isAutoPlay = false
+        setOnError {
+            println("Media error occurred: $error")
         }
     }
 
+    private var view: MediaView = MediaView(player).apply {
+        isPreserveRatio = true
+    }
+
+    private var mpane: Pane = Pane().apply {
+        children.add(view)
+        style = "-fx-background-color: black;"
+    }
+
+    init {
+        view.fitWidthProperty().bind(mpane.widthProperty())
+        view.fitHeightProperty().bind(mpane.heightProperty())
+
+        // Set the layout logic for mpane
+        mpane.layoutBoundsProperty().addListener { _, _, _ ->
+                val width = mpane.width
+                val height = mpane.height
+
+                val viewWidth = view.prefWidth(-1.0)
+                val viewHeight = view.prefHeight(-1.0)
+
+                val x = (width - viewWidth) / 2
+                val y = (height - viewHeight) / 2
+
+                view.relocate(x, y)
+                view.resizeRelocate(x, y, viewWidth, viewHeight)
+            }
+
+        center = mpane
+    }
+    val timeMillis: Long
+        get() = player.currentTime.toMillis().toLong()
+
+    // Simplified player state
     val playerState: VideoPlayerState
         get() = VideoPlayerState(
             isPlaying = player.status == MediaPlayer.Status.PLAYING,
             rate = player.rate,
-            timeMillis = player.currentTime.toMillis(),
             lengthMillis = player.totalDuration.toMillis(),
             isMuted = player.isMute,
             volume = player.volume,
@@ -36,38 +62,32 @@ class Player(file: String?) : BorderPane() {
             isLooping = player.cycleCount == MediaPlayer.INDEFINITE,
             isAutoPlay = player.isAutoPlay,
             isSeeking = false,
-            isShowingControls = false,
-    )
+            isShowingControls = false
+        )
 
-    fun onTimeUpdate(action: (Double) -> Unit) {
-        player.currentTimeProperty().addListener { _, _, newValue ->
-            action(newValue.toMillis())
+    fun playOrPause() {
+        if (player.status == MediaPlayer.Status.PLAYING) {
+            player.pause()
+        } else {
+            player.play()
         }
     }
-    fun seek(time: Double) {
-        player.seek(Duration.millis(time))
+
+    fun onTimeUpdate(callback: (Double) -> Unit) {
+        player.currentTimeProperty().addListener { _, _, newValue ->
+            callback(newValue.toMillis())
+        }
     }
 
-    fun play() {
-        player.play()
 
-    }
-
-    fun pause() {
-        player.pause()
-    }
-
-    fun stop() {
-        player.stop()
+    fun seek(time: Long) {
+        player.seek(Duration.millis(time.toDouble()))
     }
 
     fun skip(seconds: Int) {
         player.seek(player.currentTime.add(Duration.seconds(seconds.toDouble())))
     }
 
-    fun setVolume(volume: Double) {
-        player.volume = volume
-    }
     fun dispose() {
         player.dispose()
     }
