@@ -11,27 +11,41 @@ class ScreenRepositoryImpl : ScreenRepository {
     private fun getOperatingSystem(): String = System.getProperty("os.name").toLowerCase()
 
     override fun getScreens(): List<Screen> {
-        val command = listOf("ffmpeg", "-f", "avfoundation", "-list_devices", "true", "-i", "")
-        val process = ProcessBuilder(command).start()
-        process.waitFor()
-
-        val reader = BufferedReader(InputStreamReader(process.errorStream))
-        val output = reader.readText()
-        reader.close()
-
-        val screenRegex = """\[(\d+)\] Capture screen (\d+)""".toRegex()
-
-        return screenRegex.findAll(output).map {matchResult ->
-            val screenNumber = matchResult.groupValues[2].toInt() + 1 //Todo fix this
-            Screen(
-                id = screenNumber.toString(),
-                name = "Capture screen $screenNumber",
-                height = getScreenResolution(screenNumber.toString())?.first ?: 100,
-                width = getScreenResolution(screenNumber.toString())?.second ?: 100
-            )
-        }.toList()
+//        val screens = mutableListOf<Screen>()
+//        var index = 0
+//
+//        //
+//        while (true) {
+//            val grabber = FFmpegFrameGrabber.createDefault(":${index}")
+//            grabber.format = "avfoundation"
+////            grabber.option = "-list_devices"
+////            grabber.option = "true"
+//            grabber.imageWidth = 1 // Set minimal resolution to speed up the process
+//            grabber.imageHeight = 1
+//            try {
+//                grabber.start()
+//                // If start is successful, add the screen
+//                screens.add(Screen(
+//                    id = index.toString(),
+//                    name = "Capture screen ${index + 1}",
+//                    height = 1080, // Replace with actual resolution retrieval if possible
+//                    width = 1920
+//                ))
+//                grabber.stop()
+//            } catch (e: Exception) {
+//                // If an exception occurs, it likely means no more screens are available
+//                break
+//            }
+//            index++
+//        }
+//
+        return listOf(Screen(
+            id = "0",
+            name = "Capture screen 1",
+            height = 1080, // Replace with actual resolution retrieval if possible
+            width = 1920
+        ))
     }
-
     override fun createDirectoriesIfNotExist() {
 
     }

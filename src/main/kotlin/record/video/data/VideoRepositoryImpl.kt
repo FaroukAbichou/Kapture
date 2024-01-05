@@ -6,6 +6,7 @@ import core.util.FileHelper.VideoExtensions
 import core.util.FileHelper.getFileDate
 import core.util.FileHelper.getFileSize
 import core.util.FileHelper.getFilesWithExtension
+import org.bytedeco.ffmpeg.global.avutil
 import org.bytedeco.javacv.FFmpegFrameGrabber
 import org.bytedeco.javacv.FFmpegFrameRecorder
 import org.bytedeco.javacv.Java2DFrameConverter
@@ -21,7 +22,19 @@ import kotlin.time.Duration
 
 class VideoRepositoryImpl : VideoRepository {
 
-    private lateinit var recorder: FFmpegFrameRecorder
+    private val outputPath = Paths.get("/Users/takiacademy/Kapture/Videos/Recording").toFile()
+
+    private val recorder = FFmpegFrameRecorder(
+        /* file = */ outputPath,
+        /* imageWidth = */ 1920,
+        /* imageHeight = */ 1080
+    ).apply {
+        format = "mp4"
+        videoCodecName = "uyvy422"
+        videoCodec = 0
+        frameRate = 30.0
+        pixelFormat = avutil.AV_PIX_FMT_YUV420P
+    }
 
     override fun startRecording(
         windowPlacement: WindowPlacement?,
@@ -32,11 +45,9 @@ class VideoRepositoryImpl : VideoRepository {
 
     override fun stopRecording() {
         try {
-            if (this::recorder.isInitialized) {
-                recorder.stop()
-                recorder.release()
-                println("Recording stopped and resources released.")
-            }
+            recorder.stop()
+            recorder.release()
+            println("Recording stopped and resources released.")
         } catch (e: Exception) {
             e.printStackTrace()
             println("Error occurred while stopping the recording: ${e.message}")
@@ -57,10 +68,6 @@ class VideoRepositoryImpl : VideoRepository {
     }
 
     private fun startScreenRecording() {
-        val outputPath = Paths.get("/Users/takiacademy/Kapture/Videos/Recording.mp4")
-        val recorder = FFmpegFrameRecorder(outputPath.toFile(), 0)
-
-
         try {
             recorder.start()
             println("Screen recording started: $outputPath")

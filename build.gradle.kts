@@ -32,11 +32,8 @@ dependencies {
     implementation(libs.kotlinx.serializationJson)
     implementation(libs.koin.core)
     implementation(libs.kotlinx.coroutinesCore)
-    implementation("dev.chrisbanes.haze:haze:0.3.0")
-    implementation("org.bytedeco:ffmpeg-platform:6.0-1.5.9")
-    implementation("org.bytedeco:javacv-platform:1.5.9")
-    implementation("org.bytedeco:opencv:4.5.3-1.5.9")
-    implementation("org.bytedeco:javacpp:1.5.9")
+    implementation("org.bytedeco:ffmpeg-platform: 5.1.2-1.5.8")
+    implementation("org.bytedeco:javacv-platform:1.5.8")
 
     implementation(libs.voyager.navigator)
     implementation(libs.voyager.transition)
@@ -63,7 +60,6 @@ compose.desktop {
             copyright = "© 2023 Softylines. All rights reserved."
             vendor = "Softylines"
             licenseFile.set(project.file("LICENSE.txt"))
-
             windows {
                 iconFile.set(project.file("logo.ico"))
                 shortcut = true
