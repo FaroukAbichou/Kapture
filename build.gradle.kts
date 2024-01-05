@@ -5,7 +5,7 @@ plugins {
     kotlin("jvm")
     alias(libs.plugins.compose)
     alias(libs.plugins.kotlinx.serialization)
-    id ("org.openjfx.javafxplugin") version "0.1.0"
+    id("org.openjfx.javafxplugin") version "0.1.0"
 }
 
 group = "com.farouk-abichou"
@@ -13,12 +13,14 @@ version = "1.0-SNAPSHOT"
 
 javafx {
     version = "17"
-    modules("javafx.controls", "javafx.fxml" , "javafx.media" , "javafx.swing" , "javafx.web")
+    modules("javafx.controls", "javafx.fxml", "javafx.media", "javafx.swing", "javafx.web")
 }
 
 repositories {
     mavenCentral()
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+    maven("https://raw.github.com/agomezmoron/screen-recorder/mvn-repo")
+
     google()
 }
 
@@ -32,11 +34,7 @@ dependencies {
     implementation(libs.kotlinx.serializationJson)
     implementation(libs.koin.core)
     implementation(libs.kotlinx.coroutinesCore)
-    implementation("dev.chrisbanes.haze:haze:0.3.0")
-    implementation("org.bytedeco:ffmpeg-platform:6.0-1.5.9")
-    implementation("org.bytedeco:javacv-platform:1.5.9")
-    implementation("org.bytedeco:opencv:4.5.3-1.5.9")
-    implementation("org.bytedeco:javacpp:1.5.9")
+    implementation("com.github.agomezmoron:screen-recorder:0.0.3")
 
     implementation(libs.voyager.navigator)
     implementation(libs.voyager.transition)

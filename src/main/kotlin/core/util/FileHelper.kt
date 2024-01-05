@@ -26,7 +26,8 @@ object FileHelper {
     )
     fun getFilesWithExtension(directoryPath: String, fileExtension: Set<String>): List<Path> {
         return Files.walk(Paths.get(directoryPath))
-            .filter { fileExtension.any { extension ->
+            .filter {
+                fileExtension.any { extension ->
                     it.fileName.toString().endsWith(extension)
                 }
             }
