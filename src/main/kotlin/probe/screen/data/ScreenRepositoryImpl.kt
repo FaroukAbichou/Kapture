@@ -11,25 +11,7 @@ class ScreenRepositoryImpl : ScreenRepository {
     private fun getOperatingSystem(): String = System.getProperty("os.name").toLowerCase()
 
     override fun getScreens(): List<Screen> {
-        val command = listOf("ffmpeg", "-f", "avfoundation", "-list_devices", "true", "-i", "")
-        val process = ProcessBuilder(command).start()
-        process.waitFor()
-
-        val reader = BufferedReader(InputStreamReader(process.errorStream))
-        val output = reader.readText()
-        reader.close()
-
-        val screenRegex = """\[(\d+)\] Capture screen (\d+)""".toRegex()
-
-        return screenRegex.findAll(output).map {matchResult ->
-            val screenNumber = matchResult.groupValues[2].toInt() + 1 //Todo fix this
-            Screen(
-                id = screenNumber.toString(),
-                name = "Capture screen $screenNumber",
-                height = getScreenResolution(screenNumber.toString())?.first ?: 100,
-                width = getScreenResolution(screenNumber.toString())?.second ?: 100
-            )
-        }.toList()
+        return listOf(Screen("1", "Screen 1", 640, 480))
     }
 
     override fun createDirectoriesIfNotExist() {

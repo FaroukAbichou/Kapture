@@ -34,7 +34,11 @@ dependencies {
     implementation(libs.kotlinx.serializationJson)
     implementation(libs.koin.core)
     implementation(libs.kotlinx.coroutinesCore)
-    implementation("com.github.agomezmoron:screen-recorder:0.0.3")
+    // Monte Media Screen Recorder
+    implementation("ch.randelshofer:org.monte.media.screenrecorder:17.1")
+    implementation("ch.randelshofer:org.monte.media:17.1")
+    implementation("ch.randelshofer:org.monte.media.swing:17.1")
+
 
     implementation(libs.voyager.navigator)
     implementation(libs.voyager.transition)

@@ -1,45 +1,35 @@
 package record.video.data
 
 import androidx.compose.ui.graphics.ImageBitmap
-import com.github.agomezmoron.multimedia.recorder.VideoRecorder
-import com.github.agomezmoron.multimedia.recorder.configuration.VideoRecorderConfiguration
 import core.util.FileHelper.VideoExtensions
 import core.util.FileHelper.getFileDate
 import core.util.FileHelper.getFileSize
 import core.util.FileHelper.getFilesWithExtension
-import core.util.FilePaths
 import probe.core.WindowPlacement
 import probe.screen.domain.model.Screen
 import record.video.domain.VideoRepository
 import record.video.domain.model.RecordSettings
 import record.video.domain.model.Video
-import java.io.File
-import java.net.MalformedURLException
 import java.nio.file.Path
 import kotlin.time.Duration
 
-
 class VideoRepositoryImpl : VideoRepository {
+
 
     override fun startRecording(
         windowPlacement: WindowPlacement?,
         selectedScreen: Screen,
     ) {
-        println("Starting recording screen")
-        VideoRecorderConfiguration.wantToUseFullScreen(true)
-        VideoRecorderConfiguration.setVideoDirectory(File(FilePaths.VideosPath)) // home
-        VideoRecorderConfiguration.setKeepFrames(false)
+        val recorder = Screencorder()
 
-        try {
-            VideoRecorder.start("test")
-        } catch (e: MalformedURLException) {
-            e.printStackTrace()
-        }
+        recorder.start()
+        Thread.sleep(java.time.Duration.ofSeconds(7).toMillis())
+        println("Stopping")
+        println(recorder.movieFolder)
+        recorder.stop()
     }
-
     override fun stopRecording() {
-        println("Stopping recording")
-        VideoRecorder.stop()
+//        screencorder.stop()
     }
 
     override fun recordScreenWithTimeout(
