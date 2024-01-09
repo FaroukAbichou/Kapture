@@ -7,29 +7,48 @@ import core.util.FileHelper.getFileSize
 import core.util.FileHelper.getFilesWithExtension
 import probe.core.WindowPlacement
 import probe.screen.domain.model.Screen
+import record.video.JpegImagesToMovie
 import record.video.domain.VideoRepository
 import record.video.domain.model.RecordSettings
 import record.video.domain.model.Video
 import java.nio.file.Path
+import java.util.*
+import javax.media.MediaLocator
 import kotlin.time.Duration
 
-class VideoRepositoryImpl : VideoRepository {
+class VideoRepositoryImpl(
+    val screencorder: JpegImagesToMovie?,
+) : VideoRepository {
+    private var recordingThread: Thread? = null
 
+    override fun startRecording(windowPlacement: WindowPlacement?, selectedScreen: Screen) {
+        // Initialize screencorder with necessary parameters
+        // Example parameters - modify as needed
+        val width = 640  // Example width
+        val height = 480 // Example height
+        val frameRate = 30 // Example frame rate
+        val outputMediaLocator = MediaLocator("file:///path/to/output.mov") // Output file path
+        val inputFiles = Vector<String>() // Add paths to your JPEG files here
 
-    override fun startRecording(
-        windowPlacement: WindowPlacement?,
-        selectedScreen: Screen,
-    ) {
-        val recorder = Screencorder()
-
-        recorder.start()
-        Thread.sleep(java.time.Duration.ofSeconds(7).toMillis())
-        println("Stopping")
-        println(recorder.movieFolder)
-        recorder.stop()
+        // Start recording in a separate thread
+        recordingThread = Thread {
+            screencorder?.doIt(width, height, frameRate, inputFiles, outputMediaLocator)
+        }
+        recordingThread?.start()
     }
+
     override fun stopRecording() {
-//        screencorder.stop()
+        // Stop the recording
+        // You need to implement a way to stop the recording in your JpegImagesToMovie class
+        // This could be a method that stops the processor and signals the end of the recording
+//        screencorder?.stopRecording()
+
+        // Join the thread to ensure complete shutdown of recording process
+        try {
+            recordingThread?.join()
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
     }
 
     override fun recordScreenWithTimeout(
@@ -38,19 +57,6 @@ class VideoRepositoryImpl : VideoRepository {
         windowPlacement: WindowPlacement?,
         selectedScreen: Screen,
     ) {
-//        println("Starting timed recording for screen: ${selectedScreen.name}, Duration: ${duration.inWholeSeconds} seconds")
-//
-//        VideoRecorderConfiguration.wantToUseFullScreen(true);
-//        VideoRecorderConfiguration.setVideoDirectory(File(FilePaths.VideosPath)); // home
-//        VideoRecorderConfiguration.setKeepFrames(false);
-//
-//        // Stop recording after the duration has elapsed
-//        try {
-//            VideoRecorder.start("test")
-//            println(videoPath)
-//        } catch (e: MalformedURLException) {
-//            e.printStackTrace()
-//        }
     }
 
     override fun playVideo(videoPath: String) {

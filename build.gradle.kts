@@ -35,10 +35,7 @@ dependencies {
     implementation(libs.koin.core)
     implementation(libs.kotlinx.coroutinesCore)
     // Monte Media Screen Recorder
-    implementation("ch.randelshofer:org.monte.media.screenrecorder:17.1")
-    implementation("ch.randelshofer:org.monte.media:17.1")
-    implementation("ch.randelshofer:org.monte.media.swing:17.1")
-
+    implementation("javax.media:jmf:2.1.1e")
 
     implementation(libs.voyager.navigator)
     implementation(libs.voyager.transition)
